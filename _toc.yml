@@ -5,7 +5,6 @@ format: jb-book
 root: intro
 chapters:
 - file: mymarkdownfile.md
-- file: new_velocity_data.ipynb
 - file: notebooks
 - file: markdown-notebooks
 - file: markdown
