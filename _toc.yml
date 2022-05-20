@@ -8,3 +8,4 @@ chapters:
 - file: notebooks
 - file: markdown-notebooks
 - file: markdown
+- file: new_velocity_data
