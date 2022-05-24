@@ -32,10 +32,6 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-fig, ax = plt.subplots()
-
-itslive.v.plot.imshow(ax=ax, alpha = 0.1)
-se_asia_prj.plot(ax=ax, color='red')
-
+se_asia_prj.plot()
 -------------------
 
