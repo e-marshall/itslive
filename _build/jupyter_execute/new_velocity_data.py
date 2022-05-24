@@ -3,6 +3,8 @@
 
 # # Tutorial Content
 # 
+# ***Still need to clean up comments, add text and things like that***
+# 
 # This notebook will walk you through steps to read in and organize velocity data in a raster format using xarray and rioxarray tools
 # 
 # First, lets install the python libraries that were listed on the [Software](software.ipynb) page:
@@ -81,8 +83,6 @@ n45_vx_path = gen_path + 'mynewbook/gardner_data/N45_0240m_vx.tiff'
 ds_45n = components_to_speed(n45_vx_path, n45_vy_path)
 
 
-# Let's explore this object a bit:
-
 # In[6]:
 
 
@@ -92,7 +92,13 @@ ds_45n
 # In[7]:
 
 
-ds_45n.dims
+print(ds_45n.dims)
+print('---')
+print(ds_45n.coords)
+print('---')
+print(ds_45n.variables)
+print('---')
+print(ds_45n.attrs)
 
 
 # In[8]:
@@ -107,17 +113,10 @@ se_asia = gpd.read_file('/Users/emmamarshall/Downloads/15rgi60SouthAsiaEast/15_r
 # In[9]:
 
 
-se_asia
+len(se_asia['RGIId'])
 
 
 # In[10]:
-
-
-#take first 100 glaciers
-#se_asia_100 = se_asia.iloc[:100,:]
-
-
-# In[11]:
 
 
 def rasterize_vector(gpdf, utm_code, raster_obj): 
@@ -158,11 +157,17 @@ def rasterize_vector(gpdf, utm_code, raster_obj):
     return out_grid
 
 
+# In[11]:
+
+
+rasterize_vector_seasia = rasterize_vector(se_asia, 32645, ds_45n)
+rasterize_vector_seasia
+
+
 # In[12]:
 
 
-rasterize_vector_seasia_100 = rasterize_vector(se_asia, 32645, ds_45n)
-rasterize_vector_seasia_100
+len(rasterize_vector_seasia.Integer_ID)
 
 
 # In[13]:
@@ -175,6 +180,8 @@ se_asia_utm['Integer_ID'] = se_asia_utm.index.astype(int)
 #double checking that all glaciers are assigned an ID
 se_asia_utm.plot.scatter(x='Integer_ID', y='Area')
 
+
+# The plot above shows the mean ice speed of every glacier in the geodataframe object, **se_asia**, that lies within the spatial extent the velocity object.
 
 # In[14]:
 

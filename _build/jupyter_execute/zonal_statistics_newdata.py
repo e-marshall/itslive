@@ -84,7 +84,7 @@ se_asia_prj = se_asia.to_crs('+proj=lcc +lat_1=15 +lat_2=65 +lat_0=30 +lon_0=95 
 se_asia_prj.plot()
 
 
-# In[63]:
+# In[10]:
 
 
 fig, ax = plt.subplots()
@@ -93,14 +93,14 @@ itslive.v.plot.imshow(ax=ax, alpha = 0.1)
 se_asia_prj.plot(ax=ax, color='red')
 
 
-# In[82]:
+# In[11]:
 
 
 se_asia_prj['Unique_ID'] = se_asia_prj.index.astype(int)
 se_asia_prj
 
 
-# In[66]:
+# In[12]:
 
 
 def rasterize_vector(gpdf_prj, raster_obj):  #for now, project objects outside of fn
@@ -137,19 +137,25 @@ def rasterize_vector(gpdf_prj, raster_obj):  #for now, project objects outside o
     return out_grid
 
 
-# In[84]:
+# In[13]:
 
 
 outgrid_seasia = rasterize_vector(se_asia_prj, itslive)
 
 
-# In[83]:
+# In[15]:
+
+
+outgrid_seasia
+
+
+# In[14]:
 
 
 outgrid_seasia.Integer_ID.plot.imshow()
 
 
-# In[ ]:
+# In[16]:
 
 
 grouped_ID = outgrid_seasia.drop('spatial_ref').groupby(outgrid_seasia.Integer_ID)
@@ -161,63 +167,17 @@ grouped_ID = outgrid_seasia.drop('spatial_ref').groupby(outgrid_seasia.Integer_I
 
 
 
-# In[24]:
-
-
-#project to utm
-se_asia_utm = se_asia.to_crs('EPSG:32645')
-#make a col in df that is a unique integer ID (from index) for each glacier
-se_asia_utm['Integer_ID'] = se_asia_utm.index.astype(int)
-#double checking that all glaciers are assigned an ID
-se_asia_utm.plot.scatter(x='Integer_ID', y='Area')
-
-
-# In[25]:
-
-
-#rasterize glacier vector by unique id 
-#
-out_grid_se_asia = make_geocube(
-            vector_data = se_asia_utm,
-            measurements = ['Integer_ID'],
-            like = ds_45n['sp']
-)
-
-
-# In[26]:
-
-
-#now merge the rasterized vector and the original raster togehter into a geocube
-out_grid_se_asia['speed'] = (ds_45n.dims, ds_45n.sp.values, ds_45n.attrs, ds_45n.encoding)
-out_grid_se_asia
-
-
-# In[27]:
-
-
-#trying to figure out why 1300 glaciers or so get dropped
-print(len(out_grid_se_asia.Integer_ID))
-
-
-# In[28]:
-
-
-#now, get velocity statistics of each 'region' (integer) using the mask
-grouped_ID = out_grid_se_asia.drop('spatial_ref').groupby(out_grid_se_asia.Integer_ID)
-grouped_ID
-
-
-# In[29]:
+# In[22]:
 
 
 grid_mean_sp = grouped_ID.mean().rename({'speed': 'speed_mean'})
 grid_median_sp = grouped_ID.median().rename({'speed': 'speed_median'})
 grid_min_sp = grouped_ID.min().rename({'speed': 'speed_min'})
 grid_max_sp = grouped_ID.max().rename({'speed': 'speed_max'})
-grid_std_sp = grouped_ID.max().rename({'speed': 'speed_std'})
+#grid_std_sp = grouped_ID.max().rename({'speed': 'speed_std'})
 
 
-# In[30]:
+# In[19]:
 
 
 zonal_stats = xr.merge([grid_mean_sp, grid_median_sp, grid_min_sp, grid_max_sp, grid_std_sp]).to_dataframe()
@@ -225,14 +185,14 @@ zonal_stats = zonal_stats.reset_index()
 zonal_stats
 
 
-# In[31]:
+# In[20]:
 
 
 #now, trying to merge zonal stats df back with original glacier df on integer_ID col
-se_asia_glacier_data = se_asia_utm.merge(zonal_stats, on='Integer_ID')
+se_asia_glacier_data = se_asia_prj.merge(zonal_stats, on='Integer_ID')
 
 
-# In[32]:
+# In[21]:
 
 
 zonal_stats['speed_mean']
