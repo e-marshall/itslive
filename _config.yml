@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: My first book! 
+title: My first book 
 author: emma marshall
 logo: logo.png
 
@@ -9,6 +9,11 @@ logo: logo.png
 # See https://jupyterbook.org/content/execute.html
 execute:
   execute_notebooks: force
+  
+#enable parsing of latex-stype math blocks
+parse:
+    myst_enable_extensions:
+     - amsmath
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -21,7 +26,7 @@ bibtex_bibfiles:
 
 # Information about where the book exists on the web
 repository:
-  url: https://github.com/executablebooks/jupyter-book  # Online location of your book
+  url: https://e-marshall.github.io/mynewbook/intro.html  # Online location of your book
   path_to_book: docs  # Optional path to your book, relative to the repository root
   branch: master  # Which branch of the repository should be used when creating links (optional)
 

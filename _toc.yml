@@ -4,8 +4,10 @@
 format: jb-book
 root: intro
 chapters:
-- file: mymarkdownfile.md
-- file: notebooks
-- file: markdown-notebooks
-- file: markdown
-- file: new_velocity_data
+- file: software.ipynb
+- file: new_velocity_data.ipynb
+- file: Summary.md
+- file: References.md
+
+
+
