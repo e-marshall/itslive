@@ -32,8 +32,6 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-#now, get velocity statistics of each 'region' (integer) using the mask
-grouped_ID = out_grid_se_asia.drop('spatial_ref').groupby(out_grid_se_asia.Integer_ID)
-grouped_ID
+se_asia_prj.plot()
 -------------------
 

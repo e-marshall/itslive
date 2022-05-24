@@ -1,4 +1,4 @@
-# Using xarray to analyze glacier surface velocity data
+# Introduction
 
 In this notebook, we'll go over steps to access glacier surface velocity data, organize it into a format that's easier to work with, and then calculate mean velocities for individual glaciers within a region.
 
