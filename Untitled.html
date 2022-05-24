@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Content with notebooks &#8212; My first book</title>
+    <title>&lt;no title&gt; &#8212; My first book</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -158,7 +158,7 @@ const thebe_selector_output = ".output, .cell_output"
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/notebooks.ipynb"><button type="button"
+        <a class="dropdown-buttons" href="_sources/Untitled.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
@@ -178,7 +178,7 @@ const thebe_selector_output = ".output, .cell_output"
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://e-marshall.github.io/mynewbook/intro.html/issues/new?title=Issue%20on%20page%20%2Fnotebooks.html&body=Your%20issue%20content%20here."><button
+            href="https://e-marshall.github.io/mynewbook/intro.html/issues/new?title=Issue%20on%20page%20%2FUntitled.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -203,22 +203,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <i class="fas fa-list"></i> Contents
             </div>
             <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#markdown-notebooks">
-   Markdown + notebooks
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#myst-markdown">
-   MyST markdown
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#code-blocks-and-outputs">
-   Code blocks and outputs
-  </a>
- </li>
+                <ul class="simple visible nav section-nav flex-column">
 </ul>
 
             </nav>
@@ -229,7 +214,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Content with notebooks</h1>
+                <h1><no title></h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -238,22 +223,7 @@ const thebe_selector_output = ".output, .cell_output"
                             <h2> Contents </h2>
                         </div>
                         <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#markdown-notebooks">
-   Markdown + notebooks
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#myst-markdown">
-   MyST markdown
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#code-blocks-and-outputs">
-   Code blocks and outputs
-  </a>
- </li>
+                            <ul class="simple visible nav section-nav flex-column">
 </ul>
 
                         </nav>
@@ -263,82 +233,349 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="content-with-notebooks">
-<h1>Content with notebooks<a class="headerlink" href="#content-with-notebooks" title="Permalink to this headline">¶</a></h1>
-<p>You can also create content with Jupyter Notebooks. This means that you can include
-code blocks and their outputs in your book.</p>
-<div class="section" id="markdown-notebooks">
-<h2>Markdown + notebooks<a class="headerlink" href="#markdown-notebooks" title="Permalink to this headline">¶</a></h2>
-<p>As it is markdown, you can embed images, HTML, etc into your posts!</p>
-<p><img alt="" src="https://myst-parser.readthedocs.io/en/latest/_static/logo-wide.svg" /></p>
-<p>You can also $add_{math}$ and</p>
-<p>$$
-math^{blocks}
-$$</p>
-<p>or</p>
-<p>$$
-\begin{aligned}
-\mbox{mean} la_{tex} \ \
-math blocks
-\end{aligned}
-$$</p>
-<p>But make sure you $Escape $your $dollar signs $you want to keep!</p>
-</div>
-<div class="section" id="myst-markdown">
-<h2>MyST markdown<a class="headerlink" href="#myst-markdown" title="Permalink to this headline">¶</a></h2>
-<p>MyST markdown works in Jupyter Notebooks as well. For more information about MyST markdown, check
-out <a class="reference external" href="https://jupyterbook.org/content/myst.html">the MyST guide in Jupyter Book</a>,
-or see <a class="reference external" href="https://myst-parser.readthedocs.io/en/latest/">the MyST markdown documentation</a>.</p>
-</div>
-<div class="section" id="code-blocks-and-outputs">
-<h2>Code blocks and outputs<a class="headerlink" href="#code-blocks-and-outputs" title="Permalink to this headline">¶</a></h2>
-<p>Jupyter Book will also embed your code blocks and output in your book.
-For example, here’s some sample Matplotlib code:</p>
-<div class="cell docutils container">
+  <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span><span class="p">,</span> <span class="n">cycler</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.pyplot._IonContext at 0x108c8acb0&gt;
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fixing random state for reproducibility</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">19680801</span><span class="p">)</span>
-
-<span class="n">N</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="n">ii</span> <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">)]</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
-<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span>
-<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cycler</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">)))</span>
-
-
-<span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
-<span class="n">custom_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="mf">0.</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>
-                <span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="mf">.5</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>
-                <span class="n">Line2D</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">(</span><span class="mf">1.</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">)]</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">lines</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">custom_lines</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;Cold&#39;</span><span class="p">,</span> <span class="s1">&#39;Medium&#39;</span><span class="p">,</span> <span class="s1">&#39;Hot&#39;</span><span class="p">]);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gpd</span><span class="o">.</span><span class="n">__version__</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/notebooks_2_0.png" src="_images/notebooks_2_0.png" />
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;0.10.2&#39;
+</pre></div>
 </div>
 </div>
-<p>There is a lot more that you can do with outputs (such as including interactive outputs)
-with your book. For more information about this, see <a class="reference external" href="https://jupyterbook.org">the Jupyter Book documentation</a></p>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">&#39;/Users/emmamarshall/Downloads/15rgi60SouthAsiaEast/15_rgi60_SouthAsiaEast.shp&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RGIId</th>
+      <th>GLIMSId</th>
+      <th>BgnDate</th>
+      <th>EndDate</th>
+      <th>CenLon</th>
+      <th>CenLat</th>
+      <th>O1Region</th>
+      <th>O2Region</th>
+      <th>Area</th>
+      <th>Zmin</th>
+      <th>...</th>
+      <th>Aspect</th>
+      <th>Lmax</th>
+      <th>Status</th>
+      <th>Connect</th>
+      <th>Form</th>
+      <th>TermType</th>
+      <th>Surging</th>
+      <th>Linkages</th>
+      <th>Name</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>RGI60-15.00001</td>
+      <td>G102044E29941N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.044042</td>
+      <td>29.941000</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.438</td>
+      <td>4996</td>
+      <td>...</td>
+      <td>251</td>
+      <td>850</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((102.03759 29.93828, 102.03759 29.938...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>RGI60-15.00002</td>
+      <td>G102042E29987N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.042346</td>
+      <td>29.987019</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.644</td>
+      <td>4947</td>
+      <td>...</td>
+      <td>244</td>
+      <td>1021</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((102.04195 29.99030, 102.04197 29.990...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RGI60-15.00003</td>
+      <td>G102041E29997N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.041130</td>
+      <td>29.997311</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.225</td>
+      <td>5019</td>
+      <td>...</td>
+      <td>274</td>
+      <td>812</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((102.03710 29.99774, 102.03719 29.998...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>RGI60-15.00004</td>
+      <td>G102050E29962N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.050283</td>
+      <td>29.962297</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.985</td>
+      <td>4622</td>
+      <td>...</td>
+      <td>52</td>
+      <td>2318</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((102.04309 29.95992, 102.04315 29.960...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>RGI60-15.00005</td>
+      <td>G102044E30025N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.043728</td>
+      <td>30.025101</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.465</td>
+      <td>4733</td>
+      <td>...</td>
+      <td>20</td>
+      <td>913</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((102.04765 30.02514, 102.04741 30.024...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>13114</th>
+      <td>RGI60-15.13115</td>
+      <td>G081977E30337N</td>
+      <td>20090918</td>
+      <td>-9999999</td>
+      <td>81.977000</td>
+      <td>30.337000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>1.356</td>
+      <td>5480</td>
+      <td>...</td>
+      <td>352</td>
+      <td>1856</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5Z342A0003</td>
+      <td>POLYGON ((81.98085 30.33985, 81.98095 30.33949...</td>
+    </tr>
+    <tr>
+      <th>13115</th>
+      <td>RGI60-15.13116</td>
+      <td>G081991E30339N</td>
+      <td>20090918</td>
+      <td>-9999999</td>
+      <td>81.991000</td>
+      <td>30.339000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>7.427</td>
+      <td>5266</td>
+      <td>...</td>
+      <td>330</td>
+      <td>5779</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5Z342A0003</td>
+      <td>POLYGON ((82.00100 30.33999, 82.00129 30.33994...</td>
+    </tr>
+    <tr>
+      <th>13116</th>
+      <td>RGI60-15.13117</td>
+      <td>G081355E30440N</td>
+      <td>20070912</td>
+      <td>-9999999</td>
+      <td>81.355000</td>
+      <td>30.440000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>6.788</td>
+      <td>5696</td>
+      <td>...</td>
+      <td>96</td>
+      <td>5519</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5Z342B0006</td>
+      <td>POLYGON ((81.34247 30.45299, 81.34257 30.45268...</td>
+    </tr>
+    <tr>
+      <th>13117</th>
+      <td>RGI60-15.13118</td>
+      <td>G081361E30451N</td>
+      <td>20070912</td>
+      <td>-9999999</td>
+      <td>81.361000</td>
+      <td>30.451000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>0.043</td>
+      <td>5969</td>
+      <td>...</td>
+      <td>206</td>
+      <td>527</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((81.36115 30.45285, 81.36129 30.45300...</td>
+    </tr>
+    <tr>
+      <th>13118</th>
+      <td>RGI60-15.13119</td>
+      <td>G081443E30418N</td>
+      <td>20070912</td>
+      <td>-9999999</td>
+      <td>81.443000</td>
+      <td>30.418000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>0.094</td>
+      <td>5680</td>
+      <td>...</td>
+      <td>360</td>
+      <td>325</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5Z342B0005</td>
+      <td>POLYGON ((81.44464 30.41698, 81.44460 30.41680...</td>
+    </tr>
+  </tbody>
+</table>
+<p>13119 rows × 23 columns</p>
+</div></div></div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -350,16 +587,16 @@ with your book. For more information about this, see <a class="reference externa
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "conda-env-geopandas_work-py"
         },
         kernelOptions: {
-            kernelName: "python3",
+            kernelName: "conda-env-geopandas_work-py",
             path: "./."
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'conda-env-geopandas_work-py'</script>
 
               </div>
               
