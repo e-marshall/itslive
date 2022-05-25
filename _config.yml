@@ -1,7 +1,7 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Using xarray to explore glacier surface velocity data 
+title: Xarray workflow example: glacier surface velocities 
 author: emma marshall
 logo: logo.png
 
