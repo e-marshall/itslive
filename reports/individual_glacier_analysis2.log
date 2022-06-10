@@ -32,8 +32,6 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-#now, get velocity statistics of each 'region' (integer) using the mask
-grouped_ID = rasterize_vector_seasia.drop('spatial_ref').groupby(rasterize_vector_seasia.RGI_int)
-
+raster_11926 = itslive.rio.clip(rgi11926.geometry, rgi11926.crs)
 -------------------
 

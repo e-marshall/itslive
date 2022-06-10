@@ -1,0 +1,338 @@
+Traceback (most recent call last):
+  File "/Users/emarshall/miniconda3/envs/mynewbook/lib/python3.10/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/Users/emarshall/miniconda3/envs/mynewbook/lib/python3.10/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/Users/emarshall/miniconda3/envs/mynewbook/lib/python3.10/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/Users/emarshall/miniconda3/envs/mynewbook/lib/python3.10/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/Users/emarshall/miniconda3/envs/mynewbook/lib/python3.10/asyncio/base_events.py", line 646, in run_until_complete
+    return future.result()
+  File "/Users/emarshall/miniconda3/envs/mynewbook/lib/python3.10/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/Users/emarshall/miniconda3/envs/mynewbook/lib/python3.10/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/Users/emarshall/miniconda3/envs/mynewbook/lib/python3.10/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+url_x25_y475 = 's3://its-live-data/datacubes/v02/N40E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y4750000.zarr'
+data_cube_x25_y475 = xr.open_dataset(url_x25_y475, engine = 'zarr')
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mCancelledError[0m                            Traceback (most recent call last)
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:986[0m, in [0;36mTCPConnector._wrap_create_connection[0;34m(self, req, timeout, client_error, *args, **kwargs)[0m
+[1;32m    985[0m     [38;5;28;01masync[39;00m [38;5;28;01mwith[39;00m ceil_timeout(timeout[38;5;241m.[39msock_connect):
+[0;32m--> 986[0m         [38;5;28;01mreturn[39;00m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_loop[38;5;241m.[39mcreate_connection([38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)  [38;5;66;03m# type: ignore[return-value]  # noqa[39;00m
+[1;32m    987[0m [38;5;28;01mexcept[39;00m cert_errors [38;5;28;01mas[39;00m exc:
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/base_events.py:1049[0m, in [0;36mBaseEventLoop.create_connection[0;34m(self, protocol_factory, host, port, ssl, family, proto, flags, sock, local_addr, server_hostname, ssl_handshake_timeout, happy_eyeballs_delay, interleave)[0m
+[1;32m   1048[0m [38;5;28;01mtry[39;00m:
+[0;32m-> 1049[0m     sock [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_connect_sock(
+[1;32m   1050[0m         exceptions, addrinfo, laddr_infos)
+[1;32m   1051[0m     [38;5;28;01mbreak[39;00m
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/base_events.py:960[0m, in [0;36mBaseEventLoop._connect_sock[0;34m(self, exceptions, addr_info, local_addr_infos)[0m
+[1;32m    959[0m         [38;5;28;01mraise[39;00m my_exceptions[38;5;241m.[39mpop()
+[0;32m--> 960[0m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39msock_connect(sock, address)
+[1;32m    961[0m [38;5;28;01mreturn[39;00m sock
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/selector_events.py:499[0m, in [0;36mBaseSelectorEventLoop.sock_connect[0;34m(self, sock, address)[0m
+[1;32m    498[0m [38;5;28mself[39m[38;5;241m.[39m_sock_connect(fut, sock, address)
+[0;32m--> 499[0m [38;5;28;01mreturn[39;00m [38;5;28;01mawait[39;00m fut
+
+[0;31mCancelledError[0m: 
+
+During handling of the above exception, another exception occurred:
+
+[0;31mTimeoutError[0m                              Traceback (most recent call last)
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/client.py:535[0m, in [0;36mClientSession._request[0;34m(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)[0m
+[1;32m    534[0m         [38;5;28;01massert[39;00m [38;5;28mself[39m[38;5;241m.[39m_connector [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m
+[0;32m--> 535[0m         conn [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_connector[38;5;241m.[39mconnect(
+[1;32m    536[0m             req, traces[38;5;241m=[39mtraces, timeout[38;5;241m=[39mreal_timeout
+[1;32m    537[0m         )
+[1;32m    538[0m [38;5;28;01mexcept[39;00m asyncio[38;5;241m.[39mTimeoutError [38;5;28;01mas[39;00m exc:
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:542[0m, in [0;36mBaseConnector.connect[0;34m(self, req, traces, timeout)[0m
+[1;32m    541[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 542[0m     proto [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_create_connection(req, traces, timeout)
+[1;32m    543[0m     [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39m_closed:
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:907[0m, in [0;36mTCPConnector._create_connection[0;34m(self, req, traces, timeout)[0m
+[1;32m    906[0m [38;5;28;01melse[39;00m:
+[0;32m--> 907[0m     _, proto [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_create_direct_connection(req, traces, timeout)
+[1;32m    909[0m [38;5;28;01mreturn[39;00m proto
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:1175[0m, in [0;36mTCPConnector._create_direct_connection[0;34m(self, req, traces, timeout, client_error)[0m
+[1;32m   1174[0m [38;5;28;01mtry[39;00m:
+[0;32m-> 1175[0m     transp, proto [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_wrap_create_connection(
+[1;32m   1176[0m         [38;5;28mself[39m[38;5;241m.[39m_factory,
+[1;32m   1177[0m         host,
+[1;32m   1178[0m         port,
+[1;32m   1179[0m         timeout[38;5;241m=[39mtimeout,
+[1;32m   1180[0m         ssl[38;5;241m=[39msslcontext,
+[1;32m   1181[0m         family[38;5;241m=[39mhinfo[[38;5;124m"[39m[38;5;124mfamily[39m[38;5;124m"[39m],
+[1;32m   1182[0m         proto[38;5;241m=[39mhinfo[[38;5;124m"[39m[38;5;124mproto[39m[38;5;124m"[39m],
+[1;32m   1183[0m         flags[38;5;241m=[39mhinfo[[38;5;124m"[39m[38;5;124mflags[39m[38;5;124m"[39m],
+[1;32m   1184[0m         server_hostname[38;5;241m=[39mhinfo[[38;5;124m"[39m[38;5;124mhostname[39m[38;5;124m"[39m] [38;5;28;01mif[39;00m sslcontext [38;5;28;01melse[39;00m [38;5;28;01mNone[39;00m,
+[1;32m   1185[0m         local_addr[38;5;241m=[39m[38;5;28mself[39m[38;5;241m.[39m_local_addr,
+[1;32m   1186[0m         req[38;5;241m=[39mreq,
+[1;32m   1187[0m         client_error[38;5;241m=[39mclient_error,
+[1;32m   1188[0m     )
+[1;32m   1189[0m [38;5;28;01mexcept[39;00m ClientConnectorError [38;5;28;01mas[39;00m exc:
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:985[0m, in [0;36mTCPConnector._wrap_create_connection[0;34m(self, req, timeout, client_error, *args, **kwargs)[0m
+[1;32m    984[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 985[0m     [38;5;28;01masync[39;00m [38;5;28;01mwith[39;00m ceil_timeout(timeout[38;5;241m.[39msock_connect):
+[1;32m    986[0m         [38;5;28;01mreturn[39;00m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_loop[38;5;241m.[39mcreate_connection([38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)  [38;5;66;03m# type: ignore[return-value]  # noqa[39;00m
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/async_timeout/__init__.py:129[0m, in [0;36mTimeout.__aexit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
+[1;32m    123[0m [38;5;28;01masync[39;00m [38;5;28;01mdef[39;00m [38;5;21m__aexit__[39m(
+[1;32m    124[0m     [38;5;28mself[39m,
+[1;32m    125[0m     exc_type: Optional[Type[[38;5;167;01mBaseException[39;00m]],
+[1;32m    126[0m     exc_val: Optional[[38;5;167;01mBaseException[39;00m],
+[1;32m    127[0m     exc_tb: Optional[TracebackType],
+[1;32m    128[0m ) [38;5;241m-[39m[38;5;241m>[39m Optional[[38;5;28mbool[39m]:
+[0;32m--> 129[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_do_exit[49m[43m([49m[43mexc_type[49m[43m)[49m
+[1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28;01mNone[39;00m
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/async_timeout/__init__.py:212[0m, in [0;36mTimeout._do_exit[0;34m(self, exc_type)[0m
+[1;32m    211[0m     [38;5;28mself[39m[38;5;241m.[39m_timeout_handler [38;5;241m=[39m [38;5;28;01mNone[39;00m
+[0;32m--> 212[0m     [38;5;28;01mraise[39;00m asyncio[38;5;241m.[39mTimeoutError
+[1;32m    213[0m [38;5;66;03m# timeout has not expired[39;00m
+
+[0;31mTimeoutError[0m: 
+
+The above exception was the direct cause of the following exception:
+
+[0;31mServerTimeoutError[0m                        Traceback (most recent call last)
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:178[0m, in [0;36mAIOHTTPSession.send[0;34m(self, request)[0m
+[1;32m    177[0m url [38;5;241m=[39m URL(url, encoded[38;5;241m=[39m[38;5;28;01mTrue[39;00m)
+[0;32m--> 178[0m response [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_session[38;5;241m.[39mrequest(
+[1;32m    179[0m     request[38;5;241m.[39mmethod, url[38;5;241m=[39murl, headers[38;5;241m=[39mheaders_, data[38;5;241m=[39mdata, proxy[38;5;241m=[39mproxy_url,
+[1;32m    180[0m     proxy_headers[38;5;241m=[39mproxy_headers
+[1;32m    181[0m )
+[1;32m    183[0m http_response [38;5;241m=[39m aiobotocore[38;5;241m.[39mawsrequest[38;5;241m.[39mAioAWSResponse(
+[1;32m    184[0m     [38;5;28mstr[39m(response[38;5;241m.[39murl),
+[1;32m    185[0m     response[38;5;241m.[39mstatus,
+[1;32m    186[0m     response[38;5;241m.[39mheaders,
+[1;32m    187[0m     response
+[1;32m    188[0m )
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/client.py:539[0m, in [0;36mClientSession._request[0;34m(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)[0m
+[1;32m    538[0m [38;5;28;01mexcept[39;00m asyncio[38;5;241m.[39mTimeoutError [38;5;28;01mas[39;00m exc:
+[0;32m--> 539[0m     [38;5;28;01mraise[39;00m ServerTimeoutError(
+[1;32m    540[0m         [38;5;124m"[39m[38;5;124mConnection timeout [39m[38;5;124m"[39m [38;5;124m"[39m[38;5;124mto host [39m[38;5;132;01m{}[39;00m[38;5;124m"[39m[38;5;241m.[39mformat(url)
+[1;32m    541[0m     ) [38;5;28;01mfrom[39;00m [38;5;21;01mexc[39;00m
+[1;32m    543[0m [38;5;28;01massert[39;00m conn[38;5;241m.[39mtransport [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m
+
+[0;31mServerTimeoutError[0m: Connection timeout to host http://169.254.169.254/latest/api/token
+
+During handling of the above exception, another exception occurred:
+
+[0;31mConnectTimeoutError[0m                       Traceback (most recent call last)
+Input [0;32mIn [3][0m, in [0;36m<cell line: 2>[0;34m()[0m
+[1;32m      1[0m url_x25_y475 [38;5;241m=[39m [38;5;124m'[39m[38;5;124ms3://its-live-data/datacubes/v02/N40E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y4750000.zarr[39m[38;5;124m'[39m
+[0;32m----> 2[0m data_cube_x25_y475 [38;5;241m=[39m [43mxr[49m[38;5;241;43m.[39;49m[43mopen_dataset[49m[43m([49m[43murl_x25_y475[49m[43m,[49m[43m [49m[43mengine[49m[43m [49m[38;5;241;43m=[39;49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43mzarr[39;49m[38;5;124;43m'[39;49m[43m)[49m
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/api.py:495[0m, in [0;36mopen_dataset[0;34m(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, backend_kwargs, *args, **kwargs)[0m
+[1;32m    483[0m decoders [38;5;241m=[39m _resolve_decoders_kwargs(
+[1;32m    484[0m     decode_cf,
+[1;32m    485[0m     open_backend_dataset_parameters[38;5;241m=[39mbackend[38;5;241m.[39mopen_dataset_parameters,
+[0;32m   (...)[0m
+[1;32m    491[0m     decode_coords[38;5;241m=[39mdecode_coords,
+[1;32m    492[0m )
+[1;32m    494[0m overwrite_encoded_chunks [38;5;241m=[39m kwargs[38;5;241m.[39mpop([38;5;124m"[39m[38;5;124moverwrite_encoded_chunks[39m[38;5;124m"[39m, [38;5;28;01mNone[39;00m)
+[0;32m--> 495[0m backend_ds [38;5;241m=[39m [43mbackend[49m[38;5;241;43m.[39;49m[43mopen_dataset[49m[43m([49m
+[1;32m    496[0m [43m    [49m[43mfilename_or_obj[49m[43m,[49m
+[1;32m    497[0m [43m    [49m[43mdrop_variables[49m[38;5;241;43m=[39;49m[43mdrop_variables[49m[43m,[49m
+[1;32m    498[0m [43m    [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mdecoders[49m[43m,[49m
+[1;32m    499[0m [43m    [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m,[49m
+[1;32m    500[0m [43m[49m[43m)[49m
+[1;32m    501[0m ds [38;5;241m=[39m _dataset_from_backend_dataset(
+[1;32m    502[0m     backend_ds,
+[1;32m    503[0m     filename_or_obj,
+[0;32m   (...)[0m
+[1;32m    510[0m     [38;5;241m*[39m[38;5;241m*[39mkwargs,
+[1;32m    511[0m )
+[1;32m    512[0m [38;5;28;01mreturn[39;00m ds
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:800[0m, in [0;36mZarrBackendEntrypoint.open_dataset[0;34m(self, filename_or_obj, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta, group, mode, synchronizer, consolidated, chunk_store, storage_options, stacklevel)[0m
+[1;32m    780[0m [38;5;28;01mdef[39;00m [38;5;21mopen_dataset[39m(
+[1;32m    781[0m     [38;5;28mself[39m,
+[1;32m    782[0m     filename_or_obj,
+[0;32m   (...)[0m
+[1;32m    796[0m     stacklevel[38;5;241m=[39m[38;5;241m3[39m,
+[1;32m    797[0m ):
+[1;32m    799[0m     filename_or_obj [38;5;241m=[39m _normalize_path(filename_or_obj)
+[0;32m--> 800[0m     store [38;5;241m=[39m [43mZarrStore[49m[38;5;241;43m.[39;49m[43mopen_group[49m[43m([49m
+[1;32m    801[0m [43m        [49m[43mfilename_or_obj[49m[43m,[49m
+[1;32m    802[0m [43m        [49m[43mgroup[49m[38;5;241;43m=[39;49m[43mgroup[49m[43m,[49m
+[1;32m    803[0m [43m        [49m[43mmode[49m[38;5;241;43m=[39;49m[43mmode[49m[43m,[49m
+[1;32m    804[0m [43m        [49m[43msynchronizer[49m[38;5;241;43m=[39;49m[43msynchronizer[49m[43m,[49m
+[1;32m    805[0m [43m        [49m[43mconsolidated[49m[38;5;241;43m=[39;49m[43mconsolidated[49m[43m,[49m
+[1;32m    806[0m [43m        [49m[43mconsolidate_on_close[49m[38;5;241;43m=[39;49m[38;5;28;43;01mFalse[39;49;00m[43m,[49m
+[1;32m    807[0m [43m        [49m[43mchunk_store[49m[38;5;241;43m=[39;49m[43mchunk_store[49m[43m,[49m
+[1;32m    808[0m [43m        [49m[43mstorage_options[49m[38;5;241;43m=[39;49m[43mstorage_options[49m[43m,[49m
+[1;32m    809[0m [43m        [49m[43mstacklevel[49m[38;5;241;43m=[39;49m[43mstacklevel[49m[43m [49m[38;5;241;43m+[39;49m[43m [49m[38;5;241;43m1[39;49m[43m,[49m
+[1;32m    810[0m [43m    [49m[43m)[49m
+[1;32m    812[0m     store_entrypoint [38;5;241m=[39m StoreBackendEntrypoint()
+[1;32m    813[0m     [38;5;28;01mwith[39;00m close_on_error(store):
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:348[0m, in [0;36mZarrStore.open_group[0;34m(cls, store, mode, synchronizer, group, consolidated, consolidate_on_close, chunk_store, storage_options, append_dim, write_region, safe_chunks, stacklevel)[0m
+[1;32m    346[0m [38;5;28;01mif[39;00m consolidated [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    347[0m     [38;5;28;01mtry[39;00m:
+[0;32m--> 348[0m         zarr_group [38;5;241m=[39m [43mzarr[49m[38;5;241;43m.[39;49m[43mopen_consolidated[49m[43m([49m[43mstore[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mopen_kwargs[49m[43m)[49m
+[1;32m    349[0m     [38;5;28;01mexcept[39;00m [38;5;167;01mKeyError[39;00m:
+[1;32m    350[0m         warnings[38;5;241m.[39mwarn(
+[1;32m    351[0m             [38;5;124m"[39m[38;5;124mFailed to open Zarr store with consolidated metadata, [39m[38;5;124m"[39m
+[1;32m    352[0m             [38;5;124m"[39m[38;5;124mfalling back to try reading non-consolidated metadata. [39m[38;5;124m"[39m
+[0;32m   (...)[0m
+[1;32m    363[0m             stacklevel[38;5;241m=[39mstacklevel,
+[1;32m    364[0m         )
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/convenience.py:1181[0m, in [0;36mopen_consolidated[0;34m(store, metadata_key, mode, **kwargs)[0m
+[1;32m   1178[0m [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mstorage[39;00m [38;5;28;01mimport[39;00m ConsolidatedMetadataStore
+[1;32m   1180[0m [38;5;66;03m# normalize parameters[39;00m
+[0;32m-> 1181[0m store [38;5;241m=[39m [43mnormalize_store_arg[49m[43m([49m[43mstore[49m[43m,[49m[43m [49m[43mstorage_options[49m[38;5;241;43m=[39;49m[43mkwargs[49m[38;5;241;43m.[39;49m[43mget[49m[43m([49m[38;5;124;43m"[39;49m[38;5;124;43mstorage_options[39;49m[38;5;124;43m"[39;49m[43m)[49m[43m,[49m[43m [49m[43mmode[49m[38;5;241;43m=[39;49m[43mmode[49m[43m)[49m
+[1;32m   1182[0m [38;5;28;01mif[39;00m mode [38;5;129;01mnot[39;00m [38;5;129;01min[39;00m {[38;5;124m'[39m[38;5;124mr[39m[38;5;124m'[39m, [38;5;124m'[39m[38;5;124mr+[39m[38;5;124m'[39m}:
+[1;32m   1183[0m     [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124minvalid mode, expected either [39m[38;5;124m'[39m[38;5;124mr[39m[38;5;124m'[39m[38;5;124m or [39m[38;5;124m'[39m[38;5;124mr+[39m[38;5;124m'[39m[38;5;124m; found [39m[38;5;132;01m{!r}[39;00m[38;5;124m"[39m
+[1;32m   1184[0m                      [38;5;241m.[39mformat(mode))
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:114[0m, in [0;36mnormalize_store_arg[0;34m(store, storage_options, mode)[0m
+[1;32m    112[0m [38;5;28;01mif[39;00m [38;5;28misinstance[39m(store, [38;5;28mstr[39m):
+[1;32m    113[0m     [38;5;28;01mif[39;00m [38;5;124m"[39m[38;5;124m://[39m[38;5;124m"[39m [38;5;129;01min[39;00m store [38;5;129;01mor[39;00m [38;5;124m"[39m[38;5;124m::[39m[38;5;124m"[39m [38;5;129;01min[39;00m store:
+[0;32m--> 114[0m         [38;5;28;01mreturn[39;00m [43mFSStore[49m[43m([49m[43mstore[49m[43m,[49m[43m [49m[43mmode[49m[38;5;241;43m=[39;49m[43mmode[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43m([49m[43mstorage_options[49m[43m [49m[38;5;129;43;01mor[39;49;00m[43m [49m[43m{[49m[43m}[49m[43m)[49m[43m)[49m
+[1;32m    115[0m     [38;5;28;01melif[39;00m storage_options:
+[1;32m    116[0m         [38;5;28;01mraise[39;00m [38;5;167;01mValueError[39;00m([38;5;124m"[39m[38;5;124mstorage_options passed with non-fsspec path[39m[38;5;124m"[39m)
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:1140[0m, in [0;36mFSStore.__init__[0;34m(self, url, normalize_keys, key_separator, mode, exceptions, dimension_separator, **storage_options)[0m
+[1;32m   1138[0m [38;5;66;03m# Pass attributes to array creation[39;00m
+[1;32m   1139[0m [38;5;28mself[39m[38;5;241m.[39m_dimension_separator [38;5;241m=[39m dimension_separator
+[0;32m-> 1140[0m [38;5;28;01mif[39;00m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mfs[49m[38;5;241;43m.[39;49m[43mexists[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mpath[49m[43m)[49m [38;5;129;01mand[39;00m [38;5;129;01mnot[39;00m [38;5;28mself[39m[38;5;241m.[39mfs[38;5;241m.[39misdir([38;5;28mself[39m[38;5;241m.[39mpath):
+[1;32m   1141[0m     [38;5;28;01mraise[39;00m FSPathExistNotDir(url)
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:86[0m, in [0;36msync_wrapper.<locals>.wrapper[0;34m(*args, **kwargs)[0m
+[1;32m     83[0m [38;5;129m@functools[39m[38;5;241m.[39mwraps(func)
+[1;32m     84[0m [38;5;28;01mdef[39;00m [38;5;21mwrapper[39m([38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+[1;32m     85[0m     [38;5;28mself[39m [38;5;241m=[39m obj [38;5;129;01mor[39;00m args[[38;5;241m0[39m]
+[0;32m---> 86[0m     [38;5;28;01mreturn[39;00m [43msync[49m[43m([49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mloop[49m[43m,[49m[43m [49m[43mfunc[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[43margs[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:66[0m, in [0;36msync[0;34m(loop, func, timeout, *args, **kwargs)[0m
+[1;32m     64[0m     [38;5;28;01mraise[39;00m FSTimeoutError [38;5;28;01mfrom[39;00m [38;5;21;01mreturn_result[39;00m
+[1;32m     65[0m [38;5;28;01melif[39;00m [38;5;28misinstance[39m(return_result, [38;5;167;01mBaseException[39;00m):
+[0;32m---> 66[0m     [38;5;28;01mraise[39;00m return_result
+[1;32m     67[0m [38;5;28;01melse[39;00m:
+[1;32m     68[0m     [38;5;28;01mreturn[39;00m return_result
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:26[0m, in [0;36m_runner[0;34m(event, coro, result, timeout)[0m
+[1;32m     24[0m     coro [38;5;241m=[39m asyncio[38;5;241m.[39mwait_for(coro, timeout[38;5;241m=[39mtimeout)
+[1;32m     25[0m [38;5;28;01mtry[39;00m:
+[0;32m---> 26[0m     result[[38;5;241m0[39m] [38;5;241m=[39m [38;5;28;01mawait[39;00m coro
+[1;32m     27[0m [38;5;28;01mexcept[39;00m [38;5;167;01mException[39;00m [38;5;28;01mas[39;00m ex:
+[1;32m     28[0m     result[[38;5;241m0[39m] [38;5;241m=[39m ex
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:888[0m, in [0;36mS3FileSystem._exists[0;34m(self, path)[0m
+[1;32m    886[0m     [38;5;28;01mreturn[39;00m [38;5;28;01mFalse[39;00m
+[1;32m    887[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 888[0m     [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_info(path, bucket, key, version_id[38;5;241m=[39mversion_id)
+[1;32m    889[0m     [38;5;28;01mreturn[39;00m [38;5;28;01mTrue[39;00m
+[1;32m    890[0m [38;5;28;01mexcept[39;00m [38;5;167;01mFileNotFoundError[39;00m:
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:1140[0m, in [0;36mS3FileSystem._info[0;34m(self, path, bucket, key, refresh, version_id)[0m
+[1;32m   1138[0m [38;5;28;01mif[39;00m key:
+[1;32m   1139[0m     [38;5;28;01mtry[39;00m:
+[0;32m-> 1140[0m         out [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_call_s3(
+[1;32m   1141[0m             [38;5;124m"[39m[38;5;124mhead_object[39m[38;5;124m"[39m,
+[1;32m   1142[0m             [38;5;28mself[39m[38;5;241m.[39mkwargs,
+[1;32m   1143[0m             Bucket[38;5;241m=[39mbucket,
+[1;32m   1144[0m             Key[38;5;241m=[39mkey,
+[1;32m   1145[0m             [38;5;241m*[39m[38;5;241m*[39mversion_id_kw(version_id),
+[1;32m   1146[0m             [38;5;241m*[39m[38;5;241m*[39m[38;5;28mself[39m[38;5;241m.[39mreq_kw,
+[1;32m   1147[0m         )
+[1;32m   1148[0m         [38;5;28;01mreturn[39;00m {
+[1;32m   1149[0m             [38;5;124m"[39m[38;5;124mETag[39m[38;5;124m"[39m: out[38;5;241m.[39mget([38;5;124m"[39m[38;5;124mETag[39m[38;5;124m"[39m, [38;5;124m"[39m[38;5;124m"[39m),
+[1;32m   1150[0m             [38;5;124m"[39m[38;5;124mLastModified[39m[38;5;124m"[39m: out[[38;5;124m"[39m[38;5;124mLastModified[39m[38;5;124m"[39m],
+[0;32m   (...)[0m
+[1;32m   1156[0m             [38;5;124m"[39m[38;5;124mContentType[39m[38;5;124m"[39m: out[38;5;241m.[39mget([38;5;124m"[39m[38;5;124mContentType[39m[38;5;124m"[39m),
+[1;32m   1157[0m         }
+[1;32m   1158[0m     [38;5;28;01mexcept[39;00m [38;5;167;01mFileNotFoundError[39;00m:
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:325[0m, in [0;36mS3FileSystem._call_s3[0;34m(self, method, *akwarglist, **kwargs)[0m
+[1;32m    324[0m [38;5;28;01masync[39;00m [38;5;28;01mdef[39;00m [38;5;21m_call_s3[39m([38;5;28mself[39m, method, [38;5;241m*[39makwarglist, [38;5;241m*[39m[38;5;241m*[39mkwargs):
+[0;32m--> 325[0m     [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39mset_session()
+[1;32m    326[0m     s3 [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39mget_s3(kwargs[38;5;241m.[39mget([38;5;124m"[39m[38;5;124mBucket[39m[38;5;124m"[39m))
+[1;32m    327[0m     method [38;5;241m=[39m [38;5;28mgetattr[39m(s3, method)
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:473[0m, in [0;36mS3FileSystem.set_session[0;34m(self, refresh, kwargs)[0m
+[1;32m    469[0m [38;5;28;01melse[39;00m:
+[1;32m    470[0m     s3creator [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39msession[38;5;241m.[39mcreate_client(
+[1;32m    471[0m         [38;5;124m"[39m[38;5;124ms3[39m[38;5;124m"[39m, config[38;5;241m=[39mconf, [38;5;241m*[39m[38;5;241m*[39minit_kwargs, [38;5;241m*[39m[38;5;241m*[39mclient_kwargs
+[1;32m    472[0m     )
+[0;32m--> 473[0m     [38;5;28mself[39m[38;5;241m.[39m_s3 [38;5;241m=[39m [38;5;28;01mawait[39;00m s3creator[38;5;241m.[39m[38;5;21m__aenter__[39m()
+[1;32m    475[0m [38;5;28mself[39m[38;5;241m.[39m_s3creator [38;5;241m=[39m s3creator
+[1;32m    476[0m [38;5;66;03m# the following actually closes the aiohttp connection; use of privates[39;00m
+[1;32m    477[0m [38;5;66;03m# might break in the future, would cause exception at gc time[39;00m
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/session.py:22[0m, in [0;36mClientCreatorContext.__aenter__[0;34m(self)[0m
+[1;32m     21[0m [38;5;28;01masync[39;00m [38;5;28;01mdef[39;00m [38;5;21m__aenter__[39m([38;5;28mself[39m) [38;5;241m-[39m[38;5;241m>[39m AioBaseClient:
+[0;32m---> 22[0m     [38;5;28mself[39m[38;5;241m.[39m_client [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_coro
+[1;32m     23[0m     [38;5;28;01mreturn[39;00m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_client[38;5;241m.[39m[38;5;21m__aenter__[39m()
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/session.py:102[0m, in [0;36mAioSession._create_client[0;34m(self, service_name, region_name, api_version, use_ssl, verify, endpoint_url, aws_access_key_id, aws_secret_access_key, aws_session_token, config)[0m
+[1;32m     97[0m     [38;5;28;01mraise[39;00m PartialCredentialsError(
+[1;32m     98[0m         provider[38;5;241m=[39m[38;5;124m'[39m[38;5;124mexplicit[39m[38;5;124m'[39m,
+[1;32m     99[0m         cred_var[38;5;241m=[39m[38;5;28mself[39m[38;5;241m.[39m_missing_cred_vars(aws_access_key_id,
+[1;32m    100[0m                                          aws_secret_access_key))
+[1;32m    101[0m [38;5;28;01melse[39;00m:
+[0;32m--> 102[0m     credentials [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39mget_credentials()
+[1;32m    103[0m endpoint_resolver [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_get_internal_component([38;5;124m'[39m[38;5;124mendpoint_resolver[39m[38;5;124m'[39m)
+[1;32m    104[0m exceptions_factory [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_get_internal_component([38;5;124m'[39m[38;5;124mexceptions_factory[39m[38;5;124m'[39m)
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/session.py:133[0m, in [0;36mAioSession.get_credentials[0;34m(self)[0m
+[1;32m    131[0m [38;5;28;01masync[39;00m [38;5;28;01mdef[39;00m [38;5;21mget_credentials[39m([38;5;28mself[39m):
+[1;32m    132[0m     [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39m_credentials [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[0;32m--> 133[0m         [38;5;28mself[39m[38;5;241m.[39m_credentials [38;5;241m=[39m [38;5;28;01mawait[39;00m ([38;5;28mself[39m[38;5;241m.[39m_components[38;5;241m.[39mget_component(
+[1;32m    134[0m             [38;5;124m'[39m[38;5;124mcredential_provider[39m[38;5;124m'[39m)[38;5;241m.[39mload_credentials())
+[1;32m    135[0m     [38;5;28;01mreturn[39;00m [38;5;28mself[39m[38;5;241m.[39m_credentials
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/credentials.py:814[0m, in [0;36mAioCredentialResolver.load_credentials[0;34m(self)[0m
+[1;32m    812[0m [38;5;28;01mfor[39;00m provider [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39mproviders:
+[1;32m    813[0m     logger[38;5;241m.[39mdebug([38;5;124m"[39m[38;5;124mLooking for credentials via: [39m[38;5;132;01m%s[39;00m[38;5;124m"[39m, provider[38;5;241m.[39mMETHOD)
+[0;32m--> 814[0m     creds [38;5;241m=[39m [38;5;28;01mawait[39;00m provider[38;5;241m.[39mload()
+[1;32m    815[0m     [38;5;28;01mif[39;00m creds [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m:
+[1;32m    816[0m         [38;5;28;01mreturn[39;00m creds
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/credentials.py:486[0m, in [0;36mAioInstanceMetadataProvider.load[0;34m(self)[0m
+[1;32m    484[0m [38;5;28;01masync[39;00m [38;5;28;01mdef[39;00m [38;5;21mload[39m([38;5;28mself[39m):
+[1;32m    485[0m     fetcher [38;5;241m=[39m [38;5;28mself[39m[38;5;241m.[39m_role_fetcher
+[0;32m--> 486[0m     metadata [38;5;241m=[39m [38;5;28;01mawait[39;00m fetcher[38;5;241m.[39mretrieve_iam_role_credentials()
+[1;32m    487[0m     [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m metadata:
+[1;32m    488[0m         [38;5;28;01mreturn[39;00m [38;5;28;01mNone[39;00m
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/utils.py:175[0m, in [0;36mAioInstanceMetadataFetcher.retrieve_iam_role_credentials[0;34m(self)[0m
+[1;32m    173[0m [38;5;28;01masync[39;00m [38;5;28;01mdef[39;00m [38;5;21mretrieve_iam_role_credentials[39m([38;5;28mself[39m):
+[1;32m    174[0m     [38;5;28;01mtry[39;00m:
+[0;32m--> 175[0m         token [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_fetch_metadata_token()
+[1;32m    176[0m         role_name [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_get_iam_role(token)
+[1;32m    177[0m         credentials [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_get_credentials(role_name, token)
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/utils.py:88[0m, in [0;36mAioIMDSFetcher._fetch_metadata_token[0;34m(self)[0m
+[1;32m     86[0m [38;5;28;01mfor[39;00m i [38;5;129;01min[39;00m [38;5;28mrange[39m([38;5;28mself[39m[38;5;241m.[39m_num_attempts):
+[1;32m     87[0m     [38;5;28;01mtry[39;00m:
+[0;32m---> 88[0m         response [38;5;241m=[39m [38;5;28;01mawait[39;00m session[38;5;241m.[39msend(request[38;5;241m.[39mprepare())
+[1;32m     89[0m         [38;5;28;01mif[39;00m response[38;5;241m.[39mstatus_code [38;5;241m==[39m [38;5;241m200[39m:
+[1;32m     90[0m             [38;5;28;01mreturn[39;00m [38;5;28;01mawait[39;00m response[38;5;241m.[39mtext
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:210[0m, in [0;36mAIOHTTPSession.send[0;34m(self, request)[0m
+[1;32m    208[0m [38;5;28;01mexcept[39;00m ServerTimeoutError [38;5;28;01mas[39;00m e:
+[1;32m    209[0m     [38;5;28;01mif[39;00m [38;5;28mstr[39m(e)[38;5;241m.[39mlower()[38;5;241m.[39mstartswith([38;5;124m'[39m[38;5;124mconnect[39m[38;5;124m'[39m):
+[0;32m--> 210[0m         [38;5;28;01mraise[39;00m ConnectTimeoutError(endpoint_url[38;5;241m=[39mrequest[38;5;241m.[39murl, error[38;5;241m=[39me)
+[1;32m    211[0m     [38;5;28;01melse[39;00m:
+[1;32m    212[0m         [38;5;28;01mraise[39;00m ReadTimeoutError(endpoint_url[38;5;241m=[39mrequest[38;5;241m.[39murl, error[38;5;241m=[39me)
+
+[0;31mConnectTimeoutError[0m: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
+ConnectTimeoutError: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
+

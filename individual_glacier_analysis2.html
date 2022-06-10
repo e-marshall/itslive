@@ -1,0 +1,1487 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Individual glacier analysis 2 &#8212; Xarray workflow example - glacier surface velocities</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Summary" href="Summary.html" />
+    <link rel="prev" title="Individual glacier analysis 1" href="individual_glacier_analysis1.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Xarray workflow example - glacier surface velocities</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   Introduction
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="software.html">
+   Software and Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="region_scale_glacier_analysis.html">
+   Region-scale glacier analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="individual_glacier_analysis1.html">
+   Individual glacier analysis 1
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Individual glacier analysis 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Summary.html">
+   Summary
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="References.html">
+   References
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/individual_glacier_analysis2.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://e-marshall.github.io/mynewbook/intro.html"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://e-marshall.github.io/mynewbook/intro.html/issues/new?title=Issue%20on%20page%20%2Findividual_glacier_analysis2.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-in-raster-data">
+   Read in raster data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-in-vector-data">
+   Read in vector data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#clipping-raster-data-by-a-vector">
+   Clipping raster data by a vector
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extract-glacier-centerline">
+   Extract glacier centerline
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#non-function-examples-below">
+     non-function examples below
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-second-glacier">
+     A second glacier
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#make-xarray-object-out-of-centerline-bool-mask">
+   Make xarray object out of centerline bool mask
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#extract-itslive-xarray-dataset-data-only-at-points-along-centerline">
+     Extract itslive xarray dataset data only at points along centerline
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#experimenting-with-skeletonize-v-thin-scikit-image">
+     Experimenting with skeletonize v. thin (scikit image)
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Individual glacier analysis 2</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-in-raster-data">
+   Read in raster data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-in-vector-data">
+   Read in vector data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#clipping-raster-data-by-a-vector">
+   Clipping raster data by a vector
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extract-glacier-centerline">
+   Extract glacier centerline
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#non-function-examples-below">
+     non-function examples below
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#a-second-glacier">
+     A second glacier
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#make-xarray-object-out-of-centerline-bool-mask">
+   Make xarray object out of centerline bool mask
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#extract-itslive-xarray-dataset-data-only-at-points-along-centerline">
+     Extract itslive xarray dataset data only at points along centerline
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#experimenting-with-skeletonize-v-thin-scikit-image">
+     Experimenting with skeletonize v. thin (scikit image)
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="individual-glacier-analysis-2">
+<h1>Individual glacier analysis 2<a class="headerlink" href="#individual-glacier-analysis-2" title="Permalink to this headline">¶</a></h1>
+<p>This notebook will demonstrate the workflow for reading in glacier outlines (vector data) and glacier velocity (raster data) for a large region, extracting the data to examine an individual glacier and performing some preliminary analysis of glacier surface velocities at the scale of an individual glacier</p>
+<p>We start by installing the necessary software:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="kn">import</span> <span class="n">skeletonize</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">MultiPolygon</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Set paths (hopefully move away from this once accessing data from cloud)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_path</span> <span class="o">=</span> <span class="s1">&#39;/Users/emarshall/Desktop/siparcs/data/&#39;</span>
+<span class="n">rgi_path</span> <span class="o">=</span> <span class="s1">&#39;/Users/emarshall/Desktop/siparcs/data/nsidc0770_15.rgi60.SouthAsiaEast/15_rgi60_SouthAsiaEast.shp&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen_path_home</span> <span class="o">=</span> <span class="s1">&#39;/Users/emmamarshall/Desktop/phd_research/siparcs/&#39;</span>
+<span class="n">rgi_path_home</span> <span class="o">=</span> <span class="s1">&#39;/Users/emmamarshall/Downloads/15rgi60SouthAsiaEast&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="read-in-raster-data">
+<h2>Read in raster data<a class="headerlink" href="#read-in-raster-data" title="Permalink to this headline">¶</a></h2>
+<p>In this example, we’ll again by using ITS_LIVE ice velocity data downloaded from the NSIDC DAAC access point (for now)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">itslive</span> <span class="o">=</span> <span class="n">rxr</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">gen_path</span> <span class="o">+</span> <span class="s1">&#39;HMA_G0120_0000.nc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>What CRS is this dataset in?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">itslive</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CRS.from_wkt(&#39;PROJCS[&quot;Asia_North_Lambert_Conformal_Conic&quot;,GEOGCS[&quot;WGS 84&quot;,DATUM[&quot;WGS_1984&quot;,SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;false_easting&quot;,0],PARAMETER[&quot;false_northing&quot;,0],PARAMETER[&quot;central_meridian&quot;,95],PARAMETER[&quot;standard_parallel_1&quot;,15],PARAMETER[&quot;standard_parallel_2&quot;,65],PARAMETER[&quot;latitude_of_origin&quot;,30],UNIT[&quot;metre&quot;,1,AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH],AUTHORITY[&quot;EPSG&quot;,&quot;102027&quot;]]&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>It looks like the ITS_LIVE data is in the Asia North Lambert Conformal Conic coordinate reference system. When we read in the vector data and begin to work with it we will need to project it to match this.</p>
+</div>
+<div class="section" id="read-in-vector-data">
+<h2>Read in vector data<a class="headerlink" href="#read-in-vector-data" title="Permalink to this headline">¶</a></h2>
+<p>The glacier outline and attribute data we will be using is from the Randolph Glacier Inventory (RGI). The RGI contains data for glaciers worldwide and is divided into 19 primary regions. We will read in one region (South Asia East) here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#se_asia = gpd.read_file(gen_path_home[:-9] + &#39;data/nsidc0770_15.rgi60.SouthAsiaEast/15_rgi60_SouthAsiaEast.shp&#39;)</span>
+<span class="n">se_asia</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">rgi_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>And let’s explore this data a bit by looking at:</p>
+<ul class="simple">
+<li><p>the number of glaciers within the dataset</p></li>
+<li><p>the spatial extent of the dataset</p></li>
+<li><p>the coordinate reference system of the dataset</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of glaciers in dataset: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">se_asia</span><span class="p">[</span><span class="s1">&#39;RGIId&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of glaciers in dataset:  13119
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:&gt;
+</pre></div>
+</div>
+<img alt="_images/individual_glacier_analysis2_15_1.png" src="_images/individual_glacier_analysis2_15_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;CRS: &#39;</span><span class="p">,</span> <span class="n">se_asia</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CRS:  epsg:4326
+</pre></div>
+</div>
+</div>
+</div>
+<p>The RGI glacier outline dataframe is in lat/lon so let’s project it to match the raster data:
+If you look at the geoemtry column of the projected dataset you will see that the coordinates are now in meters instead of degrees.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia_prj</span> <span class="o">=</span> <span class="n">se_asia</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;+proj=lcc +lat_1=15 +lat_2=65 +lat_0=30 +lon_0=95 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m no_defs&#39;</span><span class="p">)</span>
+<span class="n">se_asia_prj</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RGIId</th>
+      <th>GLIMSId</th>
+      <th>BgnDate</th>
+      <th>EndDate</th>
+      <th>CenLon</th>
+      <th>CenLat</th>
+      <th>O1Region</th>
+      <th>O2Region</th>
+      <th>Area</th>
+      <th>Zmin</th>
+      <th>...</th>
+      <th>Aspect</th>
+      <th>Lmax</th>
+      <th>Status</th>
+      <th>Connect</th>
+      <th>Form</th>
+      <th>TermType</th>
+      <th>Surging</th>
+      <th>Linkages</th>
+      <th>Name</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>RGI60-15.00001</td>
+      <td>G102044E29941N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.044042</td>
+      <td>29.941000</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.438</td>
+      <td>4996</td>
+      <td>...</td>
+      <td>251</td>
+      <td>850</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((626747.322 19334.286, 626747.214 193...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>RGI60-15.00002</td>
+      <td>G102042E29987N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.042346</td>
+      <td>29.987019</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.644</td>
+      <td>4947</td>
+      <td>...</td>
+      <td>244</td>
+      <td>1021</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((626699.144 24673.098, 626701.110 246...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RGI60-15.00003</td>
+      <td>G102041E29997N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.041130</td>
+      <td>29.997311</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.225</td>
+      <td>5019</td>
+      <td>...</td>
+      <td>274</td>
+      <td>812</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((626205.858 25396.784, 626210.489 254...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>RGI60-15.00004</td>
+      <td>G102050E29962N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.050283</td>
+      <td>29.962297</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.985</td>
+      <td>4622</td>
+      <td>...</td>
+      <td>52</td>
+      <td>2318</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((627054.150 21582.052, 627057.905 216...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>RGI60-15.00005</td>
+      <td>G102044E30025N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.043728</td>
+      <td>30.025101</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.465</td>
+      <td>4733</td>
+      <td>...</td>
+      <td>20</td>
+      <td>913</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((626913.162 28267.766, 626895.820 282...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>13114</th>
+      <td>RGI60-15.13115</td>
+      <td>G081977E30337N</td>
+      <td>20090918</td>
+      <td>-9999999</td>
+      <td>81.977000</td>
+      <td>30.337000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>1.356</td>
+      <td>5480</td>
+      <td>...</td>
+      <td>352</td>
+      <td>1856</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5Z342A0003</td>
+      <td>POLYGON ((-1150121.533 121963.660, -1150118.27...</td>
+    </tr>
+    <tr>
+      <th>13115</th>
+      <td>RGI60-15.13116</td>
+      <td>G081991E30339N</td>
+      <td>20090918</td>
+      <td>-9999999</td>
+      <td>81.991000</td>
+      <td>30.339000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>7.427</td>
+      <td>5266</td>
+      <td>...</td>
+      <td>330</td>
+      <td>5779</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5Z342A0003</td>
+      <td>POLYGON ((-1148353.222 121707.808, -1148328.34...</td>
+    </tr>
+    <tr>
+      <th>13116</th>
+      <td>RGI60-15.13117</td>
+      <td>G081355E30440N</td>
+      <td>20070912</td>
+      <td>-9999999</td>
+      <td>81.355000</td>
+      <td>30.440000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>6.788</td>
+      <td>5696</td>
+      <td>...</td>
+      <td>96</td>
+      <td>5519</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5Z342B0006</td>
+      <td>POLYGON ((-1204224.276 142125.331, -1204220.83...</td>
+    </tr>
+    <tr>
+      <th>13117</th>
+      <td>RGI60-15.13118</td>
+      <td>G081361E30451N</td>
+      <td>20070912</td>
+      <td>-9999999</td>
+      <td>81.361000</td>
+      <td>30.451000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>0.043</td>
+      <td>5969</td>
+      <td>...</td>
+      <td>206</td>
+      <td>527</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((-1202593.561 141849.818, -1202579.07...</td>
+    </tr>
+    <tr>
+      <th>13118</th>
+      <td>RGI60-15.13119</td>
+      <td>G081443E30418N</td>
+      <td>20070912</td>
+      <td>-9999999</td>
+      <td>81.443000</td>
+      <td>30.418000</td>
+      <td>15</td>
+      <td>1</td>
+      <td>0.094</td>
+      <td>5680</td>
+      <td>...</td>
+      <td>360</td>
+      <td>325</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5Z342B0005</td>
+      <td>POLYGON ((-1195868.335 137065.519, -1195874.56...</td>
+    </tr>
+  </tbody>
+</table>
+<p>13119 rows × 23 columns</p>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="clipping-raster-data-by-a-vector">
+<h2>Clipping raster data by a vector<a class="headerlink" href="#clipping-raster-data-by-a-vector" title="Permalink to this headline">¶</a></h2>
+<p>Now, let’s focus on just a single glacier. To start with, let’s look at the five largest (in area) glaciers in the dataset and choose one of those.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span> <span class="o">=</span> <span class="s1">&#39;Area&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RGIId</th>
+      <th>GLIMSId</th>
+      <th>BgnDate</th>
+      <th>EndDate</th>
+      <th>CenLon</th>
+      <th>CenLat</th>
+      <th>O1Region</th>
+      <th>O2Region</th>
+      <th>Area</th>
+      <th>Zmin</th>
+      <th>...</th>
+      <th>Aspect</th>
+      <th>Lmax</th>
+      <th>Status</th>
+      <th>Connect</th>
+      <th>Form</th>
+      <th>TermType</th>
+      <th>Surging</th>
+      <th>Linkages</th>
+      <th>Name</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>11908</th>
+      <td>RGI60-15.11909</td>
+      <td>G096657E29334N</td>
+      <td>20050908</td>
+      <td>-9999999</td>
+      <td>96.657000</td>
+      <td>29.334000</td>
+      <td>15</td>
+      <td>3</td>
+      <td>179.589</td>
+      <td>3980</td>
+      <td>...</td>
+      <td>78</td>
+      <td>32403</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>9</td>
+      <td>Yagnung</td>
+      <td>POLYGON ((96.57583 29.39731, 96.57590 29.39730...</td>
+    </tr>
+    <tr>
+      <th>6880</th>
+      <td>RGI60-15.06881</td>
+      <td>G079147E30802N</td>
+      <td>20010801</td>
+      <td>-9999999</td>
+      <td>79.147205</td>
+      <td>30.801627</td>
+      <td>15</td>
+      <td>1</td>
+      <td>121.890</td>
+      <td>3999</td>
+      <td>...</td>
+      <td>353</td>
+      <td>32048</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>0</td>
+      <td>Gangotri Glacier</td>
+      <td>POLYGON ((79.17425 30.82318, 79.17372 30.82337...</td>
+    </tr>
+    <tr>
+      <th>11925</th>
+      <td>RGI60-15.11926</td>
+      <td>G096745E29216N</td>
+      <td>20050908</td>
+      <td>-9999999</td>
+      <td>96.745000</td>
+      <td>29.216000</td>
+      <td>15</td>
+      <td>3</td>
+      <td>96.283</td>
+      <td>4285</td>
+      <td>...</td>
+      <td>101</td>
+      <td>15157</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5O282B0028 Xirinongpu Glacier</td>
+      <td>POLYGON ((96.73404 29.26991, 96.73484 29.26927...</td>
+    </tr>
+    <tr>
+      <th>9990</th>
+      <td>RGI60-15.09991</td>
+      <td>G086830E28048N</td>
+      <td>20100409</td>
+      <td>-9999999</td>
+      <td>86.830000</td>
+      <td>28.048000</td>
+      <td>15</td>
+      <td>2</td>
+      <td>73.215</td>
+      <td>5155</td>
+      <td>...</td>
+      <td>13</td>
+      <td>20118</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5O193B0142 Rongbuk Glacier</td>
+      <td>POLYGON ((86.87850 28.06345, 86.87983 28.06234...</td>
+    </tr>
+    <tr>
+      <th>2702</th>
+      <td>RGI60-15.02703</td>
+      <td>G088202E27766N</td>
+      <td>20001108</td>
+      <td>-9999999</td>
+      <td>88.201782</td>
+      <td>27.765869</td>
+      <td>15</td>
+      <td>2</td>
+      <td>68.664</td>
+      <td>4187</td>
+      <td>...</td>
+      <td>69</td>
+      <td>26217</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((88.25193 27.80569, 88.25205 27.80544...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 23 columns</p>
+</div></div></div>
+</div>
+<p>To start with, let’s look at the glacier with the RGIId RGI60-15.11926 and an area of 96.283 km2.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rgi11926</span> <span class="o">=</span> <span class="n">se_asia_prj</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">se_asia_prj</span><span class="p">[</span><span class="s1">&#39;RGIId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;RGI60-15.11926&#39;</span><span class="p">]</span>
+<span class="n">rgi11926</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RGIId</th>
+      <th>GLIMSId</th>
+      <th>BgnDate</th>
+      <th>EndDate</th>
+      <th>CenLon</th>
+      <th>CenLat</th>
+      <th>O1Region</th>
+      <th>O2Region</th>
+      <th>Area</th>
+      <th>Zmin</th>
+      <th>...</th>
+      <th>Aspect</th>
+      <th>Lmax</th>
+      <th>Status</th>
+      <th>Connect</th>
+      <th>Form</th>
+      <th>TermType</th>
+      <th>Surging</th>
+      <th>Linkages</th>
+      <th>Name</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>11925</th>
+      <td>RGI60-15.11926</td>
+      <td>G096745E29216N</td>
+      <td>20050908</td>
+      <td>-9999999</td>
+      <td>96.745</td>
+      <td>29.216</td>
+      <td>15</td>
+      <td>3</td>
+      <td>96.283</td>
+      <td>4285</td>
+      <td>...</td>
+      <td>101</td>
+      <td>15157</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>CN5O282B0028 Xirinongpu Glacier</td>
+      <td>POLYGON ((155971.052 -73238.820, 156044.377 -7...</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 23 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raster_11926</span> <span class="o">=</span> <span class="n">itslive</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">rgi11926</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">rgi11926</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">Input In [13],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">raster_11926</span> <span class="o">=</span> <span class="n">itslive</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">rgi11926</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">rgi11926</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/rioxarray/raster_dataset.py:373,</span> in <span class="ni">RasterDataset.clip</span><span class="nt">(self, geometries, crs, all_touched, drop, invert, from_disk)</span>
+<span class="g g-Whitespace">    </span><span class="mi">370</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">371</span>     <span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span> <span class="o">=</span> <span class="n">_get_spatial_dims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">372</span>     <span class="n">clipped_dataset</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+<span class="ne">--&gt; </span><span class="mi">373</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">374</span>         <span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">set_spatial_dims</span><span class="p">(</span><span class="n">x_dim</span><span class="o">=</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="o">=</span><span class="n">y_dim</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">375</span>         <span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">376</span>             <span class="n">geometries</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">377</span>             <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">378</span>             <span class="n">all_touched</span><span class="o">=</span><span class="n">all_touched</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">379</span>             <span class="n">drop</span><span class="o">=</span><span class="n">drop</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">380</span>             <span class="n">invert</span><span class="o">=</span><span class="n">invert</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">381</span>             <span class="n">from_disk</span><span class="o">=</span><span class="n">from_disk</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">382</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">383</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">384</span> <span class="k">except</span> <span class="n">MissingSpatialDimensionError</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">385</span>     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">get_option</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">386</span>         <span class="n">SKIP_MISSING_SPATIAL_DIMS</span>
+<span class="g g-Whitespace">    </span><span class="mi">387</span>     <span class="p">):</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/rioxarray/raster_array.py:891,</span> in <span class="ni">RasterArray.clip</span><span class="nt">(self, geometries, crs, all_touched, drop, invert, from_disk)</span>
+<span class="g g-Whitespace">    </span><span class="mi">883</span>     <span class="n">cropped_ds</span> <span class="o">=</span> <span class="n">_clip_from_disk</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">884</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">885</span>         <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">888</span>         <span class="n">invert</span><span class="o">=</span><span class="n">invert</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">889</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">890</span> <span class="k">if</span> <span class="n">cropped_ds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">891</span>     <span class="n">cropped_ds</span> <span class="o">=</span> <span class="n">_clip_xarray</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">892</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">893</span>         <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">894</span>         <span class="n">all_touched</span><span class="o">=</span><span class="n">all_touched</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">895</span>         <span class="n">drop</span><span class="o">=</span><span class="n">drop</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">896</span>         <span class="n">invert</span><span class="o">=</span><span class="n">invert</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">897</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">899</span> <span class="k">if</span> <span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">900</span>     <span class="n">cropped_ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x_dim</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1</span>
+<span class="g g-Whitespace">    </span><span class="mi">901</span>     <span class="ow">or</span> <span class="n">cropped_ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y_dim</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1</span>
+<span class="g g-Whitespace">    </span><span class="mi">902</span> <span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">903</span>     <span class="k">raise</span> <span class="n">NoDataInBounds</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">904</span>         <span class="sa">f</span><span class="s2">&quot;No data found in bounds.</span><span class="si">{</span><span class="n">_get_data_var_message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">905</span>     <span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/rioxarray/raster_array.py:225,</span> in <span class="ni">_clip_xarray</span><span class="nt">(xds, geometries, all_touched, drop, invert)</span>
+<span class="g g-Whitespace">    </span><span class="mi">219</span> <span class="k">if</span> <span class="n">drop</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="n">cropped_ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">set_spatial_dims</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">221</span>         <span class="n">x_dim</span><span class="o">=</span><span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="o">=</span><span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">y_dim</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">223</span>     <span class="n">cropped_ds</span> <span class="o">=</span> <span class="n">cropped_ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">isel_window</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">224</span>         <span class="n">rasterio</span><span class="o">.</span><span class="n">windows</span><span class="o">.</span><span class="n">get_data_window</span><span class="p">(</span>
+<span class="ne">--&gt; </span><span class="mi">225</span>             <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">clip_mask_arr</span><span class="p">,</span> <span class="o">~</span><span class="n">clip_mask_arr</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">227</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">228</span> <span class="k">if</span> <span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">nodata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">nodata</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">229</span>     <span class="n">cropped_ds</span> <span class="o">=</span> <span class="n">cropped_ds</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">nodata</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/numpy/ma/core.py:2814,</span> in <span class="ni">MaskedArray.__new__</span><span class="nt">(cls, data, mask, dtype, copy, subok, ndmin, fill_value, keep_mask, hard_mask, shrink, order)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2811</span> <span class="n">_print_width</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="g g-Whitespace">   </span><span class="mi">2812</span> <span class="n">_print_width_1d</span> <span class="o">=</span> <span class="mi">1500</span>
+<span class="ne">-&gt; </span><span class="mi">2814</span> <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">nomask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2815</span>             <span class="n">subok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2816</span>             <span class="n">hard_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">2817</span>     <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">2818</span><span class="sd">     Create a new masked array from scratch.</span>
+<span class="g g-Whitespace">   </span><span class="mi">2819</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2823</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">2824</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">2825</span>     <span class="c1"># Process data.</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#turn non-ice pixels to NaN (previously -32767.)</span>
+<span class="n">clipped_raster11926</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">raster_11926</span><span class="o">.</span><span class="n">ice</span> <span class="o">==</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">raster_11926</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="extract-glacier-centerline">
+<h2>Extract glacier centerline<a class="headerlink" href="#extract-glacier-centerline" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>using scikit-image skeletonize()</p></li>
+<li><p>probably not the best/ideal way to do this, for now wanted to have an example but maybe not worth including here?</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extract_glacier_centerline</span><span class="p">(</span><span class="n">glacier_gpdf</span><span class="p">,</span> <span class="n">full_scene_raster</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; This function should take in a vector outline of a single glacier and a xr object of glacier velocity data (full scene) </span>
+<span class="sd">    and return a dictionary (?) with 2 keys and values corresponding to two xarray objects: one showing the full 2d extent of </span>
+<span class="sd">    raster data clipped to the glacier outline and one with the extracted glacier centerline&#39;&#39;&#39;</span>
+
+    <span class="c1">#clip raster by vector</span>
+    <span class="n">clipped_raster</span> <span class="o">=</span> <span class="n">full_scene_raster</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">glacier_gpdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">glacier_gpdf</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+
+    <span class="c1">#turn non-ice pixels to NaN (previously -32767.)</span>
+    <span class="n">clipped_raster</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">clipped_raster</span><span class="o">.</span><span class="n">ice</span> <span class="o">==</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">clipped_raster</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+
+    <span class="c1">#extract centerline - this is a xr DataArray that only has an boolean array representing centerline</span>
+    <span class="n">centerline_da</span> <span class="o">=</span> <span class="n">clipped_raster</span><span class="o">.</span><span class="n">ice</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">skeletonize</span><span class="p">)</span>
+
+    <span class="c1">#create xarray dataset with centerline extracted for all data vars</span>
+    <span class="n">centerline_ds</span> <span class="o">=</span> <span class="n">clipped_raster</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">centerline_da</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1">#wrap into dict</span>
+    <span class="n">glacier_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;clipped_to_ice&#39;</span><span class="p">:</span> <span class="n">clipped_raster</span><span class="p">,</span>
+                    <span class="s1">&#39;centerline&#39;</span><span class="p">:</span> <span class="n">centerline_ds</span>
+                    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">glacier_dict</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g11926_dict</span> <span class="o">=</span> <span class="n">extract_glacier_centerline</span><span class="p">(</span><span class="n">rgi11926</span><span class="p">,</span> <span class="n">itslive</span><span class="p">)</span>
+<span class="n">g11926_cl</span> <span class="o">=</span> <span class="n">g11926_dict</span><span class="p">[</span><span class="s1">&#39;centerline&#39;</span><span class="p">]</span>
+<span class="n">g11926_cl</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+
+<span class="n">g11926_cl</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">g11926_dict</span><span class="p">[</span><span class="s1">&#39;clipped_to_ice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g06681_dict</span> <span class="o">=</span> <span class="n">extract_glacier_centerline</span><span class="p">(</span><span class="n">rgi06681</span><span class="p">,</span> <span class="n">itslive</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="non-function-examples-below">
+<h3>non-function examples below<a class="headerlink" href="#non-function-examples-below" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">centerline_11926_da</span> <span class="o">=</span> <span class="n">clipped_raster11926</span><span class="o">.</span><span class="n">ice</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">skeletonize</span><span class="p">)</span>
+<span class="n">centerline_11926_da</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">centerline_11926_da</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">centerline_11926_ds</span> <span class="o">=</span> <span class="n">clipped_raster11926</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">centerline_11926_da</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">centerline_11926_ds</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g11926_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;full&#39;</span><span class="p">:</span><span class="n">raster_11926</span><span class="p">,</span>
+                <span class="s1">&#39;clipped_to_ice&#39;</span><span class="p">:</span> <span class="n">clipped_raster11926</span><span class="p">,</span>
+                <span class="s1">&#39;centerline&#39;</span><span class="p">:</span> <span class="n">centerline_11926_ds</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g11926_dict</span> <span class="o">=</span> <span class="n">extract_glacier_centerline</span><span class="p">(</span><span class="n">rgi11926</span><span class="p">,</span> <span class="n">itslive</span><span class="p">)</span>
+<span class="n">g11926_cl</span> <span class="o">=</span> <span class="n">g11926_dict</span><span class="p">[</span><span class="s1">&#39;centerline&#39;</span><span class="p">]</span>
+<span class="n">g11926_cl</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span> <span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+
+<span class="n">g11926_cl</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">g11926_dict</span><span class="p">[</span><span class="s1">&#39;clipped_to_ice&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g06681_dict</span> <span class="o">=</span> <span class="n">extract_glacier_centerline</span><span class="p">(</span><span class="n">rgi06681</span><span class="p">,</span> <span class="n">itslive</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g06681_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g06681_cl</span> <span class="o">=</span> <span class="n">g06681_dict</span><span class="p">[</span><span class="s1">&#39;centerline&#39;</span><span class="p">]</span>
+<span class="n">g06681_cl</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rgi06681</span> <span class="o">=</span> <span class="n">se_asia_prj</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">se_asia_prj</span><span class="p">[</span><span class="s1">&#39;RGIId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;RGI60-15.06681&#39;</span><span class="p">]</span>
+<span class="n">se_asia_prj</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Area&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="a-second-glacier">
+<h3>A second glacier<a class="headerlink" href="#a-second-glacier" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rgi11909</span> <span class="o">=</span> <span class="n">se_asia_prj</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">se_asia_prj</span><span class="p">[</span><span class="s1">&#39;RGIId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;RGI60-15.11909&#39;</span><span class="p">]</span>
+<span class="n">rgi11909</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raster_11909</span> <span class="o">=</span> <span class="n">itslive</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">rgi11909</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">rgi11909</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#turn non-ice pixels to NaN ()</span>
+<span class="n">clipped_raster11909</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">raster_11909</span><span class="o">.</span><span class="n">ice</span> <span class="o">==</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">raster_11909</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">NaN</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compare different skeletonize algorithms:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">just_ice</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">cividis</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Glacier velocity&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">skeleton_ice</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Reds</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">skeleton_ice_lee</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greens</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">)</span>
+
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">skeleton_ice</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Reds</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;skeleton&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">skeleton_ice_lee</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Greens</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;skeleton (lee)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="make-xarray-object-out-of-centerline-bool-mask">
+<h2>Make xarray object out of centerline bool mask<a class="headerlink" href="#make-xarray-object-out-of-centerline-bool-mask" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>should have the same coords as the velocity xarray object</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">centerline_da</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+    <span class="n">skeleton_ice</span><span class="p">,</span>
+    <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">),</span>
+    <span class="n">coords</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">glacier_raster</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">glacier_raster</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">}</span>
+<span class="p">)</span>
+
+
+<span class="n">centerline_da</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">centerline_da</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="extract-itslive-xarray-dataset-data-only-at-points-along-centerline">
+<h3>Extract itslive xarray dataset data only at points along centerline<a class="headerlink" href="#extract-itslive-xarray-dataset-data-only-at-points-along-centerline" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>this should return a dataset with the same data vars but only data along centerline</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">centerline_ds</span> <span class="o">=</span> <span class="n">glacier_raster</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">da</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">centerline_ds</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">just_ice</span><span class="o">.</span><span class="n">ice</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">cividis</span><span class="p">)</span>
+<span class="n">centerline_ds</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">just_ice</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="experimenting-with-skeletonize-v-thin-scikit-image">
+<h3>Experimenting with skeletonize v. thin (scikit image)<a class="headerlink" href="#experimenting-with-skeletonize-v-thin-scikit-image" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">just_ice</span><span class="o">.</span><span class="n">ice</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="kn">import</span> <span class="n">skeletonize</span><span class="p">,</span> <span class="n">thin</span>
+
+<span class="n">thinned</span> <span class="o">=</span> <span class="n">thin</span><span class="p">(</span><span class="n">just_ice</span><span class="o">.</span><span class="n">ice</span><span class="p">)</span>
+<span class="c1">#thinned_partial = thin(just_ice.ice.data, max_num_iter = 50)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">thinned</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">thinned</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;thinned&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">thinned_partial</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;thinned partial&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-env-mynewbook-py"
+        },
+        kernelOptions: {
+            kernelName: "conda-env-mynewbook-py",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-env-mynewbook-py'</script>
+
+              </div>
+              
+            
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="individual_glacier_analysis1.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Individual glacier analysis 1</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="Summary.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Summary</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            
+        </div>
+    </div>
+    <footer class="footer">
+  <p>
+    
+      By emma marshall<br/>
+    
+        &copy; Copyright 2021.<br/>
+  </p>
+</footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
