@@ -5,7 +5,9 @@ format: jb-book
 root: intro
 chapters:
 - file: software.ipynb
-- file: new_velocity_data.ipynb
+- file: region_scale_glacier_analysis.ipynb
+- file: individual_glacier_analysis1.ipynb
+- file: individual_glacier_analysis2.ipynb
 - file: Summary.md
 - file: References.md
 
