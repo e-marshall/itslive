@@ -6,10 +6,9 @@ root: intro
 chapters:
 - file: software.ipynb
 - file: accessing_s3_data.ipynb
-- file: hma_itslive_s3_data.ipynb
-- file: region_scale_glacier_analysis.ipynb
 - file: individual_glacier_analysis1.ipynb
 - file: individual_glacier_analysis2.ipynb
+- file: region_scale_glacier_analysis.ipynb
 - file: Summary.md
 - file: References.md
 
