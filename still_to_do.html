@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Introduction &#8212; Xarray workflow example - glacier surface velocities</title>
+    <title>To do for this book &#8212; Xarray workflow example - glacier surface velocities</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,7 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="To do for this book" href="still_to_do.html" />
+    <link rel="next" title="Software and Data" href="software.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -91,15 +92,15 @@ const thebe_selector_output = ".output, .cell_output"
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
         <ul class="nav bd-sidenav">
- <li class="toctree-l1 current">
-  <a class="reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
    Introduction
   </a>
  </li>
 </ul>
-<ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="still_to_do.html">
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    To do for this book
   </a>
  </li>
@@ -179,7 +180,7 @@ const thebe_selector_output = ".output, .cell_output"
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/intro.md"><button type="button"
+        <a class="dropdown-buttons" href="_sources/still_to_do.md"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.md</button></a>
         <!-- Download PDF via print -->
@@ -199,7 +200,7 @@ const thebe_selector_output = ".output, .cell_output"
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://e-marshall.github.io/mynewbook/intro.html/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here."><button
+            href="https://e-marshall.github.io/mynewbook/intro.html/issues/new?title=Issue%20on%20page%20%2Fstill_to_do.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -226,13 +227,8 @@ const thebe_selector_output = ".output, .cell_output"
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#background">
-   Background
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#learning-objectives">
-   Learning objectives
+  <a class="reference internal nav-link" href="#final-structure">
+   Final structure:
   </a>
  </li>
 </ul>
@@ -245,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Introduction</h1>
+                <h1>To do for this book</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -256,13 +252,8 @@ const thebe_selector_output = ".output, .cell_output"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#background">
-   Background
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#learning-objectives">
-   Learning objectives
+  <a class="reference internal nav-link" href="#final-structure">
+   Final structure:
   </a>
  </li>
 </ul>
@@ -274,39 +265,40 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p><em>this text content needs cleaning up</em></p>
-<p>In this notebook, we’ll go over steps to access glacier surface velocity data, organize it into a format that’s easier to work with, and then calculate mean velocities for individual glaciers within a region.</p>
-<div class="section" id="background">
-<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
-<p>Frequently when working with geospatial data, we want to accomplish tasks that force us to work with raster and vector data together. Vector data (points, lines, polygons) often represent physical features and areas of interest. Raster data are gridded objects where individual pixels are assigned different values. Data such as temperature, elevation, layer thickness and velocit are represented in raster format. Two-dimensional, gridded raster data can often cover large spatial extents. Vector data help us to identify features and locations of interest on the ground. This tutorial will demonstrate an example of using vector data to extract regions of interest from within a raster dataset.</p>
-<p>There are different tools in python for handling vector and raster data: <strong>xarray</strong> is a great way to work with raster data while <strong>geopandas</strong> handles vector data well. During various stages of data processing and analysis, it may be useful to switch between these two formats for certain tasks. The tutorial in this chapter will demonstrate accessing and exploring data using both <strong>xarray</strong> and <strong>geopandas</strong>, using <strong>geopandas</strong> to query raster data in <strong>xarray</strong> format, and various analytical steps using both <strong>xarray</strong> and <strong>geopandas</strong>.</p>
-<p>The example we’ll be working with in this chapter is glacier velocity data. We will start with polygons representing glacier outlines and glacier surface velocity raster data. At the end of the notebook, we will have both raster and vector objects representing the data we have manipulated. You’ll see that they will both be useful for conveying different types of information.</p>
-</div>
-<div class="section" id="learning-objectives">
-<h2>Learning objectives<a class="headerlink" href="#learning-objectives" title="Permalink to this headline">¶</a></h2>
+  <div class="tex2jax_ignore mathjax_ignore section" id="to-do-for-this-book">
+<h1>To do for this book<a class="headerlink" href="#to-do-for-this-book" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><p>data access (downloading and cloud-based)</p></li>
-<li><p>basic raster manipulation and organizing in <strong>xarray</strong></p></li>
-<li><p>examining shp files using <strong>geopandas</strong></p></li>
-<li><p>aggregating using xarray groupby</p></li>
-<li><p>xarray to pandas/geopandas</p></li>
-</ul>
-<p>Navigate to the other pages in this jupyter book to find out more about this tutorial. You can check out the data and open source python tools we’ll be using before we get started with the notebook.</p>
-<div class="toctree-wrapper compound">
+<li><p>have been changing structure around a lot, need to change certain older nb pages to reflect that</p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="still_to_do.html">To do for this book</a></li>
-<li class="toctree-l1"><a class="reference internal" href="software.html">Software and Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accessing_s3_data.html">Accessing ITS_LIVE data via S3 bucket</a></li>
-<li class="toctree-l1"><a class="reference internal" href="individual_glacier_analysis1.html">Individual glacier analysis 1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="individual_glacier_analysis2.html">Individual glacier analysis 2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="region_scale_glacier_analysis.html">Region-scale glacier analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="region_scale_glacier_analysis.html#new-notebook-structure-still-working-on">new notebook structure (still working on)**</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
+<li><p>data and software page needs to be modified
+“two data streams” section isn’t really accurate anymore</p></li>
+<li><p>individual glacier workflow pages can be trimmed down to remove data access sections, just focus on xr workflows</p></li>
+<li><p>regional workflow page needs to be changed a lot</p></li>
 </ul>
-</div>
+</li>
+</ul>
+<div class="section" id="final-structure">
+<h2>Final structure:<a class="headerlink" href="#final-structure" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Intro
+-background, learning goals</p></li>
+<li><p>Software and data</p>
+<ul class="simple">
+<li><p>software section needs to be updated</p></li>
+<li><p>conda env info?</p></li>
+<li><p>describe the data that will be used here,</p></li>
+<li><p>data access options</p>
+<ul>
+<li><p>something like we show 2 data access options, netcdf thru NSDIC interface, zarr thru s3 buckets</p></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>s3 access nb</p></li>
+<li><p>individual glacier analysis 1 (full glacier)</p></li>
+<li><p>individual glacier analysis 2 (centerline)</p></li>
+<li><p>regional glacier analysis</p></li>
+</ol>
 </div>
 </div>
 
@@ -334,11 +326,18 @@ const thebe_selector_output = ".output, .cell_output"
               
             
                 <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='right-next' id="next-link" href="still_to_do.html" title="next page">
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Introduction</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="software.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">To do for this book</p>
+        <p class="prev-next-title">Software and Data</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

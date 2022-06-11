@@ -100,6 +100,11 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="still_to_do.html">
+   To do for this book
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="software.html">
    Software and Data
   </a>
@@ -404,7 +409,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="ne">---&gt; </span><span class="mi">53</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 <span class="g g-Whitespace">     </span><span class="mi">54</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">move_to_end</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-<span class="ne">KeyError</span>: [&lt;function open at 0x14bb22d40&gt;, (&#39;/Users/emarshall/Desktop/siparcs/data/HMA_G0120_0000.nc&#39;,), &#39;r&#39;, ((&#39;sharing&#39;, False),)]
+<span class="ne">KeyError</span>: [&lt;function open at 0x14393ec20&gt;, (&#39;/Users/emarshall/Desktop/siparcs/data/HMA_G0120_0000.nc&#39;,), &#39;r&#39;, ((&#39;sharing&#39;, False),)]
 
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
@@ -479,11 +484,6 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CRS.from_wkt(&#39;PROJCS[&quot;Asia_North_Lambert_Conformal_Conic&quot;,GEOGCS[&quot;WGS 84&quot;,DATUM[&quot;WGS_1984&quot;,SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;false_easting&quot;,0],PARAMETER[&quot;false_northing&quot;,0],PARAMETER[&quot;central_meridian&quot;,95],PARAMETER[&quot;standard_parallel_1&quot;,15],PARAMETER[&quot;standard_parallel_2&quot;,65],PARAMETER[&quot;latitude_of_origin&quot;,30],UNIT[&quot;metre&quot;,1,AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH],AUTHORITY[&quot;EPSG&quot;,&quot;102027&quot;]]&#39;)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -491,21 +491,10 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x189ef6ad0&gt;
-</pre></div>
-</div>
-<img alt="_images/individual_glacier_analysis2_10_1.png" src="_images/individual_glacier_analysis2_10_1.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">itslive</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">UTM_Projection</span><span class="o">.</span><span class="n">GeoTransform</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;-2160007.5 120.0 0.0 1643527.5 0.0 -120.0&#39;
 </pre></div>
 </div>
 </div>
@@ -535,23 +524,12 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of glaciers in dataset:  13119
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:&gt;
-</pre></div>
-</div>
-<img alt="_images/individual_glacier_analysis2_17_1.png" src="_images/individual_glacier_analysis2_17_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -570,317 +548,6 @@ If you look at the geoemtry column of the projected dataset you will see that th
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>RGIId</th>
-      <th>GLIMSId</th>
-      <th>BgnDate</th>
-      <th>EndDate</th>
-      <th>CenLon</th>
-      <th>CenLat</th>
-      <th>O1Region</th>
-      <th>O2Region</th>
-      <th>Area</th>
-      <th>Zmin</th>
-      <th>...</th>
-      <th>Aspect</th>
-      <th>Lmax</th>
-      <th>Status</th>
-      <th>Connect</th>
-      <th>Form</th>
-      <th>TermType</th>
-      <th>Surging</th>
-      <th>Linkages</th>
-      <th>Name</th>
-      <th>geometry</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>RGI60-15.00001</td>
-      <td>G102044E29941N</td>
-      <td>19990920</td>
-      <td>-9999999</td>
-      <td>102.044042</td>
-      <td>29.941000</td>
-      <td>15</td>
-      <td>3</td>
-      <td>0.438</td>
-      <td>4996</td>
-      <td>...</td>
-      <td>251</td>
-      <td>850</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>None</td>
-      <td>POLYGON ((626747.322 19334.286, 626747.214 193...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>RGI60-15.00002</td>
-      <td>G102042E29987N</td>
-      <td>19990920</td>
-      <td>-9999999</td>
-      <td>102.042346</td>
-      <td>29.987019</td>
-      <td>15</td>
-      <td>3</td>
-      <td>0.644</td>
-      <td>4947</td>
-      <td>...</td>
-      <td>244</td>
-      <td>1021</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>None</td>
-      <td>POLYGON ((626699.144 24673.098, 626701.110 246...</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>RGI60-15.00003</td>
-      <td>G102041E29997N</td>
-      <td>19990920</td>
-      <td>-9999999</td>
-      <td>102.041130</td>
-      <td>29.997311</td>
-      <td>15</td>
-      <td>3</td>
-      <td>0.225</td>
-      <td>5019</td>
-      <td>...</td>
-      <td>274</td>
-      <td>812</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>None</td>
-      <td>POLYGON ((626205.858 25396.784, 626210.489 254...</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>RGI60-15.00004</td>
-      <td>G102050E29962N</td>
-      <td>19990920</td>
-      <td>-9999999</td>
-      <td>102.050283</td>
-      <td>29.962297</td>
-      <td>15</td>
-      <td>3</td>
-      <td>0.985</td>
-      <td>4622</td>
-      <td>...</td>
-      <td>52</td>
-      <td>2318</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>None</td>
-      <td>POLYGON ((627054.150 21582.052, 627057.905 216...</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>RGI60-15.00005</td>
-      <td>G102044E30025N</td>
-      <td>19990920</td>
-      <td>-9999999</td>
-      <td>102.043728</td>
-      <td>30.025101</td>
-      <td>15</td>
-      <td>3</td>
-      <td>0.465</td>
-      <td>4733</td>
-      <td>...</td>
-      <td>20</td>
-      <td>913</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>None</td>
-      <td>POLYGON ((626913.162 28267.766, 626895.820 282...</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>13114</th>
-      <td>RGI60-15.13115</td>
-      <td>G081977E30337N</td>
-      <td>20090918</td>
-      <td>-9999999</td>
-      <td>81.977000</td>
-      <td>30.337000</td>
-      <td>15</td>
-      <td>1</td>
-      <td>1.356</td>
-      <td>5480</td>
-      <td>...</td>
-      <td>352</td>
-      <td>1856</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>CN5Z342A0003</td>
-      <td>POLYGON ((-1150121.533 121963.660, -1150118.27...</td>
-    </tr>
-    <tr>
-      <th>13115</th>
-      <td>RGI60-15.13116</td>
-      <td>G081991E30339N</td>
-      <td>20090918</td>
-      <td>-9999999</td>
-      <td>81.991000</td>
-      <td>30.339000</td>
-      <td>15</td>
-      <td>1</td>
-      <td>7.427</td>
-      <td>5266</td>
-      <td>...</td>
-      <td>330</td>
-      <td>5779</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>CN5Z342A0003</td>
-      <td>POLYGON ((-1148353.222 121707.808, -1148328.34...</td>
-    </tr>
-    <tr>
-      <th>13116</th>
-      <td>RGI60-15.13117</td>
-      <td>G081355E30440N</td>
-      <td>20070912</td>
-      <td>-9999999</td>
-      <td>81.355000</td>
-      <td>30.440000</td>
-      <td>15</td>
-      <td>1</td>
-      <td>6.788</td>
-      <td>5696</td>
-      <td>...</td>
-      <td>96</td>
-      <td>5519</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>CN5Z342B0006</td>
-      <td>POLYGON ((-1204224.276 142125.331, -1204220.83...</td>
-    </tr>
-    <tr>
-      <th>13117</th>
-      <td>RGI60-15.13118</td>
-      <td>G081361E30451N</td>
-      <td>20070912</td>
-      <td>-9999999</td>
-      <td>81.361000</td>
-      <td>30.451000</td>
-      <td>15</td>
-      <td>1</td>
-      <td>0.043</td>
-      <td>5969</td>
-      <td>...</td>
-      <td>206</td>
-      <td>527</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>None</td>
-      <td>POLYGON ((-1202593.561 141849.818, -1202579.07...</td>
-    </tr>
-    <tr>
-      <th>13118</th>
-      <td>RGI60-15.13119</td>
-      <td>G081443E30418N</td>
-      <td>20070912</td>
-      <td>-9999999</td>
-      <td>81.443000</td>
-      <td>30.418000</td>
-      <td>15</td>
-      <td>1</td>
-      <td>0.094</td>
-      <td>5680</td>
-      <td>...</td>
-      <td>360</td>
-      <td>325</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>CN5Z342B0005</td>
-      <td>POLYGON ((-1195868.335 137065.519, -1195874.56...</td>
-    </tr>
-  </tbody>
-</table>
-<p>13119 rows × 23 columns</p>
-</div></div></div>
 </div>
 </div>
 <div class="section" id="clipping-raster-data-by-a-vector">
@@ -892,173 +559,6 @@ If you look at the geoemtry column of the projected dataset you will see that th
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>RGIId</th>
-      <th>GLIMSId</th>
-      <th>BgnDate</th>
-      <th>EndDate</th>
-      <th>CenLon</th>
-      <th>CenLat</th>
-      <th>O1Region</th>
-      <th>O2Region</th>
-      <th>Area</th>
-      <th>Zmin</th>
-      <th>...</th>
-      <th>Aspect</th>
-      <th>Lmax</th>
-      <th>Status</th>
-      <th>Connect</th>
-      <th>Form</th>
-      <th>TermType</th>
-      <th>Surging</th>
-      <th>Linkages</th>
-      <th>Name</th>
-      <th>geometry</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>11908</th>
-      <td>RGI60-15.11909</td>
-      <td>G096657E29334N</td>
-      <td>20050908</td>
-      <td>-9999999</td>
-      <td>96.657000</td>
-      <td>29.334000</td>
-      <td>15</td>
-      <td>3</td>
-      <td>179.589</td>
-      <td>3980</td>
-      <td>...</td>
-      <td>78</td>
-      <td>32403</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>1</td>
-      <td>9</td>
-      <td>Yagnung</td>
-      <td>POLYGON ((96.57583 29.39731, 96.57590 29.39730...</td>
-    </tr>
-    <tr>
-      <th>6880</th>
-      <td>RGI60-15.06881</td>
-      <td>G079147E30802N</td>
-      <td>20010801</td>
-      <td>-9999999</td>
-      <td>79.147205</td>
-      <td>30.801627</td>
-      <td>15</td>
-      <td>1</td>
-      <td>121.890</td>
-      <td>3999</td>
-      <td>...</td>
-      <td>353</td>
-      <td>32048</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>0</td>
-      <td>Gangotri Glacier</td>
-      <td>POLYGON ((79.17425 30.82318, 79.17372 30.82337...</td>
-    </tr>
-    <tr>
-      <th>11925</th>
-      <td>RGI60-15.11926</td>
-      <td>G096745E29216N</td>
-      <td>20050908</td>
-      <td>-9999999</td>
-      <td>96.745000</td>
-      <td>29.216000</td>
-      <td>15</td>
-      <td>3</td>
-      <td>96.283</td>
-      <td>4285</td>
-      <td>...</td>
-      <td>101</td>
-      <td>15157</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>CN5O282B0028 Xirinongpu Glacier</td>
-      <td>POLYGON ((96.73404 29.26991, 96.73484 29.26927...</td>
-    </tr>
-    <tr>
-      <th>9990</th>
-      <td>RGI60-15.09991</td>
-      <td>G086830E28048N</td>
-      <td>20100409</td>
-      <td>-9999999</td>
-      <td>86.830000</td>
-      <td>28.048000</td>
-      <td>15</td>
-      <td>2</td>
-      <td>73.215</td>
-      <td>5155</td>
-      <td>...</td>
-      <td>13</td>
-      <td>20118</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>CN5O193B0142 Rongbuk Glacier</td>
-      <td>POLYGON ((86.87850 28.06345, 86.87983 28.06234...</td>
-    </tr>
-    <tr>
-      <th>2702</th>
-      <td>RGI60-15.02703</td>
-      <td>G088202E27766N</td>
-      <td>20001108</td>
-      <td>-9999999</td>
-      <td>88.201782</td>
-      <td>27.765869</td>
-      <td>15</td>
-      <td>2</td>
-      <td>68.664</td>
-      <td>4187</td>
-      <td>...</td>
-      <td>69</td>
-      <td>26217</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>None</td>
-      <td>POLYGON ((88.25193 27.80569, 88.25205 27.80544...</td>
-    </tr>
-  </tbody>
-</table>
-<p>5 rows × 23 columns</p>
-</div></div></div>
 </div>
 <p>To start with, let’s look at the glacier with the RGIId RGI60-15.11926 and an area of 96.283 km2.</p>
 <div class="cell docutils container">
@@ -1068,77 +568,6 @@ If you look at the geoemtry column of the projected dataset you will see that th
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>RGIId</th>
-      <th>GLIMSId</th>
-      <th>BgnDate</th>
-      <th>EndDate</th>
-      <th>CenLon</th>
-      <th>CenLat</th>
-      <th>O1Region</th>
-      <th>O2Region</th>
-      <th>Area</th>
-      <th>Zmin</th>
-      <th>...</th>
-      <th>Aspect</th>
-      <th>Lmax</th>
-      <th>Status</th>
-      <th>Connect</th>
-      <th>Form</th>
-      <th>TermType</th>
-      <th>Surging</th>
-      <th>Linkages</th>
-      <th>Name</th>
-      <th>geometry</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>11925</th>
-      <td>RGI60-15.11926</td>
-      <td>G096745E29216N</td>
-      <td>20050908</td>
-      <td>-9999999</td>
-      <td>96.745</td>
-      <td>29.216</td>
-      <td>15</td>
-      <td>3</td>
-      <td>96.283</td>
-      <td>4285</td>
-      <td>...</td>
-      <td>101</td>
-      <td>15157</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>9</td>
-      <td>9</td>
-      <td>CN5O282B0028 Xirinongpu Glacier</td>
-      <td>POLYGON ((155971.052 -73238.820, 156044.377 -7...</td>
-    </tr>
-  </tbody>
-</table>
-<p>1 rows × 23 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1198,12 +627,6 @@ If you look at the geoemtry column of the projected dataset you will see that th
 <span class="n">g11926_cl</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x189e44550&gt;
-</pre></div>
-</div>
-<img alt="_images/individual_glacier_analysis2_29_1.png" src="_images/individual_glacier_analysis2_29_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
