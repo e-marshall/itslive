@@ -1,9 +1,13 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Xarray workflow example: glacier surface velocities 
+title: Xarray workflow example - glacier surface velocities 
 author: emma marshall
 logo: logo.png
+
+#only want to include files listed in toc (not sure this will work)
+# found here: https://github.com/executablebooks/jupyter-book/pull/1123
+only_build_toc_files: true
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
