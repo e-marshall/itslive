@@ -53,7 +53,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Summary" href="Summary.html" />
+    <link rel="next" title="Region-scale glacier analysis" href="region_scale_glacier_analysis.html" />
     <link rel="prev" title="Individual glacier analysis 1" href="individual_glacier_analysis1.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -105,8 +105,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="region_scale_glacier_analysis.html">
-   Region-scale glacier analysis
+  <a class="reference internal" href="accessing_s3_data.html">
+   Accessing ITS_LIVE data via S3 bucket
   </a>
  </li>
  <li class="toctree-l1">
@@ -117,6 +117,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Individual glacier analysis 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="region_scale_glacier_analysis.html">
+   Region-scale glacier analysis
   </a>
  </li>
  <li class="toctree-l1">
@@ -386,6 +391,86 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/file_manager.py:199,</span> in <span class="ni">CachingFileManager._acquire_with_cache_info</span><span class="nt">(self, needs_lock)</span>
+<span class="g g-Whitespace">    </span><span class="mi">198</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">199</span>     <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_key</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">200</span> <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/lru_cache.py:53,</span> in <span class="ni">LRUCache.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">     </span><span class="mi">52</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">53</span>     <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">54</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span><span class="o">.</span><span class="n">move_to_end</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<span class="ne">KeyError</span>: [&lt;function open at 0x14bb22d40&gt;, (&#39;/Users/emarshall/Desktop/siparcs/data/HMA_G0120_0000.nc&#39;,), &#39;r&#39;, ((&#39;sharing&#39;, False),)]
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">CPLE_OpenFailedError</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
+<span class="nn">File rasterio/_base.pyx:261,</span> in <span class="ni">rasterio._base.DatasetBase.__init__</span><span class="nt">()</span>
+
+<span class="nn">File rasterio/_shim.pyx:78,</span> in <span class="ni">rasterio._shim.open_dataset</span><span class="nt">()</span>
+
+<span class="nn">File rasterio/_err.pyx:216,</span> in <span class="ni">rasterio._err.exc_wrap_pointer</span><span class="nt">()</span>
+
+<span class="ne">CPLE_OpenFailedError</span>: /Users/emarshall/Desktop/siparcs/data/HMA_G0120_0000.nc: No such file or directory
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">RasterioIOError</span><span class="g g-Whitespace">                           </span>Traceback (most recent call last)
+<span class="nn">Input In [4],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">itslive</span> <span class="o">=</span> <span class="n">rxr</span><span class="o">.</span><span class="n">open_rasterio</span><span class="p">(</span><span class="n">gen_path</span> <span class="o">+</span> <span class="s1">&#39;HMA_G0120_0000.nc&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/rioxarray/_io.py:843,</span> in <span class="ni">open_rasterio</span><span class="nt">(filename, parse_coordinates, chunks, cache, lock, masked, mask_and_scale, variable, group, default_name, decode_times, decode_timedelta, **open_kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">841</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">842</span>         <span class="n">manager</span> <span class="o">=</span> <span class="n">URIManager</span><span class="p">(</span><span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">open_kwargs</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">843</span>     <span class="n">riods</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">844</span>     <span class="n">captured_warnings</span> <span class="o">=</span> <span class="n">rio_warnings</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">846</span> <span class="c1"># raise the NotGeoreferencedWarning if applicable</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/file_manager.py:181,</span> in <span class="ni">CachingFileManager.acquire</span><span class="nt">(self, needs_lock)</span>
+<span class="g g-Whitespace">    </span><span class="mi">166</span> <span class="k">def</span> <span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">needs_lock</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">167</span>     <span class="sd">&quot;&quot;&quot;Acquire a file object from the manager.</span>
+<span class="g g-Whitespace">    </span><span class="mi">168</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">169</span><span class="sd">     A new file is only opened if it has expired from the</span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">    </span><span class="mi">179</span><span class="sd">         An open file object, as returned by ``opener(*args, **kwargs)``.</span>
+<span class="g g-Whitespace">    </span><span class="mi">180</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">181</span>     <span class="n">file</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acquire_with_cache_info</span><span class="p">(</span><span class="n">needs_lock</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">182</span>     <span class="k">return</span> <span class="n">file</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/file_manager.py:205,</span> in <span class="ni">CachingFileManager._acquire_with_cache_info</span><span class="nt">(self, needs_lock)</span>
+<span class="g g-Whitespace">    </span><span class="mi">203</span>     <span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">204</span>     <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span>
+<span class="ne">--&gt; </span><span class="mi">205</span> <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opener</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">206</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">207</span>     <span class="c1"># ensure file doesn&#39;t get overridden when opened again</span>
+<span class="g g-Whitespace">    </span><span class="mi">208</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/rasterio/env.py:437,</span> in <span class="ni">ensure_env_with_credentials.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">434</span>     <span class="n">session</span> <span class="o">=</span> <span class="n">DummySession</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">436</span> <span class="k">with</span> <span class="n">env_ctor</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">437</span>     <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/rasterio/__init__.py:220,</span> in <span class="ni">open</span><span class="nt">(fp, mode, driver, width, height, count, crs, transform, dtype, nodata, sharing, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">216</span> <span class="c1"># Create dataset instances and pass the given env, which will</span>
+<span class="g g-Whitespace">    </span><span class="mi">217</span> <span class="c1"># be taken over by the dataset&#39;s context manager if it is not</span>
+<span class="g g-Whitespace">    </span><span class="mi">218</span> <span class="c1"># None.</span>
+<span class="g g-Whitespace">    </span><span class="mi">219</span> <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">220</span>     <span class="n">s</span> <span class="o">=</span> <span class="n">DatasetReader</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span> <span class="n">sharing</span><span class="o">=</span><span class="n">sharing</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">221</span> <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;r+&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="n">s</span> <span class="o">=</span> <span class="n">get_writer_for_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">)(</span>
+<span class="g g-Whitespace">    </span><span class="mi">223</span>         <span class="n">path</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span> <span class="n">sharing</span><span class="o">=</span><span class="n">sharing</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="g g-Whitespace">    </span><span class="mi">224</span>     <span class="p">)</span>
+
+<span class="nn">File rasterio/_base.pyx:263,</span> in <span class="ni">rasterio._base.DatasetBase.__init__</span><span class="nt">()</span>
+
+<span class="ne">RasterioIOError</span>: /Users/emarshall/Desktop/siparcs/data/HMA_G0120_0000.nc: No such file or directory
+</pre></div>
+</div>
+</div>
 </div>
 <p>What CRS is this dataset in?</p>
 <div class="cell docutils container">
@@ -396,6 +481,31 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CRS.from_wkt(&#39;PROJCS[&quot;Asia_North_Lambert_Conformal_Conic&quot;,GEOGCS[&quot;WGS 84&quot;,DATUM[&quot;WGS_1984&quot;,SPHEROID[&quot;WGS 84&quot;,6378137,298.257223563,AUTHORITY[&quot;EPSG&quot;,&quot;7030&quot;]]],PRIMEM[&quot;Greenwich&quot;,0],UNIT[&quot;Degree&quot;,0.0174532925199433]],PROJECTION[&quot;Lambert_Conformal_Conic_2SP&quot;],PARAMETER[&quot;false_easting&quot;,0],PARAMETER[&quot;false_northing&quot;,0],PARAMETER[&quot;central_meridian&quot;,95],PARAMETER[&quot;standard_parallel_1&quot;,15],PARAMETER[&quot;standard_parallel_2&quot;,65],PARAMETER[&quot;latitude_of_origin&quot;,30],UNIT[&quot;metre&quot;,1,AUTHORITY[&quot;EPSG&quot;,&quot;9001&quot;]],AXIS[&quot;Easting&quot;,EAST],AXIS[&quot;Northing&quot;,NORTH],AUTHORITY[&quot;EPSG&quot;,&quot;102027&quot;]]&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">itslive</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x189ef6ad0&gt;
+</pre></div>
+</div>
+<img alt="_images/individual_glacier_analysis2_10_1.png" src="_images/individual_glacier_analysis2_10_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">itslive</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">UTM_Projection</span><span class="o">.</span><span class="n">GeoTransform</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;-2160007.5 120.0 0.0 1643527.5 0.0 -120.0&#39;
 </pre></div>
 </div>
 </div>
@@ -441,17 +551,12 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:&gt;
 </pre></div>
 </div>
-<img alt="_images/individual_glacier_analysis2_15_1.png" src="_images/individual_glacier_analysis2_15_1.png" />
+<img alt="_images/individual_glacier_analysis2_17_1.png" src="_images/individual_glacier_analysis2_17_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;CRS: &#39;</span><span class="p">,</span> <span class="n">se_asia</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CRS:  epsg:4326
 </pre></div>
 </div>
 </div>
@@ -1041,86 +1146,6 @@ If you look at the geoemtry column of the projected dataset you will see that th
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="nn">Input In [13],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">raster_11926</span> <span class="o">=</span> <span class="n">itslive</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">rgi11926</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">rgi11926</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/rioxarray/raster_dataset.py:373,</span> in <span class="ni">RasterDataset.clip</span><span class="nt">(self, geometries, crs, all_touched, drop, invert, from_disk)</span>
-<span class="g g-Whitespace">    </span><span class="mi">370</span> <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">371</span>     <span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span> <span class="o">=</span> <span class="n">_get_spatial_dims</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span> <span class="n">var</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">372</span>     <span class="n">clipped_dataset</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-<span class="ne">--&gt; </span><span class="mi">373</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">[</span><span class="n">var</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">374</span>         <span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">set_spatial_dims</span><span class="p">(</span><span class="n">x_dim</span><span class="o">=</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="o">=</span><span class="n">y_dim</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">375</span>         <span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">376</span>             <span class="n">geometries</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">377</span>             <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">378</span>             <span class="n">all_touched</span><span class="o">=</span><span class="n">all_touched</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">379</span>             <span class="n">drop</span><span class="o">=</span><span class="n">drop</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">380</span>             <span class="n">invert</span><span class="o">=</span><span class="n">invert</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">381</span>             <span class="n">from_disk</span><span class="o">=</span><span class="n">from_disk</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">382</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">383</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">384</span> <span class="k">except</span> <span class="n">MissingSpatialDimensionError</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">385</span>     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">get_option</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">386</span>         <span class="n">SKIP_MISSING_SPATIAL_DIMS</span>
-<span class="g g-Whitespace">    </span><span class="mi">387</span>     <span class="p">):</span>
-
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/rioxarray/raster_array.py:891,</span> in <span class="ni">RasterArray.clip</span><span class="nt">(self, geometries, crs, all_touched, drop, invert, from_disk)</span>
-<span class="g g-Whitespace">    </span><span class="mi">883</span>     <span class="n">cropped_ds</span> <span class="o">=</span> <span class="n">_clip_from_disk</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">884</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">885</span>         <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">888</span>         <span class="n">invert</span><span class="o">=</span><span class="n">invert</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">889</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">890</span> <span class="k">if</span> <span class="n">cropped_ds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">891</span>     <span class="n">cropped_ds</span> <span class="o">=</span> <span class="n">_clip_xarray</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">892</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">893</span>         <span class="n">geometries</span><span class="o">=</span><span class="n">geometries</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">894</span>         <span class="n">all_touched</span><span class="o">=</span><span class="n">all_touched</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">895</span>         <span class="n">drop</span><span class="o">=</span><span class="n">drop</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">896</span>         <span class="n">invert</span><span class="o">=</span><span class="n">invert</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">897</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">899</span> <span class="k">if</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">900</span>     <span class="n">cropped_ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x_dim</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1</span>
-<span class="g g-Whitespace">    </span><span class="mi">901</span>     <span class="ow">or</span> <span class="n">cropped_ds</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y_dim</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1</span>
-<span class="g g-Whitespace">    </span><span class="mi">902</span> <span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">903</span>     <span class="k">raise</span> <span class="n">NoDataInBounds</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">904</span>         <span class="sa">f</span><span class="s2">&quot;No data found in bounds.</span><span class="si">{</span><span class="n">_get_data_var_message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">905</span>     <span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/rioxarray/raster_array.py:225,</span> in <span class="ni">_clip_xarray</span><span class="nt">(xds, geometries, all_touched, drop, invert)</span>
-<span class="g g-Whitespace">    </span><span class="mi">219</span> <span class="k">if</span> <span class="n">drop</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="n">cropped_ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">set_spatial_dims</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">221</span>         <span class="n">x_dim</span><span class="o">=</span><span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">x_dim</span><span class="p">,</span> <span class="n">y_dim</span><span class="o">=</span><span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">y_dim</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span>
-<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">223</span>     <span class="n">cropped_ds</span> <span class="o">=</span> <span class="n">cropped_ds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">isel_window</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">224</span>         <span class="n">rasterio</span><span class="o">.</span><span class="n">windows</span><span class="o">.</span><span class="n">get_data_window</span><span class="p">(</span>
-<span class="ne">--&gt; </span><span class="mi">225</span>             <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">clip_mask_arr</span><span class="p">,</span> <span class="o">~</span><span class="n">clip_mask_arr</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">226</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">227</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">228</span> <span class="k">if</span> <span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">nodata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">nodata</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">229</span>     <span class="n">cropped_ds</span> <span class="o">=</span> <span class="n">cropped_ds</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">xds</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">nodata</span><span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/numpy/ma/core.py:2814,</span> in <span class="ni">MaskedArray.__new__</span><span class="nt">(cls, data, mask, dtype, copy, subok, ndmin, fill_value, keep_mask, hard_mask, shrink, order)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2811</span> <span class="n">_print_width</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="g g-Whitespace">   </span><span class="mi">2812</span> <span class="n">_print_width_1d</span> <span class="o">=</span> <span class="mi">1500</span>
-<span class="ne">-&gt; </span><span class="mi">2814</span> <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">nomask</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2815</span>             <span class="n">subok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keep_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2816</span>             <span class="n">hard_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="g g-Whitespace">   </span><span class="mi">2817</span>     <span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">2818</span><span class="sd">     Create a new masked array from scratch.</span>
-<span class="g g-Whitespace">   </span><span class="mi">2819</span><span class="sd"> </span>
-<span class="sd">   (...)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2823</span><span class="sd"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">2824</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">   </span><span class="mi">2825</span>     <span class="c1"># Process data.</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1173,6 +1198,12 @@ If you look at the geoemtry column of the projected dataset you will see that th
 <span class="n">g11926_cl</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x189e44550&gt;
+</pre></div>
+</div>
+<img alt="_images/individual_glacier_analysis2_29_1.png" src="_images/individual_glacier_analysis2_29_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1456,10 +1487,10 @@ If you look at the geoemtry column of the projected dataset you will see that th
             <p class="prev-next-title">Individual glacier analysis 1</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="Summary.html" title="next page">
+    <a class='right-next' id="next-link" href="region_scale_glacier_analysis.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Summary</p>
+        <p class="prev-next-title">Region-scale glacier analysis</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

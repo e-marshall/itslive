@@ -54,7 +54,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Individual glacier analysis 2" href="individual_glacier_analysis2.html" />
-    <link rel="prev" title="Region-scale glacier analysis" href="region_scale_glacier_analysis.html" />
+    <link rel="prev" title="Accessing ITS_LIVE data via S3 bucket" href="accessing_s3_data.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -105,8 +105,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="region_scale_glacier_analysis.html">
-   Region-scale glacier analysis
+  <a class="reference internal" href="accessing_s3_data.html">
+   Accessing ITS_LIVE data via S3 bucket
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -117,6 +117,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toctree-l1">
   <a class="reference internal" href="individual_glacier_analysis2.html">
    Individual glacier analysis 2
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="region_scale_glacier_analysis.html">
+   Region-scale glacier analysis
   </a>
  </li>
  <li class="toctree-l1">
@@ -2856,6 +2861,62 @@ Attributes:
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">kernelspec.py</span> <span class="kn">import</span> <span class="n">_get_kernel_spec_by_name</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="nn">/Users/emarshall/Desktop/siparcs/xr_book1/mynewbook/individual_glacier_analysis1.ipynb Cell 57&#39;</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/emarshall/Desktop/siparcs/xr_book1/mynewbook/individual_glacier_analysis1.ipynb#ch0000053?line=0&#39;</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="kn">from</span> <span class="nn">kernelspec.py</span> <span class="kn">import</span> <span class="n">_get_kernel_spec_by_name</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;kernelspec&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_kernel_spec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kernel_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a :class:`KernelSpec` instance for the given kernel_name.</span>
+
+<span class="sd">        Raises :exc:`NoSuchKernel` if the given kernel name is not found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_valid_kernel_name</span><span class="p">(</span><span class="n">kernel_name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Kernelspec name </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2"> is invalid: </span><span class="si">{</span><span class="n">_kernel_name_description</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">resource_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_spec_directory</span><span class="p">(</span><span class="n">kernel_name</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">resource_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Kernelspec name </span><span class="si">{</span><span class="n">kernel_name</span><span class="si">}</span><span class="s2"> cannot be found!&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">NoSuchKernel</span><span class="p">(</span><span class="n">kernel_name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_kernel_spec_by_name</span><span class="p">(</span><span class="n">kernel_name</span><span class="p">,</span> <span class="n">resource_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_kernel_spec</span><span class="p">(</span><span class="n">kernel_name</span> <span class="o">=</span> <span class="s1">&#39;conda-env-mynewbook-py&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">/Users/emarshall/Desktop/siparcs/xr_book1/mynewbook/individual_glacier_analysis1.ipynb Cell 59&#39;</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="o">----&gt;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s1">&#39;vscode-notebook-cell:/Users/emarshall/Desktop/siparcs/xr_book1/mynewbook/individual_glacier_analysis1.ipynb#ch0000063?line=0&#39;</span><span class="o">&gt;</span><span class="mi">1</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span> <span class="n">get_kernel_spec</span><span class="p">(</span><span class="n">kernel_name</span> <span class="o">=</span> <span class="s1">&#39;conda-env-mynewbook-py&#39;</span><span class="p">)</span>
+
+<span class="ne">TypeError</span>: get_kernel_spec() missing 1 required positional argument: &#39;self&#39;
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -2885,11 +2946,11 @@ Attributes:
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="region_scale_glacier_analysis.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="accessing_s3_data.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Region-scale glacier analysis</p>
+            <p class="prev-next-title">Accessing ITS_LIVE data via S3 bucket</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="individual_glacier_analysis2.html" title="next page">
