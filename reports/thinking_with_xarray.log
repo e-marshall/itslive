@@ -17,14 +17,20 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-ds_catalog.isel(mid_date=1).v.plot()
+data.coarsen(lat=5, lon=5, boundary='trim').reduce(np.p).plot()
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mNameError[0m                                 Traceback (most recent call last)
-Input [0;32mIn [7][0m, in [0;36m<cell line: 1>[0;34m()[0m
-[0;32m----> 1[0m [43mds_catalog[49m[38;5;241m.[39misel(mid_date[38;5;241m=[39m[38;5;241m1[39m)[38;5;241m.[39mv[38;5;241m.[39mplot()
+[0;31mAttributeError[0m                            Traceback (most recent call last)
+Input [0;32mIn [20][0m, in [0;36m<cell line: 1>[0;34m()[0m
+[0;32m----> 1[0m data[38;5;241m.[39mcoarsen(lat[38;5;241m=[39m[38;5;241m5[39m, lon[38;5;241m=[39m[38;5;241m5[39m, boundary[38;5;241m=[39m[38;5;124m'[39m[38;5;124mtrim[39m[38;5;124m'[39m)[38;5;241m.[39mreduce([43mnp[49m[38;5;241;43m.[39;49m[43mp[49m)[38;5;241m.[39mplot()
 
-[0;31mNameError[0m: name 'ds_catalog' is not defined
-NameError: name 'ds_catalog' is not defined
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/numpy/__init__.py:315[0m, in [0;36m__getattr__[0;34m(attr)[0m
+[1;32m    312[0m     [38;5;28;01mfrom[39;00m [38;5;21;01m.[39;00m[38;5;21;01mtesting[39;00m [38;5;28;01mimport[39;00m Tester
+[1;32m    313[0m     [38;5;28;01mreturn[39;00m Tester
+[0;32m--> 315[0m [38;5;28;01mraise[39;00m [38;5;167;01mAttributeError[39;00m([38;5;124m"[39m[38;5;124mmodule [39m[38;5;132;01m{!r}[39;00m[38;5;124m has no attribute [39m[38;5;124m"[39m
+[1;32m    316[0m                      [38;5;124m"[39m[38;5;132;01m{!r}[39;00m[38;5;124m"[39m[38;5;241m.[39mformat([38;5;18m__name__[39m, attr))
+
+[0;31mAttributeError[0m: module 'numpy' has no attribute 'p'
+AttributeError: module 'numpy' has no attribute 'p'
 
