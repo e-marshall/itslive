@@ -32,7 +32,7 @@ File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/back
 [0;32m---> 53[0m     value [38;5;241m=[39m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_cache[49m[43m[[49m[43mkey[49m[43m][49m
 [1;32m     54[0m     [38;5;28mself[39m[38;5;241m.[39m_cache[38;5;241m.[39mmove_to_end(key)
 
-[0;31mKeyError[0m: [<function open at 0x14393ec20>, ('/Users/emarshall/Desktop/siparcs/data/HMA_G0120_0000.nc',), 'r', (('sharing', False),)]
+[0;31mKeyError[0m: [<function open at 0x14b65ec20>, ('/Users/emarshall/Desktop/siparcs/data/HMA_G0120_0000.nc',), 'r', (('sharing', False),)]
 
 During handling of the above exception, another exception occurred:
 

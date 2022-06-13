@@ -782,14 +782,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="nn">Input In [5],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">get_bbox_single</span><span class="p">(</span><span class="n">data_cube_x25_y475</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;data_cube_x25_y475&#39; is not defined
-</pre></div>
-</div>
+<img alt="_images/accessing_s3_data_14_0.png" src="_images/accessing_s3_data_14_0.png" />
 </div>
 </div>
 <p>Now we can see where this granule lies. Let’s try another url:</p>
@@ -940,12 +933,12 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
 <span class="ne">GroupNotFoundError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
-<span class="nn">Input In [6],</span> in <span class="ni">&lt;cell line: 3&gt;</span><span class="nt">()</span>
+<span class="nn">Input In [27],</span> in <span class="ni">&lt;cell line: 3&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#this url doen&#39;st work</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">url_x35_y305</span> <span class="o">=</span> <span class="s1">&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X350000_Y3050000.zarr&#39;</span>
 <span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">dc_x35_y305</span> <span class="o">=</span> <span class="n">read_in_s3</span><span class="p">(</span><span class="n">url_x35_y305</span><span class="p">)</span>
 
-<span class="nn">Input In [4],</span> in <span class="ni">read_in_s3</span><span class="nt">(http_url)</span>
+<span class="nn">Input In [25],</span> in <span class="ni">read_in_s3</span><span class="nt">(http_url)</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">http_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">s3_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.s3.amazonaws.com&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 <span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">datacube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">s3_url</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
@@ -1029,6 +1022,222 @@ This catalog provides http links to the zarr objects. To successfully point to t
 
 <span class="n">dc_x35_y315</span> <span class="o">=</span> <span class="n">read_in_s3</span><span class="p">(</span><span class="n">url_x35_y315</span><span class="p">)</span>
                            
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/rd/kx8trg7979q204t5141wt7_80000gn/T/ipykernel_12093/4261528005.py:5: RuntimeWarning: Failed to open Zarr store with consolidated metadata, falling back to try reading non-consolidated metadata. This is typically much slower for opening a dataset. To silence this warning, consider:
+1. Consolidating metadata in this existing store with zarr.consolidate_metadata().
+2. Explicitly setting consolidated=False, to avoid trying to read consolidate metadata, or
+3. Explicitly setting consolidated=True, to raise an error in this case instead of falling back to try reading non-consolidated metadata.
+  datacube = xr.open_dataset(s3_url, engine = &#39;zarr&#39;,
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NoSuchKey</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:110,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
+<span class="g g-Whitespace">    </span><span class="mi">109</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">110</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">111</span> <span class="k">except</span> <span class="n">S3_RETRYABLE_ERRORS</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/client.py:265,</span> in <span class="ni">AioBaseClient._make_api_call</span><span class="nt">(self, operation_name, api_params)</span>
+<span class="g g-Whitespace">    </span><span class="mi">264</span>     <span class="n">error_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">from_code</span><span class="p">(</span><span class="n">error_code</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">265</span>     <span class="k">raise</span> <span class="n">error_class</span><span class="p">(</span><span class="n">parsed_response</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">266</span> <span class="k">else</span><span class="p">:</span>
+
+<span class="ne">NoSuchKey</span>: An error occurred (NoSuchKey) when calling the GetObject operation: The specified key does not exist.
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/mapping.py:137,</span> in <span class="ni">FSMap.__getitem__</span><span class="nt">(self, key, default)</span>
+<span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">137</span>     <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">138</span> <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing_exceptions</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:86,</span> in <span class="ni">sync_wrapper.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">85</span> <span class="bp">self</span> <span class="o">=</span> <span class="n">obj</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="ne">---&gt; </span><span class="mi">86</span> <span class="k">return</span> <span class="n">sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:66,</span> in <span class="ni">sync</span><span class="nt">(loop, func, timeout, *args, **kwargs)</span>
+<span class="g g-Whitespace">     </span><span class="mi">65</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">return_result</span><span class="p">,</span> <span class="ne">BaseException</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">66</span>     <span class="k">raise</span> <span class="n">return_result</span>
+<span class="g g-Whitespace">     </span><span class="mi">67</span> <span class="k">else</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:26,</span> in <span class="ni">_runner</span><span class="nt">(event, coro, result, timeout)</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">26</span>     <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coro</span>
+<span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:398,</span> in <span class="ni">AsyncFileSystem._cat</span><span class="nt">(self, path, recursive, on_error, batch_size, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">397</span>     <span class="k">if</span> <span class="n">ex</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">398</span>         <span class="k">raise</span> <span class="n">ex</span>
+<span class="g g-Whitespace">    </span><span class="mi">399</span> <span class="k">if</span> <span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">400</span>     <span class="nb">len</span><span class="p">(</span><span class="n">paths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
+<span class="g g-Whitespace">    </span><span class="mi">401</span>     <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">402</span>     <span class="ow">or</span> <span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_protocol</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">403</span> <span class="p">):</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/tasks.py:408,</span> in <span class="ni">wait_for</span><span class="nt">(fut, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">407</span> <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">408</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">fut</span>
+<span class="g g-Whitespace">    </span><span class="mi">410</span> <span class="k">if</span> <span class="n">timeout</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:955,</span> in <span class="ni">S3FileSystem._cat_file</span><span class="nt">(self, path, version_id, start, end)</span>
+<span class="g g-Whitespace">    </span><span class="mi">953</span>         <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;Body&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="ne">--&gt; </span><span class="mi">955</span> <span class="k">return</span> <span class="k">await</span> <span class="n">_error_wrapper</span><span class="p">(</span><span class="n">_call_and_read</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:137,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
+<span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="n">err</span> <span class="o">=</span> <span class="n">translate_boto_error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">137</span> <span class="k">raise</span> <span class="n">err</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:110,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
+<span class="g g-Whitespace">    </span><span class="mi">109</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">110</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">111</span> <span class="k">except</span> <span class="n">S3_RETRYABLE_ERRORS</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:942,</span> in <span class="ni">S3FileSystem._cat_file.&lt;locals&gt;._call_and_read</span><span class="nt">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">941</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">_call_and_read</span><span class="p">():</span>
+<span class="ne">--&gt; </span><span class="mi">942</span>     <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_s3</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">943</span>         <span class="s2">&quot;get_object&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">944</span>         <span class="n">Bucket</span><span class="o">=</span><span class="n">bucket</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">945</span>         <span class="n">Key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">946</span>         <span class="o">**</span><span class="n">version_id_kw</span><span class="p">(</span><span class="n">version_id</span> <span class="ow">or</span> <span class="n">vers</span><span class="p">),</span>
+<span class="g g-Whitespace">    </span><span class="mi">947</span>         <span class="o">**</span><span class="n">head</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">948</span>         <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">req_kw</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">949</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">950</span>     <span class="k">try</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:332,</span> in <span class="ni">S3FileSystem._call_s3</span><span class="nt">(self, method, *akwarglist, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">331</span> <span class="n">additional_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_s3_method_kwargs</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">akwarglist</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">332</span> <span class="k">return</span> <span class="k">await</span> <span class="n">_error_wrapper</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">333</span>     <span class="n">method</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">additional_kwargs</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span>
+<span class="g g-Whitespace">    </span><span class="mi">334</span> <span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:137,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
+<span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="n">err</span> <span class="o">=</span> <span class="n">translate_boto_error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">137</span> <span class="k">raise</span> <span class="n">err</span>
+
+<span class="ne">FileNotFoundError</span>: The specified key does not exist.
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:1164,</span> in <span class="ni">FSStore.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1163</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1164</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1165</span> <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">exceptions</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/mapping.py:141,</span> in <span class="ni">FSMap.__getitem__</span><span class="nt">(self, key, default)</span>
+<span class="g g-Whitespace">    </span><span class="mi">140</span>         <span class="k">return</span> <span class="n">default</span>
+<span class="ne">--&gt; </span><span class="mi">141</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">142</span> <span class="k">return</span> <span class="n">result</span>
+
+<span class="ne">KeyError</span>: &#39;.zmetadata&#39;
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:348,</span> in <span class="ni">ZarrStore.open_group</span><span class="nt">(cls, store, mode, synchronizer, group, consolidated, consolidate_on_close, chunk_store, storage_options, append_dim, write_region, safe_chunks, stacklevel)</span>
+<span class="g g-Whitespace">    </span><span class="mi">347</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">348</span>     <span class="n">zarr_group</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open_consolidated</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">**</span><span class="n">open_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">349</span> <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/convenience.py:1187,</span> in <span class="ni">open_consolidated</span><span class="nt">(store, metadata_key, mode, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1186</span> <span class="c1"># setup metadata store</span>
+<span class="ne">-&gt; </span><span class="mi">1187</span> <span class="n">meta_store</span> <span class="o">=</span> <span class="n">ConsolidatedMetadataStore</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">metadata_key</span><span class="o">=</span><span class="n">metadata_key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1189</span> <span class="c1"># pass through</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:2644,</span> in <span class="ni">ConsolidatedMetadataStore.__init__</span><span class="nt">(self, store, metadata_key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2643</span> <span class="c1"># retrieve consolidated metadata</span>
+<span class="ne">-&gt; </span><span class="mi">2644</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">json_loads</span><span class="p">(</span><span class="n">store</span><span class="p">[</span><span class="n">metadata_key</span><span class="p">])</span>
+<span class="g g-Whitespace">   </span><span class="mi">2646</span> <span class="c1"># check format of consolidated metadata</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:1166,</span> in <span class="ni">FSStore.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1165</span> <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">exceptions</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1166</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+<span class="ne">KeyError</span>: &#39;.zmetadata&#39;
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">GroupNotFoundError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
+<span class="nn">Input In [28],</span> in <span class="ni">&lt;cell line: 3&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">url_x35_y315</span> <span class="o">=</span> <span class="s1">&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X350000_Y3150000.zarr&#39;</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">dc_x35_y315</span> <span class="o">=</span> <span class="n">read_in_s3</span><span class="p">(</span><span class="n">url_x35_y315</span><span class="p">)</span>
+
+<span class="nn">Input In [25],</span> in <span class="ni">read_in_s3</span><span class="nt">(http_url)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">http_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">s3_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.s3.amazonaws.com&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">datacube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">s3_url</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>                             <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">})</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="k">return</span> <span class="n">datacube</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/api.py:495,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, backend_kwargs, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">483</span> <span class="n">decoders</span> <span class="o">=</span> <span class="n">_resolve_decoders_kwargs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">484</span>     <span class="n">decode_cf</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">485</span>     <span class="n">open_backend_dataset_parameters</span><span class="o">=</span><span class="n">backend</span><span class="o">.</span><span class="n">open_dataset_parameters</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">491</span>     <span class="n">decode_coords</span><span class="o">=</span><span class="n">decode_coords</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">492</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">494</span> <span class="n">overwrite_encoded_chunks</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;overwrite_encoded_chunks&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">495</span> <span class="n">backend_ds</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">496</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">497</span>     <span class="n">drop_variables</span><span class="o">=</span><span class="n">drop_variables</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">498</span>     <span class="o">**</span><span class="n">decoders</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">499</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">500</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">501</span> <span class="n">ds</span> <span class="o">=</span> <span class="n">_dataset_from_backend_dataset</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">502</span>     <span class="n">backend_ds</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">503</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">510</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">511</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">512</span> <span class="k">return</span> <span class="n">ds</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:800,</span> in <span class="ni">ZarrBackendEntrypoint.open_dataset</span><span class="nt">(self, filename_or_obj, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta, group, mode, synchronizer, consolidated, chunk_store, storage_options, stacklevel)</span>
+<span class="g g-Whitespace">    </span><span class="mi">780</span> <span class="k">def</span> <span class="nf">open_dataset</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">781</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">782</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">796</span>     <span class="n">stacklevel</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">797</span> <span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">799</span>     <span class="n">filename_or_obj</span> <span class="o">=</span> <span class="n">_normalize_path</span><span class="p">(</span><span class="n">filename_or_obj</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">800</span>     <span class="n">store</span> <span class="o">=</span> <span class="n">ZarrStore</span><span class="o">.</span><span class="n">open_group</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">801</span>         <span class="n">filename_or_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">802</span>         <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">803</span>         <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">804</span>         <span class="n">synchronizer</span><span class="o">=</span><span class="n">synchronizer</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">805</span>         <span class="n">consolidated</span><span class="o">=</span><span class="n">consolidated</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">806</span>         <span class="n">consolidate_on_close</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">807</span>         <span class="n">chunk_store</span><span class="o">=</span><span class="n">chunk_store</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">808</span>         <span class="n">storage_options</span><span class="o">=</span><span class="n">storage_options</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">809</span>         <span class="n">stacklevel</span><span class="o">=</span><span class="n">stacklevel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">810</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">812</span>     <span class="n">store_entrypoint</span> <span class="o">=</span> <span class="n">StoreBackendEntrypoint</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">813</span>     <span class="k">with</span> <span class="n">close_on_error</span><span class="p">(</span><span class="n">store</span><span class="p">):</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:365,</span> in <span class="ni">ZarrStore.open_group</span><span class="nt">(cls, store, mode, synchronizer, group, consolidated, consolidate_on_close, chunk_store, storage_options, append_dim, write_region, safe_chunks, stacklevel)</span>
+<span class="g g-Whitespace">    </span><span class="mi">349</span>     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">350</span>         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">351</span>             <span class="s2">&quot;Failed to open Zarr store with consolidated metadata, &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">352</span>             <span class="s2">&quot;falling back to try reading non-consolidated metadata. &quot;</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">363</span>             <span class="n">stacklevel</span><span class="o">=</span><span class="n">stacklevel</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">364</span>         <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">365</span>         <span class="n">zarr_group</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open_group</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">**</span><span class="n">open_kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">366</span> <span class="k">elif</span> <span class="n">consolidated</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">367</span>     <span class="c1"># TODO: an option to pass the metadata_key keyword</span>
+<span class="g g-Whitespace">    </span><span class="mi">368</span>     <span class="n">zarr_group</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open_consolidated</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">**</span><span class="n">open_kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/hierarchy.py:1182,</span> in <span class="ni">open_group</span><span class="nt">(store, mode, cache_attrs, synchronizer, path, chunk_store, storage_options)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1180</span>         <span class="k">if</span> <span class="n">contains_array</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1181</span>             <span class="k">raise</span> <span class="n">ContainsArrayError</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1182</span>         <span class="k">raise</span> <span class="n">GroupNotFoundError</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1184</span> <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;w&#39;</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1185</span>     <span class="n">init_group</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">chunk_store</span><span class="o">=</span><span class="n">chunk_store</span><span class="p">)</span>
+
+<span class="ne">GroupNotFoundError</span>: group not found at path &#39;&#39;
 </pre></div>
 </div>
 </div>
@@ -1294,7 +1503,7 @@ nothing there ¯\_(ツ)_/¯
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nepal_url_ls</span> <span class="o">=</span> <span class="n">find_granule_by_point</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="p">[</span><span class="mf">88.5</span><span class="p">,</span> <span class="mf">29.</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nepal_url_ls</span> <span class="o">=</span> <span class="n">find_granule_by_point</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="p">[</span><span class="mf">86.7</span><span class="p">,</span> <span class="mf">28.07</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1307,7 +1516,7 @@ nothing there ¯\_(ツ)_/¯
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X650000_Y3250000.zarr&#39;]
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X450000_Y3150000.zarr&#39;]
 </pre></div>
 </div>
 </div>
