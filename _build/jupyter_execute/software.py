@@ -19,6 +19,14 @@ import numpy as np
 import xarray as xr
 import rioxarray as rxr
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+from shapely.geometry import Polygon
+from shapely.geometry import Point
+import cartopy.crs as ccrs
+from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
+import cartopy
+import cartopy.feature as cfeature
+import json
 from geocube.api.core import make_geocube
 
 
@@ -31,9 +39,11 @@ from geocube.api.core import make_geocube
 # Head to the next page to see how we start working with this data 
 # 
 
-# ### Two streams of velocity data
+# ### Three streams of velocity data
 # 
-# This notebook is going to contain an example of something you might run into: the same (or similar) data is hosted from different sources, meaning it is accessed in different ways and may be in slightly different formats. In this case, we have ITS_LIVE velocity data that can be accessed from an S3 bucket and from the NSIDC DAAC. You'll see that while this is the same underlying dataset, the formatting varies significantly between the two and in this case, the data are in two different file types (Geotiff and netcdf). In the [Tutorial content](new_velocity_data.ipynb) page, you will see sections on ingesting and working with both types of data. 
+# This notebook is going to contain an example of something you might run into: the same (or similar) data is hosted from different sources, meaning it is accessed in different ways and may be in slightly different formats. In this case, we have ITS_LIVE velocity data that can be accessed from an S3 bucket as **zarr datacubes** from the NSIDC DAAC as **netcdfs** and from the NSIDC DAAC (??) as **geotiffs**. You'll see that while this is the same underlying dataset, the formatting varies significantly among the three and in this case, the data are in different file types. 
+# 
+# In [Accessing ITS_LIVE zarr datacubes](accessing_s3_data.ipynb) you will see an example of accessing cloud-hosted zarr datacubes that are stored in s3 bukets hosted by Amazon Web Services. In the [Regional glacier velocity analysis notebook](region_scale_glacier_analysis.ipynb), you will see how to construct xarray objects representing glacier velocity data from **geotiff** files. Finally, in the [individual glacier analysis 1 notebook](individual_glacier_analysis1.ipynb) you will see an example of dowloading and reading ITS_LIVE data in netcdf-format accessed from the NSIDC DAAC. 
 
 # In[ ]:
 

@@ -226,8 +226,8 @@ const thebe_selector_output = ".output, .cell_output"
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#background">
-   Background
+  <a class="reference internal nav-link" href="#overview">
+   Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -256,8 +256,8 @@ const thebe_selector_output = ".output, .cell_output"
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#background">
-   Background
+  <a class="reference internal nav-link" href="#overview">
+   Overview
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -276,20 +276,20 @@ const thebe_selector_output = ".output, .cell_output"
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p><em>this text content needs cleaning up</em></p>
-<p>In this notebook, we’ll go over steps to access glacier surface velocity data, organize it into a format that’s easier to work with, and then calculate mean velocities for individual glaciers within a region.</p>
-<div class="section" id="background">
-<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
-<p>Frequently when working with geospatial data, we want to accomplish tasks that force us to work with raster and vector data together. Vector data (points, lines, polygons) often represent physical features and areas of interest. Raster data are gridded objects where individual pixels are assigned different values. Data such as temperature, elevation, layer thickness and velocit are represented in raster format. Two-dimensional, gridded raster data can often cover large spatial extents. Vector data help us to identify features and locations of interest on the ground. This tutorial will demonstrate an example of using vector data to extract regions of interest from within a raster dataset.</p>
-<p>There are different tools in python for handling vector and raster data: <strong>xarray</strong> is a great way to work with raster data while <strong>geopandas</strong> handles vector data well. During various stages of data processing and analysis, it may be useful to switch between these two formats for certain tasks. The tutorial in this chapter will demonstrate accessing and exploring data using both <strong>xarray</strong> and <strong>geopandas</strong>, using <strong>geopandas</strong> to query raster data in <strong>xarray</strong> format, and various analytical steps using both <strong>xarray</strong> and <strong>geopandas</strong>.</p>
-<p>The example we’ll be working with in this chapter is glacier velocity data. We will start with polygons representing glacier outlines and glacier surface velocity raster data. At the end of the notebook, we will have both raster and vector objects representing the data we have manipulated. You’ll see that they will both be useful for conveying different types of information.</p>
+<p>In this this tutorial, we will demonstrate how to access and work with with multi-dimensional remote sensing data using the python package and open source project <code class="docutils literal notranslate"><span class="pre">xarray</span></code>. This example will use an ice velocity dataset called <a class="reference external" href="https://its-live.jpl.nasa.gov/">ITS_LIVE</a>.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial contains a number of jupyter notebooks demonstrating various steps of a typical workflow for accessing, processing and analyzing remote sensing data. The structure is as follows:
+1. Data access (Two examples of accessing ITS_LIVE velocity data)
+2. Processing and analysis at the scale of an individual glacier
+3. Processing and analysis of a group of glaciers at a sub-regional to regional scale</p>
 </div>
 <div class="section" id="learning-objectives">
 <h2>Learning objectives<a class="headerlink" href="#learning-objectives" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>data access (downloading and cloud-based)</p></li>
 <li><p>basic raster manipulation and organizing in <strong>xarray</strong></p></li>
-<li><p>examining shp files using <strong>geopandas</strong></p></li>
+<li><p>using <strong>geopandas</strong> to query raster data in <strong>xarray</strong>-format</p></li>
 <li><p>aggregating using xarray groupby</p></li>
 <li><p>xarray to pandas/geopandas</p></li>
 </ul>
