@@ -4,6 +4,7 @@
 format: jb-book
 root: intro
 chapters:
+- file: still_to_do.md
 - file: software.ipynb
 - file: accessing_s3_data.ipynb
 - file: individual_glacier_analysis1.ipynb
