@@ -1,4 +1,4 @@
-# Introduction
+# Glacier surface velocity processing and analysis with **xarray**
 
 In this this tutorial, we will demonstrate how to access and work with with multi-dimensional remote sensing data using the python package and open source project `xarray`. This example will use an ice velocity dataset called [ITS_LIVE](https://its-live.jpl.nasa.gov/). 
 
