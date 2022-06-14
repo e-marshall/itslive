@@ -22,17 +22,11 @@ data_cube_x25_y475 = xr.open_dataset(url_x25_y475, engine = 'zarr')
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mOSError[0m                                   Traceback (most recent call last)
+[0;31mCancelledError[0m                            Traceback (most recent call last)
 File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:986[0m, in [0;36mTCPConnector._wrap_create_connection[0;34m(self, req, timeout, client_error, *args, **kwargs)[0m
 [1;32m    985[0m     [38;5;28;01masync[39;00m [38;5;28;01mwith[39;00m ceil_timeout(timeout[38;5;241m.[39msock_connect):
 [0;32m--> 986[0m         [38;5;28;01mreturn[39;00m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_loop[38;5;241m.[39mcreate_connection([38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)  [38;5;66;03m# type: ignore[return-value]  # noqa[39;00m
 [1;32m    987[0m [38;5;28;01mexcept[39;00m cert_errors [38;5;28;01mas[39;00m exc:
-
-File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/base_events.py:1064[0m, in [0;36mBaseEventLoop.create_connection[0;34m(self, protocol_factory, host, port, ssl, family, proto, flags, sock, local_addr, server_hostname, ssl_handshake_timeout, happy_eyeballs_delay, interleave)[0m
-[1;32m   1063[0m [38;5;28;01mif[39;00m [38;5;28mlen[39m(exceptions) [38;5;241m==[39m [38;5;241m1[39m:
-[0;32m-> 1064[0m     [38;5;28;01mraise[39;00m exceptions[[38;5;241m0[39m]
-[1;32m   1065[0m [38;5;28;01melse[39;00m:
-[1;32m   1066[0m     [38;5;66;03m# If they all have the same str(), raise one.[39;00m
 
 File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/base_events.py:1049[0m, in [0;36mBaseEventLoop.create_connection[0;34m(self, protocol_factory, host, port, ssl, family, proto, flags, sock, local_addr, server_hostname, ssl_handshake_timeout, happy_eyeballs_delay, interleave)[0m
 [1;32m   1048[0m [38;5;28;01mtry[39;00m:
@@ -49,33 +43,11 @@ File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/selector_events.p
 [1;32m    498[0m [38;5;28mself[39m[38;5;241m.[39m_sock_connect(fut, sock, address)
 [0;32m--> 499[0m [38;5;28;01mreturn[39;00m [38;5;28;01mawait[39;00m fut
 
-File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/selector_events.py:504[0m, in [0;36mBaseSelectorEventLoop._sock_connect[0;34m(self, fut, sock, address)[0m
-[1;32m    503[0m [38;5;28;01mtry[39;00m:
-[0;32m--> 504[0m     [43msock[49m[38;5;241;43m.[39;49m[43mconnect[49m[43m([49m[43maddress[49m[43m)[49m
-[1;32m    505[0m [38;5;28;01mexcept[39;00m ([38;5;167;01mBlockingIOError[39;00m, [38;5;167;01mInterruptedError[39;00m):
-[1;32m    506[0m     [38;5;66;03m# Issue #23618: When the C function connect() fails with EINTR, the[39;00m
-[1;32m    507[0m     [38;5;66;03m# connection runs in background. We have to wait until the socket[39;00m
-[1;32m    508[0m     [38;5;66;03m# becomes writable to be notified when the connection succeed or[39;00m
-[1;32m    509[0m     [38;5;66;03m# fails.[39;00m
+[0;31mCancelledError[0m: 
 
-[0;31mOSError[0m: [Errno 65] No route to host
+During handling of the above exception, another exception occurred:
 
-The above exception was the direct cause of the following exception:
-
-[0;31mClientConnectorError[0m                      Traceback (most recent call last)
-File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:178[0m, in [0;36mAIOHTTPSession.send[0;34m(self, request)[0m
-[1;32m    177[0m url [38;5;241m=[39m URL(url, encoded[38;5;241m=[39m[38;5;28;01mTrue[39;00m)
-[0;32m--> 178[0m response [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_session[38;5;241m.[39mrequest(
-[1;32m    179[0m     request[38;5;241m.[39mmethod, url[38;5;241m=[39murl, headers[38;5;241m=[39mheaders_, data[38;5;241m=[39mdata, proxy[38;5;241m=[39mproxy_url,
-[1;32m    180[0m     proxy_headers[38;5;241m=[39mproxy_headers
-[1;32m    181[0m )
-[1;32m    183[0m http_response [38;5;241m=[39m aiobotocore[38;5;241m.[39mawsrequest[38;5;241m.[39mAioAWSResponse(
-[1;32m    184[0m     [38;5;28mstr[39m(response[38;5;241m.[39murl),
-[1;32m    185[0m     response[38;5;241m.[39mstatus,
-[1;32m    186[0m     response[38;5;241m.[39mheaders,
-[1;32m    187[0m     response
-[1;32m    188[0m )
-
+[0;31mTimeoutError[0m                              Traceback (most recent call last)
 File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/client.py:535[0m, in [0;36mClientSession._request[0;34m(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)[0m
 [1;32m    534[0m         [38;5;28;01massert[39;00m [38;5;28mself[39m[38;5;241m.[39m_connector [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m
 [0;32m--> 535[0m         conn [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_connector[38;5;241m.[39mconnect(
@@ -92,10 +64,6 @@ File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/con
 [1;32m    906[0m [38;5;28;01melse[39;00m:
 [0;32m--> 907[0m     _, proto [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_create_direct_connection(req, traces, timeout)
 [1;32m    909[0m [38;5;28;01mreturn[39;00m proto
-
-File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:1206[0m, in [0;36mTCPConnector._create_direct_connection[0;34m(self, req, traces, timeout, client_error)[0m
-[1;32m   1205[0m [38;5;28;01massert[39;00m last_exc [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m
-[0;32m-> 1206[0m [38;5;28;01mraise[39;00m last_exc
 
 File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:1175[0m, in [0;36mTCPConnector._create_direct_connection[0;34m(self, req, traces, timeout, client_error)[0m
 [1;32m   1174[0m [38;5;28;01mtry[39;00m:
@@ -115,15 +83,56 @@ File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/con
 [1;32m   1188[0m     )
 [1;32m   1189[0m [38;5;28;01mexcept[39;00m ClientConnectorError [38;5;28;01mas[39;00m exc:
 
-File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:992[0m, in [0;36mTCPConnector._wrap_create_connection[0;34m(self, req, timeout, client_error, *args, **kwargs)[0m
-[1;32m    991[0m [38;5;28;01mexcept[39;00m [38;5;167;01mOSError[39;00m [38;5;28;01mas[39;00m exc:
-[0;32m--> 992[0m     [38;5;28;01mraise[39;00m client_error(req[38;5;241m.[39mconnection_key, exc) [38;5;28;01mfrom[39;00m [38;5;21;01mexc[39;00m
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:985[0m, in [0;36mTCPConnector._wrap_create_connection[0;34m(self, req, timeout, client_error, *args, **kwargs)[0m
+[1;32m    984[0m [38;5;28;01mtry[39;00m:
+[0;32m--> 985[0m     [38;5;28;01masync[39;00m [38;5;28;01mwith[39;00m ceil_timeout(timeout[38;5;241m.[39msock_connect):
+[1;32m    986[0m         [38;5;28;01mreturn[39;00m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_loop[38;5;241m.[39mcreate_connection([38;5;241m*[39margs, [38;5;241m*[39m[38;5;241m*[39mkwargs)  [38;5;66;03m# type: ignore[return-value]  # noqa[39;00m
 
-[0;31mClientConnectorError[0m: Cannot connect to host 169.254.169.254:80 ssl:default [No route to host]
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/async_timeout/__init__.py:129[0m, in [0;36mTimeout.__aexit__[0;34m(self, exc_type, exc_val, exc_tb)[0m
+[1;32m    123[0m [38;5;28;01masync[39;00m [38;5;28;01mdef[39;00m [38;5;21m__aexit__[39m(
+[1;32m    124[0m     [38;5;28mself[39m,
+[1;32m    125[0m     exc_type: Optional[Type[[38;5;167;01mBaseException[39;00m]],
+[1;32m    126[0m     exc_val: Optional[[38;5;167;01mBaseException[39;00m],
+[1;32m    127[0m     exc_tb: Optional[TracebackType],
+[1;32m    128[0m ) [38;5;241m-[39m[38;5;241m>[39m Optional[[38;5;28mbool[39m]:
+[0;32m--> 129[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_do_exit[49m[43m([49m[43mexc_type[49m[43m)[49m
+[1;32m    130[0m     [38;5;28;01mreturn[39;00m [38;5;28;01mNone[39;00m
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/async_timeout/__init__.py:212[0m, in [0;36mTimeout._do_exit[0;34m(self, exc_type)[0m
+[1;32m    211[0m     [38;5;28mself[39m[38;5;241m.[39m_timeout_handler [38;5;241m=[39m [38;5;28;01mNone[39;00m
+[0;32m--> 212[0m     [38;5;28;01mraise[39;00m asyncio[38;5;241m.[39mTimeoutError
+[1;32m    213[0m [38;5;66;03m# timeout has not expired[39;00m
+
+[0;31mTimeoutError[0m: 
+
+The above exception was the direct cause of the following exception:
+
+[0;31mServerTimeoutError[0m                        Traceback (most recent call last)
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:178[0m, in [0;36mAIOHTTPSession.send[0;34m(self, request)[0m
+[1;32m    177[0m url [38;5;241m=[39m URL(url, encoded[38;5;241m=[39m[38;5;28;01mTrue[39;00m)
+[0;32m--> 178[0m response [38;5;241m=[39m [38;5;28;01mawait[39;00m [38;5;28mself[39m[38;5;241m.[39m_session[38;5;241m.[39mrequest(
+[1;32m    179[0m     request[38;5;241m.[39mmethod, url[38;5;241m=[39murl, headers[38;5;241m=[39mheaders_, data[38;5;241m=[39mdata, proxy[38;5;241m=[39mproxy_url,
+[1;32m    180[0m     proxy_headers[38;5;241m=[39mproxy_headers
+[1;32m    181[0m )
+[1;32m    183[0m http_response [38;5;241m=[39m aiobotocore[38;5;241m.[39mawsrequest[38;5;241m.[39mAioAWSResponse(
+[1;32m    184[0m     [38;5;28mstr[39m(response[38;5;241m.[39murl),
+[1;32m    185[0m     response[38;5;241m.[39mstatus,
+[1;32m    186[0m     response[38;5;241m.[39mheaders,
+[1;32m    187[0m     response
+[1;32m    188[0m )
+
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/client.py:539[0m, in [0;36mClientSession._request[0;34m(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)[0m
+[1;32m    538[0m [38;5;28;01mexcept[39;00m asyncio[38;5;241m.[39mTimeoutError [38;5;28;01mas[39;00m exc:
+[0;32m--> 539[0m     [38;5;28;01mraise[39;00m ServerTimeoutError(
+[1;32m    540[0m         [38;5;124m"[39m[38;5;124mConnection timeout [39m[38;5;124m"[39m [38;5;124m"[39m[38;5;124mto host [39m[38;5;132;01m{}[39;00m[38;5;124m"[39m[38;5;241m.[39mformat(url)
+[1;32m    541[0m     ) [38;5;28;01mfrom[39;00m [38;5;21;01mexc[39;00m
+[1;32m    543[0m [38;5;28;01massert[39;00m conn[38;5;241m.[39mtransport [38;5;129;01mis[39;00m [38;5;129;01mnot[39;00m [38;5;28;01mNone[39;00m
+
+[0;31mServerTimeoutError[0m: Connection timeout to host http://169.254.169.254/latest/api/token
 
 During handling of the above exception, another exception occurred:
 
-[0;31mEndpointConnectionError[0m                   Traceback (most recent call last)
+[0;31mConnectTimeoutError[0m                       Traceback (most recent call last)
 Input [0;32mIn [2][0m, in [0;36m<cell line: 2>[0;34m()[0m
 [1;32m      1[0m url_x25_y475 [38;5;241m=[39m [38;5;124m'[39m[38;5;124ms3://its-live-data/datacubes/v02/N40E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y4750000.zarr[39m[38;5;124m'[39m
 [0;32m----> 2[0m data_cube_x25_y475 [38;5;241m=[39m [43mxr[49m[38;5;241;43m.[39;49m[43mopen_dataset[49m[43m([49m[43murl_x25_y475[49m[43m,[49m[43m [49m[43mengine[49m[43m [49m[38;5;241;43m=[39;49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43mzarr[39;49m[38;5;124;43m'[39;49m[43m)[49m
@@ -317,13 +326,13 @@ File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore
 [1;32m     89[0m         [38;5;28;01mif[39;00m response[38;5;241m.[39mstatus_code [38;5;241m==[39m [38;5;241m200[39m:
 [1;32m     90[0m             [38;5;28;01mreturn[39;00m [38;5;28;01mawait[39;00m response[38;5;241m.[39mtext
 
-File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:214[0m, in [0;36mAIOHTTPSession.send[0;34m(self, request)[0m
+File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:210[0m, in [0;36mAIOHTTPSession.send[0;34m(self, request)[0m
+[1;32m    208[0m [38;5;28;01mexcept[39;00m ServerTimeoutError [38;5;28;01mas[39;00m e:
+[1;32m    209[0m     [38;5;28;01mif[39;00m [38;5;28mstr[39m(e)[38;5;241m.[39mlower()[38;5;241m.[39mstartswith([38;5;124m'[39m[38;5;124mconnect[39m[38;5;124m'[39m):
+[0;32m--> 210[0m         [38;5;28;01mraise[39;00m ConnectTimeoutError(endpoint_url[38;5;241m=[39mrequest[38;5;241m.[39murl, error[38;5;241m=[39me)
+[1;32m    211[0m     [38;5;28;01melse[39;00m:
 [1;32m    212[0m         [38;5;28;01mraise[39;00m ReadTimeoutError(endpoint_url[38;5;241m=[39mrequest[38;5;241m.[39murl, error[38;5;241m=[39me)
-[1;32m    213[0m [38;5;28;01mexcept[39;00m (ClientConnectorError, ClientConnectionError, socket[38;5;241m.[39mgaierror) [38;5;28;01mas[39;00m e:
-[0;32m--> 214[0m     [38;5;28;01mraise[39;00m EndpointConnectionError(endpoint_url[38;5;241m=[39mrequest[38;5;241m.[39murl, error[38;5;241m=[39me)
-[1;32m    215[0m [38;5;28;01mexcept[39;00m asyncio[38;5;241m.[39mTimeoutError [38;5;28;01mas[39;00m e:
-[1;32m    216[0m     [38;5;28;01mraise[39;00m ReadTimeoutError(endpoint_url[38;5;241m=[39mrequest[38;5;241m.[39murl, error[38;5;241m=[39me)
 
-[0;31mEndpointConnectionError[0m: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
-EndpointConnectionError: Could not connect to the endpoint URL: "http://169.254.169.254/latest/api/token"
+[0;31mConnectTimeoutError[0m: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
+ConnectTimeoutError: Connect timeout on endpoint URL: "http://169.254.169.254/latest/api/token"
 

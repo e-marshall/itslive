@@ -407,17 +407,11 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">OSError</span><span class="g g-Whitespace">                                   </span>Traceback (most recent call last)
+<span class="ne">CancelledError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
 <span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:986,</span> in <span class="ni">TCPConnector._wrap_create_connection</span><span class="nt">(self, req, timeout, client_error, *args, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">985</span>     <span class="k">async</span> <span class="k">with</span> <span class="n">ceil_timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">.</span><span class="n">sock_connect</span><span class="p">):</span>
 <span class="ne">--&gt; </span><span class="mi">986</span>         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">create_connection</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[return-value]  # noqa</span>
 <span class="g g-Whitespace">    </span><span class="mi">987</span> <span class="k">except</span> <span class="n">cert_errors</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/base_events.py:1064,</span> in <span class="ni">BaseEventLoop.create_connection</span><span class="nt">(self, protocol_factory, host, port, ssl, family, proto, flags, sock, local_addr, server_hostname, ssl_handshake_timeout, happy_eyeballs_delay, interleave)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1063</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">exceptions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-<span class="ne">-&gt; </span><span class="mi">1064</span>     <span class="k">raise</span> <span class="n">exceptions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="g g-Whitespace">   </span><span class="mi">1065</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1066</span>     <span class="c1"># If they all have the same str(), raise one.</span>
 
 <span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/base_events.py:1049,</span> in <span class="ni">BaseEventLoop.create_connection</span><span class="nt">(self, protocol_factory, host, port, ssl, family, proto, flags, sock, local_addr, server_hostname, ssl_handshake_timeout, happy_eyeballs_delay, interleave)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1048</span> <span class="k">try</span><span class="p">:</span>
@@ -434,33 +428,11 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">498</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock_connect</span><span class="p">(</span><span class="n">fut</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">499</span> <span class="k">return</span> <span class="k">await</span> <span class="n">fut</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/selector_events.py:504,</span> in <span class="ni">BaseSelectorEventLoop._sock_connect</span><span class="nt">(self, fut, sock, address)</span>
-<span class="g g-Whitespace">    </span><span class="mi">503</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">504</span>     <span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">505</span> <span class="k">except</span> <span class="p">(</span><span class="ne">BlockingIOError</span><span class="p">,</span> <span class="ne">InterruptedError</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">506</span>     <span class="c1"># Issue #23618: When the C function connect() fails with EINTR, the</span>
-<span class="g g-Whitespace">    </span><span class="mi">507</span>     <span class="c1"># connection runs in background. We have to wait until the socket</span>
-<span class="g g-Whitespace">    </span><span class="mi">508</span>     <span class="c1"># becomes writable to be notified when the connection succeed or</span>
-<span class="g g-Whitespace">    </span><span class="mi">509</span>     <span class="c1"># fails.</span>
+<span class="ne">CancelledError</span>: 
 
-<span class="ne">OSError</span>: [Errno 65] No route to host
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
-<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
-
-<span class="ne">ClientConnectorError</span><span class="g g-Whitespace">                      </span>Traceback (most recent call last)
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:178,</span> in <span class="ni">AIOHTTPSession.send</span><span class="nt">(self, request)</span>
-<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">encoded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">178</span> <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">179</span>     <span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers_</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">proxy</span><span class="o">=</span><span class="n">proxy_url</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">180</span>     <span class="n">proxy_headers</span><span class="o">=</span><span class="n">proxy_headers</span>
-<span class="g g-Whitespace">    </span><span class="mi">181</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">183</span> <span class="n">http_response</span> <span class="o">=</span> <span class="n">aiobotocore</span><span class="o">.</span><span class="n">awsrequest</span><span class="o">.</span><span class="n">AioAWSResponse</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">184</span>     <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">),</span>
-<span class="g g-Whitespace">    </span><span class="mi">185</span>     <span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">186</span>     <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">187</span>     <span class="n">response</span>
-<span class="g g-Whitespace">    </span><span class="mi">188</span> <span class="p">)</span>
-
+<span class="ne">TimeoutError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
 <span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/client.py:535,</span> in <span class="ni">ClientSession._request</span><span class="nt">(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)</span>
 <span class="g g-Whitespace">    </span><span class="mi">534</span>         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 <span class="ne">--&gt; </span><span class="mi">535</span>         <span class="n">conn</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
@@ -477,10 +449,6 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">906</span> <span class="k">else</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">907</span>     <span class="n">_</span><span class="p">,</span> <span class="n">proto</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_direct_connection</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">traces</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">909</span> <span class="k">return</span> <span class="n">proto</span>
-
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:1206,</span> in <span class="ni">TCPConnector._create_direct_connection</span><span class="nt">(self, req, traces, timeout, client_error)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1205</span> <span class="k">assert</span> <span class="n">last_exc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-<span class="ne">-&gt; </span><span class="mi">1206</span> <span class="k">raise</span> <span class="n">last_exc</span>
 
 <span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:1175,</span> in <span class="ni">TCPConnector._create_direct_connection</span><span class="nt">(self, req, traces, timeout, client_error)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1174</span> <span class="k">try</span><span class="p">:</span>
@@ -500,15 +468,56 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">   </span><span class="mi">1188</span>     <span class="p">)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1189</span> <span class="k">except</span> <span class="n">ClientConnectorError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:992,</span> in <span class="ni">TCPConnector._wrap_create_connection</span><span class="nt">(self, req, timeout, client_error, *args, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">991</span> <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">992</span>     <span class="k">raise</span> <span class="n">client_error</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">connection_key</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:985,</span> in <span class="ni">TCPConnector._wrap_create_connection</span><span class="nt">(self, req, timeout, client_error, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">984</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">985</span>     <span class="k">async</span> <span class="k">with</span> <span class="n">ceil_timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">.</span><span class="n">sock_connect</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">986</span>         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">create_connection</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[return-value]  # noqa</span>
 
-<span class="ne">ClientConnectorError</span>: Cannot connect to host 169.254.169.254:80 ssl:default [No route to host]
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/async_timeout/__init__.py:129,</span> in <span class="ni">Timeout.__aexit__</span><span class="nt">(self, exc_type, exc_val, exc_tb)</span>
+<span class="g g-Whitespace">    </span><span class="mi">123</span> <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">124</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">125</span>     <span class="n">exc_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]],</span>
+<span class="g g-Whitespace">    </span><span class="mi">126</span>     <span class="n">exc_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">127</span>     <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">TracebackType</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">128</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="ne">--&gt; </span><span class="mi">129</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_do_exit</span><span class="p">(</span><span class="n">exc_type</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">130</span>     <span class="k">return</span> <span class="kc">None</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/async_timeout/__init__.py:212,</span> in <span class="ni">Timeout._do_exit</span><span class="nt">(self, exc_type)</span>
+<span class="g g-Whitespace">    </span><span class="mi">211</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_timeout_handler</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="ne">--&gt; </span><span class="mi">212</span>     <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span>
+<span class="g g-Whitespace">    </span><span class="mi">213</span> <span class="c1"># timeout has not expired</span>
+
+<span class="ne">TimeoutError</span>: 
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">ServerTimeoutError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:178,</span> in <span class="ni">AIOHTTPSession.send</span><span class="nt">(self, request)</span>
+<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">encoded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">178</span> <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">179</span>     <span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers_</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">proxy</span><span class="o">=</span><span class="n">proxy_url</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">180</span>     <span class="n">proxy_headers</span><span class="o">=</span><span class="n">proxy_headers</span>
+<span class="g g-Whitespace">    </span><span class="mi">181</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">183</span> <span class="n">http_response</span> <span class="o">=</span> <span class="n">aiobotocore</span><span class="o">.</span><span class="n">awsrequest</span><span class="o">.</span><span class="n">AioAWSResponse</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">184</span>     <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">),</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span>     <span class="n">response</span><span class="o">.</span><span class="n">status</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span>     <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">187</span>     <span class="n">response</span>
+<span class="g g-Whitespace">    </span><span class="mi">188</span> <span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/client.py:539,</span> in <span class="ni">ClientSession._request</span><span class="nt">(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)</span>
+<span class="g g-Whitespace">    </span><span class="mi">538</span> <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">539</span>     <span class="k">raise</span> <span class="n">ServerTimeoutError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">540</span>         <span class="s2">&quot;Connection timeout &quot;</span> <span class="s2">&quot;to host </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">541</span>     <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+<span class="g g-Whitespace">    </span><span class="mi">543</span> <span class="k">assert</span> <span class="n">conn</span><span class="o">.</span><span class="n">transport</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+<span class="ne">ServerTimeoutError</span>: Connection timeout to host http://169.254.169.254/latest/api/token
 
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
-<span class="ne">EndpointConnectionError</span><span class="g g-Whitespace">                   </span>Traceback (most recent call last)
+<span class="ne">ConnectTimeoutError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
 <span class="nn">Input In [2],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">url_x25_y475</span> <span class="o">=</span> <span class="s1">&#39;s3://its-live-data/datacubes/v02/N40E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y4750000.zarr&#39;</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">data_cube_x25_y475</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">url_x25_y475</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">)</span>
@@ -702,14 +711,14 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">     </span><span class="mi">89</span>         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">90</span>             <span class="k">return</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:214,</span> in <span class="ni">AIOHTTPSession.send</span><span class="nt">(self, request)</span>
+<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:210,</span> in <span class="ni">AIOHTTPSession.send</span><span class="nt">(self, request)</span>
+<span class="g g-Whitespace">    </span><span class="mi">208</span> <span class="k">except</span> <span class="n">ServerTimeoutError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">209</span>     <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;connect&#39;</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">210</span>         <span class="k">raise</span> <span class="n">ConnectTimeoutError</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">211</span>     <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">212</span>         <span class="k">raise</span> <span class="n">ReadTimeoutError</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">213</span> <span class="k">except</span> <span class="p">(</span><span class="n">ClientConnectorError</span><span class="p">,</span> <span class="n">ClientConnectionError</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">gaierror</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">214</span>     <span class="k">raise</span> <span class="n">EndpointConnectionError</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">215</span> <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">216</span>     <span class="k">raise</span> <span class="n">ReadTimeoutError</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
 
-<span class="ne">EndpointConnectionError</span>: Could not connect to the endpoint URL: &quot;http://169.254.169.254/latest/api/token&quot;
+<span class="ne">ConnectTimeoutError</span>: Connect timeout on endpoint URL: &quot;http://169.254.169.254/latest/api/token&quot;
 </pre></div>
 </div>
 </div>
