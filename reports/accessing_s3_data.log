@@ -133,7 +133,7 @@ File [0;32m~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/cli
 During handling of the above exception, another exception occurred:
 
 [0;31mConnectTimeoutError[0m                       Traceback (most recent call last)
-Input [0;32mIn [2][0m, in [0;36m<cell line: 2>[0;34m()[0m
+Input [0;32mIn [3][0m, in [0;36m<cell line: 2>[0;34m()[0m
 [1;32m      1[0m url_x25_y475 [38;5;241m=[39m [38;5;124m'[39m[38;5;124ms3://its-live-data/datacubes/v02/N40E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y4750000.zarr[39m[38;5;124m'[39m
 [0;32m----> 2[0m data_cube_x25_y475 [38;5;241m=[39m [43mxr[49m[38;5;241;43m.[39;49m[43mopen_dataset[49m[43m([49m[43murl_x25_y475[49m[43m,[49m[43m [49m[43mengine[49m[43m [49m[38;5;241;43m=[39;49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43mzarr[39;49m[38;5;124;43m'[39;49m[43m)[49m
 

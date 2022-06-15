@@ -397,7 +397,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 <div class="section" id="accessing-s3-data-from-python">
 <h2>Accessing s3 data from python<a class="headerlink" href="#accessing-s3-data-from-python" title="Permalink to this headline">¶</a></h2>
-<div class="cell tag_&quot;output_scroll&quot; tag_'output_scroll' docutils container">
+<div class="cell tag_'output_scroll' docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;output </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -934,7 +934,7 @@ output 99
 </div>
 <p>This link doesn’t work. From the error we’re getting, it looks like it’s not working because the zarr file isn’t in the location that we’re pointing to with the url we supply. As cloud-based datasets are developed and maintained, the locations of specific objects will change and sometimes metadata doesn’t always catch up, so this may be an error you’ll encounter more than once.</p>
 <p>Let’s try another url:</p>
-<div class="cell tag_'raises_exception' docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url_x35_y315</span> <span class="o">=</span> <span class="s1">&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X350000_Y3150000.zarr&#39;</span>
 
