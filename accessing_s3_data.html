@@ -785,7 +785,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/y9/k06gyzdx25z64l_tdt_q2xv9s680sz/T/ipykernel_39517/1060595601.py:5: RuntimeWarning: Failed to open Zarr store with consolidated metadata, falling back to try reading non-consolidated metadata. This is typically much slower for opening a dataset. To silence this warning, consider:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/y9/k06gyzdx25z64l_tdt_q2xv9s680sz/T/ipykernel_39704/1060595601.py:5: RuntimeWarning: Failed to open Zarr store with consolidated metadata, falling back to try reading non-consolidated metadata. This is typically much slower for opening a dataset. To silence this warning, consider:
 1. Consolidating metadata in this existing store with zarr.consolidate_metadata().
 2. Explicitly setting consolidated=False, to avoid trying to read consolidate metadata, or
 3. Explicitly setting consolidated=True, to raise an error in this case instead of falling back to try reading non-consolidated metadata.
@@ -1050,7 +1050,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;s3fs.core.S3FileSystem at 0x18f9158d0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;s3fs.core.S3FileSystem at 0x18f4cd990&gt;
 </pre></div>
 </div>
 </div>
@@ -1436,24 +1436,6 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="nn">Input In [38],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">get_bbox_group</span><span class="p">(</span><span class="n">granule_ls_32645</span><span class="p">)</span>
-
-<span class="nn">Input In [37],</span> in <span class="ni">get_bbox_group</span><span class="nt">(input_ls, bounds)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="k">for</span> <span class="n">xr_obj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">input_ls</span><span class="p">)):</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="sd">&#39;&#39;&#39;Takes input xr object (from itslive data cube), plots a quick map of the footprint. </span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span><span class="sd">     currently only working for granules in crs epsg 32645&#39;&#39;&#39;</span>
-<span class="ne">---&gt; </span><span class="mi">11</span>     <span class="n">xmin</span> <span class="o">=</span> <span class="n">input_ls</span><span class="p">[</span><span class="n">xr_obj</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="n">xmax</span> <span class="o">=</span> <span class="n">input_ls</span><span class="p">[</span><span class="n">xr_obj</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="n">ymin</span> <span class="o">=</span> <span class="n">input_ls</span><span class="p">[</span><span class="n">xr_obj</span><span class="p">]</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-
-<span class="ne">AttributeError</span>: &#39;str&#39; object has no attribute &#39;coords&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <p>Let’s take a closer look at the region of interest, we can do that by specifying bounds when we call the function</p>
 <div class="cell docutils container">
@@ -1516,11 +1498,6 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X450000_Y3150000.zarr&#39;]
-</pre></div>
-</div>
-</div>
 </div>
 <p>Let’s use the <code class="docutils literal notranslate"><span class="pre">read_in_s3</span></code> function we defined to open the datacube as an <code class="docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></p>
 <div class="cell docutils container">
@@ -1537,9 +1514,6 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/accessing_s3_data_42_0.png" src="_images/accessing_s3_data_42_0.png" />
-</div>
 </div>
 <p>Great, now we know how to access the its_live data cubes for a given region as well as at a specific point.</p>
 <p>Let’s take a quick first look at this data cube. The next notebooks will go into more examples of inspecting and working with this data</p>
@@ -1548,12 +1522,6 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nepal_dc</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x198c3a5f0&gt;
-</pre></div>
-</div>
-<img alt="_images/accessing_s3_data_44_1.png" src="_images/accessing_s3_data_44_1.png" />
 </div>
 </div>
 <p>The above plot shows the mean of the magnitude of velocity variable along the time dimension. It looks like the footpring we’re viewing has glaciated terrain in the southern region as well as non-glaciated terrain in the northern region. The rest of the notebooks in this chapter will demonstrate how to subset this spatially-large data object to specific areas of interest.</p>
