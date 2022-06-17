@@ -235,13 +235,6 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal nav-link" href="#data">
    Data
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#three-streams-of-velocity-data">
-     Three streams of velocity data
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -272,13 +265,6 @@ const thebe_selector_output = ".output, .cell_output"
   <a class="reference internal nav-link" href="#data">
    Data
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#three-streams-of-velocity-data">
-     Three streams of velocity data
-    </a>
-   </li>
-  </ul>
  </li>
 </ul>
 
@@ -312,6 +298,10 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">from</span> <span class="nn">geocube.api.core</span> <span class="kn">import</span> <span class="n">make_geocube</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="kn">import</span> <span class="n">skeletonize</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
 </pre></div>
 </div>
 </div>
@@ -322,11 +312,6 @@ const thebe_selector_output = ".output, .cell_output"
 <p>The velocity data that we’ll be using is from the  <a class="reference external" href="https://its-live.jpl.nasa.gov/#access">ITS_LIVE dataset</a>. This dataset contains global coverage of land ice velocity data at various temporal frequencies and in various formats. Follow the link to explore the data that’s available for a particular region you may be interested in.</p>
 <p>The ITS_LIVE velocity data is accessed in a raster format and the data covers a large swath of terrain covering land that is glaciated and non-glaciated. We want to select just the pixels that cover glaciated surfaces; to do this, we use glacier outlines from the <a class="reference external" href="https://www.glims.org/RGI/">Randolph Glacier Inventory</a>.</p>
 <p>Head to the next page to see how we start accessing and working with this data</p>
-<div class="section" id="three-streams-of-velocity-data">
-<h3>Three streams of velocity data<a class="headerlink" href="#three-streams-of-velocity-data" title="Permalink to this headline">¶</a></h3>
-<p>This notebook is going to contain an example of something you might run into: the same (or similar) data is hosted from different sources, meaning it is accessed in different ways and may be in slightly different formats. In this case, we have ITS_LIVE velocity data that can be accessed from an S3 bucket as <strong>zarr datacubes</strong> from the NSIDC DAAC as <strong>netcdfs</strong> and from the NSIDC DAAC (* files in notebook currently are the ones sent by Alex) as <strong>geotiffs</strong>. You’ll see that while this is the same underlying dataset, the formatting varies significantly among the three and in this case, the data are in different file types.</p>
-<p>In <a class="reference internal" href="accessing_s3_data.html"><span class="doc std std-doc">Accessing ITS_LIVE zarr datacubes</span></a> you will see an example of accessing cloud-hosted zarr datacubes that are stored in s3 buckets hosted by Amazon Web Services. In the <a class="reference internal" href="region_scale_glacier_analysis.html"><span class="doc std std-doc">Regional glacier velocity analysis notebook</span></a>, you will see how to construct xarray objects representing glacier velocity data from <strong>geotiff</strong> files. Finally, in the <span class="xref myst">individual glacier analysis 1 notebook</span> you will see an example of dowloading and reading ITS_LIVE data in netcdf-format accessed from the NSIDC DAAC.</p>
-</div>
 </div>
 </div>
 
