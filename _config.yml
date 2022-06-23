@@ -1,9 +1,9 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Xarray workflow example - glacier surface velocities 
+title: Using xarray to examine cloud-based glacier surface velocity data
 author: emma marshall
-logo: logo.png
+#logo: logo.png
 
 #only want to include files listed in toc (not sure this will work)
 # found here: https://github.com/executablebooks/jupyter-book/pull/1123
