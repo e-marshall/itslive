@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Software and Data &#8212; Xarray workflow example - glacier surface velocities</title>
+    <title>Software and Data &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -54,7 +54,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Accessing ITS_LIVE data via S3 bucket" href="accessing_s3_data.html" />
-    <link rel="prev" title="To do for this book" href="still_to_do.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -76,14 +76,9 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="index.html">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
-        
       
       
-      <img src="_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Xarray workflow example - glacier surface velocities</h1>
+      <h1 class="site-logo" id="site-title">Using xarray to examine cloud-based glacier surface velocity data</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
@@ -94,16 +89,11 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   Glacier surface velocity processing and analysis with xarray
+   Introduction
   </a>
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="still_to_do.html">
-   To do for this book
-  </a>
- </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Software and Data
@@ -116,7 +106,17 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ind_glacier_data_inspection_analysis.html">
-   Individual glacier analysis 1
+   Individual glacier data inspection
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ind_glacier_analysis_new.html">
+   Individual glacier surface velocity analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="glacier_analysis_grouped.html">
+   Region-scale glacier analysis
   </a>
  </li>
  <li class="toctree-l1">
@@ -270,37 +270,45 @@ const thebe_selector_output = ".output, .cell_output"
 <p>On this page you’ll find information about the computing environment and datasets that we’ll be using in this tutorial.</p>
 <div class="section" id="computing-environment">
 <h2>Computing environment<a class="headerlink" href="#computing-environment" title="Permalink to this headline">¶</a></h2>
-<p>Below, you’lll see a list of the python libraries we’ll be using in this example:</p>
+<p>Below, you’lll see a list of the python libraries we’ll be using in this example. This is the full list of libraries across all notebooks.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rxr</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
+
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.ticker</span> <span class="k">as</span> <span class="nn">mticker</span>
+
 <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
 <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
 <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
 <span class="kn">from</span> <span class="nn">cartopy.mpl.gridliner</span> <span class="kn">import</span> <span class="n">LONGITUDE_FORMATTER</span><span class="p">,</span> <span class="n">LATITUDE_FORMATTER</span>
 <span class="kn">import</span> <span class="nn">cartopy</span>
 <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
-<span class="kn">import</span> <span class="nn">json</span>
+
 <span class="kn">from</span> <span class="nn">geocube.api.core</span> <span class="kn">import</span> <span class="n">make_geocube</span>
-<span class="kn">import</span> <span class="nn">urllib.request</span>
 <span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="kn">import</span> <span class="n">skeletonize</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
+<span class="kn">import</span> <span class="nn">flox</span>
+<span class="kn">import</span> <span class="nn">s3fs</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>The package ‘itslivetools’ contains functions to help reading in and inspecting ITS_LIVE data. </br></p>
+<p>Installation: </br>
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/e-marshall/itslivetools.git&#64;main</span></code></p>
 </div>
 <div class="section" id="data">
 <h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
-<p>The velocity data that we’ll be using is from the  <a class="reference external" href="https://its-live.jpl.nasa.gov/#access">ITS_LIVE dataset</a>. This dataset contains global coverage of land ice velocity data at various temporal frequencies and in various formats. Follow the link to explore the data that’s available for a particular region you may be interested in.</p>
-<p>The ITS_LIVE velocity data is accessed in a raster format and the data covers a large swath of terrain covering land that is glaciated and non-glaciated. We want to select just the pixels that cover glaciated surfaces; to do this, we use glacier outlines from the <a class="reference external" href="https://www.glims.org/RGI/">Randolph Glacier Inventory</a>.</p>
+<p>The velocity data that we’ll be using is from the  <a class="reference external" href="https://its-live.jpl.nasa.gov/#access">ITS_LIVE dataset</a>. This dataset contains global coverage of land ice velocity data at various temporal frequencies and in various formats. Follow the link to explore the data that’s available for a particular region you may be interested in. <strong>ITS_LIVE</strong> has multiple options for data access; this example will focus on using zarr datacubes that are stored in s3 buckets on AWS.</p>
+<p><strong>ITS_LIVE</strong> velocity data is accessed in a raster format and the data covers a large swath of terrain covering land that is glaciated and non-glaciated. We want to select just the pixels that cover glaciated surfaces; to do this, we use glacier outlines from the <a class="reference external" href="https://www.glims.org/RGI/">Randolph Glacier Inventory</a>. These are not cloud-hosted, you can download them locally instead.</p>
 <p>Head to the next page to see how we start accessing and working with this data</p>
 </div>
 </div>
@@ -330,11 +338,11 @@ const thebe_selector_output = ".output, .cell_output"
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="still_to_do.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">To do for this book</p>
+            <p class="prev-next-title">Introduction</p>
         </div>
     </a>
     <a class='right-next' id="next-link" href="accessing_s3_data.html" title="next page">

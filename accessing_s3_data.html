@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Accessing ITS_LIVE data via S3 bucket &#8212; Xarray workflow example - glacier surface velocities</title>
+    <title>Accessing ITS_LIVE data via S3 bucket &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,7 +53,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Individual glacier analysis 1" href="ind_glacier_data_inspection_analysis.html" />
+    <link rel="next" title="Individual glacier data inspection" href="ind_glacier_data_inspection_analysis.html" />
     <link rel="prev" title="Software and Data" href="software.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -76,14 +76,9 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="index.html">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
-        
       
       
-      <img src="_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Xarray workflow example - glacier surface velocities</h1>
+      <h1 class="site-logo" id="site-title">Using xarray to examine cloud-based glacier surface velocity data</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
@@ -94,16 +89,11 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="intro.html">
-   Glacier surface velocity processing and analysis with xarray
+   Introduction
   </a>
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="still_to_do.html">
-   To do for this book
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="software.html">
    Software and Data
@@ -116,7 +106,17 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ind_glacier_data_inspection_analysis.html">
-   Individual glacier analysis 1
+   Individual glacier data inspection
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ind_glacier_analysis_new.html">
+   Individual glacier surface velocity analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="glacier_analysis_grouped.html">
+   Region-scale glacier analysis
   </a>
  </li>
  <li class="toctree-l1">
@@ -304,7 +304,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>This notebook will demonstrate how to access cloud-hosted Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) data from AWS S3 buckets. Here you will find examples of how to successfully access cloud-hosted data as well as some common errors and issues you may run into along the way, what they mean, and how to resolve them.</p>
 <p>Learning goals:</p>
 <ul class="simple">
-<li><p>accessing and inspecting data stored in s3 buckets</p></li>
+<li><p>accessing data stored in s3 buckets</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -322,6 +322,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">cartopy</span>
 <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">s3fs</span>
 
 <span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
 </pre></div>
@@ -362,23 +363,23 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">CancelledError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:986,</span> in <span class="ni">TCPConnector._wrap_create_connection</span><span class="nt">(self, req, timeout, client_error, *args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiohttp/connector.py:986,</span> in <span class="ni">TCPConnector._wrap_create_connection</span><span class="nt">(self, req, timeout, client_error, *args, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">985</span>     <span class="k">async</span> <span class="k">with</span> <span class="n">ceil_timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">.</span><span class="n">sock_connect</span><span class="p">):</span>
 <span class="ne">--&gt; </span><span class="mi">986</span>         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">create_connection</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[return-value]  # noqa</span>
 <span class="g g-Whitespace">    </span><span class="mi">987</span> <span class="k">except</span> <span class="n">cert_errors</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/base_events.py:1049,</span> in <span class="ni">BaseEventLoop.create_connection</span><span class="nt">(self, protocol_factory, host, port, ssl, family, proto, flags, sock, local_addr, server_hostname, ssl_handshake_timeout, happy_eyeballs_delay, interleave)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/asyncio/base_events.py:1049,</span> in <span class="ni">BaseEventLoop.create_connection</span><span class="nt">(self, protocol_factory, host, port, ssl, family, proto, flags, sock, local_addr, server_hostname, ssl_handshake_timeout, happy_eyeballs_delay, interleave)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1048</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">-&gt; </span><span class="mi">1049</span>     <span class="n">sock</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_sock</span><span class="p">(</span>
 <span class="g g-Whitespace">   </span><span class="mi">1050</span>         <span class="n">exceptions</span><span class="p">,</span> <span class="n">addrinfo</span><span class="p">,</span> <span class="n">laddr_infos</span><span class="p">)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1051</span>     <span class="k">break</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/base_events.py:960,</span> in <span class="ni">BaseEventLoop._connect_sock</span><span class="nt">(self, exceptions, addr_info, local_addr_infos)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/asyncio/base_events.py:960,</span> in <span class="ni">BaseEventLoop._connect_sock</span><span class="nt">(self, exceptions, addr_info, local_addr_infos)</span>
 <span class="g g-Whitespace">    </span><span class="mi">959</span>         <span class="k">raise</span> <span class="n">my_exceptions</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 <span class="ne">--&gt; </span><span class="mi">960</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock_connect</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">961</span> <span class="k">return</span> <span class="n">sock</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/selector_events.py:499,</span> in <span class="ni">BaseSelectorEventLoop.sock_connect</span><span class="nt">(self, sock, address)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/asyncio/selector_events.py:499,</span> in <span class="ni">BaseSelectorEventLoop.sock_connect</span><span class="nt">(self, sock, address)</span>
 <span class="g g-Whitespace">    </span><span class="mi">498</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sock_connect</span><span class="p">(</span><span class="n">fut</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">499</span> <span class="k">return</span> <span class="k">await</span> <span class="n">fut</span>
 
@@ -387,24 +388,24 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
 <span class="ne">TimeoutError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/client.py:535,</span> in <span class="ni">ClientSession._request</span><span class="nt">(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiohttp/client.py:535,</span> in <span class="ni">ClientSession._request</span><span class="nt">(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)</span>
 <span class="g g-Whitespace">    </span><span class="mi">534</span>         <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 <span class="ne">--&gt; </span><span class="mi">535</span>         <span class="n">conn</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">536</span>             <span class="n">req</span><span class="p">,</span> <span class="n">traces</span><span class="o">=</span><span class="n">traces</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">real_timeout</span>
 <span class="g g-Whitespace">    </span><span class="mi">537</span>         <span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">538</span> <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:542,</span> in <span class="ni">BaseConnector.connect</span><span class="nt">(self, req, traces, timeout)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiohttp/connector.py:542,</span> in <span class="ni">BaseConnector.connect</span><span class="nt">(self, req, traces, timeout)</span>
 <span class="g g-Whitespace">    </span><span class="mi">541</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">542</span>     <span class="n">proto</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_connection</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">traces</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">543</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_closed</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:907,</span> in <span class="ni">TCPConnector._create_connection</span><span class="nt">(self, req, traces, timeout)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiohttp/connector.py:907,</span> in <span class="ni">TCPConnector._create_connection</span><span class="nt">(self, req, traces, timeout)</span>
 <span class="g g-Whitespace">    </span><span class="mi">906</span> <span class="k">else</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">907</span>     <span class="n">_</span><span class="p">,</span> <span class="n">proto</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_direct_connection</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">traces</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">909</span> <span class="k">return</span> <span class="n">proto</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:1175,</span> in <span class="ni">TCPConnector._create_direct_connection</span><span class="nt">(self, req, traces, timeout, client_error)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiohttp/connector.py:1175,</span> in <span class="ni">TCPConnector._create_direct_connection</span><span class="nt">(self, req, traces, timeout, client_error)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1174</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">-&gt; </span><span class="mi">1175</span>     <span class="n">transp</span><span class="p">,</span> <span class="n">proto</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_create_connection</span><span class="p">(</span>
 <span class="g g-Whitespace">   </span><span class="mi">1176</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_factory</span><span class="p">,</span>
@@ -422,12 +423,12 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">   </span><span class="mi">1188</span>     <span class="p">)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1189</span> <span class="k">except</span> <span class="n">ClientConnectorError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/connector.py:985,</span> in <span class="ni">TCPConnector._wrap_create_connection</span><span class="nt">(self, req, timeout, client_error, *args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiohttp/connector.py:985,</span> in <span class="ni">TCPConnector._wrap_create_connection</span><span class="nt">(self, req, timeout, client_error, *args, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">984</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">985</span>     <span class="k">async</span> <span class="k">with</span> <span class="n">ceil_timeout</span><span class="p">(</span><span class="n">timeout</span><span class="o">.</span><span class="n">sock_connect</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">986</span>         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loop</span><span class="o">.</span><span class="n">create_connection</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[return-value]  # noqa</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/async_timeout/__init__.py:129,</span> in <span class="ni">Timeout.__aexit__</span><span class="nt">(self, exc_type, exc_val, exc_tb)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/async_timeout/__init__.py:129,</span> in <span class="ni">Timeout.__aexit__</span><span class="nt">(self, exc_type, exc_val, exc_tb)</span>
 <span class="g g-Whitespace">    </span><span class="mi">123</span> <span class="k">async</span> <span class="k">def</span> <span class="fm">__aexit__</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">124</span>     <span class="bp">self</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">125</span>     <span class="n">exc_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]],</span>
@@ -437,7 +438,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="ne">--&gt; </span><span class="mi">129</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_do_exit</span><span class="p">(</span><span class="n">exc_type</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">130</span>     <span class="k">return</span> <span class="kc">None</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/async_timeout/__init__.py:212,</span> in <span class="ni">Timeout._do_exit</span><span class="nt">(self, exc_type)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/async_timeout/__init__.py:212,</span> in <span class="ni">Timeout._do_exit</span><span class="nt">(self, exc_type)</span>
 <span class="g g-Whitespace">    </span><span class="mi">211</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_timeout_handler</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="ne">--&gt; </span><span class="mi">212</span>     <span class="k">raise</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span>
 <span class="g g-Whitespace">    </span><span class="mi">213</span> <span class="c1"># timeout has not expired</span>
@@ -447,7 +448,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
 
 <span class="ne">ServerTimeoutError</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:178,</span> in <span class="ni">AIOHTTPSession.send</span><span class="nt">(self, request)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/httpsession.py:178,</span> in <span class="ni">AIOHTTPSession.send</span><span class="nt">(self, request)</span>
 <span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">encoded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">178</span> <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">request</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">179</span>     <span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers_</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">proxy</span><span class="o">=</span><span class="n">proxy_url</span><span class="p">,</span>
@@ -460,7 +461,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">187</span>     <span class="n">response</span>
 <span class="g g-Whitespace">    </span><span class="mi">188</span> <span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiohttp/client.py:539,</span> in <span class="ni">ClientSession._request</span><span class="nt">(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiohttp/client.py:539,</span> in <span class="ni">ClientSession._request</span><span class="nt">(self, method, str_or_url, params, data, json, cookies, headers, skip_auto_headers, auth, allow_redirects, max_redirects, compress, chunked, expect100, raise_for_status, read_until_eof, proxy, proxy_auth, timeout, verify_ssl, fingerprint, ssl_context, ssl, proxy_headers, trace_request_ctx, read_bufsize)</span>
 <span class="g g-Whitespace">    </span><span class="mi">538</span> <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">539</span>     <span class="k">raise</span> <span class="n">ServerTimeoutError</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">540</span>         <span class="s2">&quot;Connection timeout &quot;</span> <span class="s2">&quot;to host </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
@@ -476,7 +477,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">url1</span> <span class="o">=</span> <span class="s1">&#39;s3://its-live-data/datacubes/v02/N40E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y4750000.zarr&#39;</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">dc1</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">url1</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/api.py:495,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, backend_kwargs, *args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/api.py:495,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, backend_kwargs, *args, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">483</span> <span class="n">decoders</span> <span class="o">=</span> <span class="n">_resolve_decoders_kwargs</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">484</span>     <span class="n">decode_cf</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">485</span>     <span class="n">open_backend_dataset_parameters</span><span class="o">=</span><span class="n">backend</span><span class="o">.</span><span class="n">open_dataset_parameters</span><span class="p">,</span>
@@ -498,7 +499,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">511</span> <span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">512</span> <span class="k">return</span> <span class="n">ds</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:800,</span> in <span class="ni">ZarrBackendEntrypoint.open_dataset</span><span class="nt">(self, filename_or_obj, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta, group, mode, synchronizer, consolidated, chunk_store, storage_options, stacklevel)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/zarr.py:800,</span> in <span class="ni">ZarrBackendEntrypoint.open_dataset</span><span class="nt">(self, filename_or_obj, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta, group, mode, synchronizer, consolidated, chunk_store, storage_options, stacklevel)</span>
 <span class="g g-Whitespace">    </span><span class="mi">780</span> <span class="k">def</span> <span class="nf">open_dataset</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">781</span>     <span class="bp">self</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">782</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
@@ -520,7 +521,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">812</span>     <span class="n">store_entrypoint</span> <span class="o">=</span> <span class="n">StoreBackendEntrypoint</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">813</span>     <span class="k">with</span> <span class="n">close_on_error</span><span class="p">(</span><span class="n">store</span><span class="p">):</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:348,</span> in <span class="ni">ZarrStore.open_group</span><span class="nt">(cls, store, mode, synchronizer, group, consolidated, consolidate_on_close, chunk_store, storage_options, append_dim, write_region, safe_chunks, stacklevel)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/zarr.py:348,</span> in <span class="ni">ZarrStore.open_group</span><span class="nt">(cls, store, mode, synchronizer, group, consolidated, consolidate_on_close, chunk_store, storage_options, append_dim, write_region, safe_chunks, stacklevel)</span>
 <span class="g g-Whitespace">    </span><span class="mi">346</span> <span class="k">if</span> <span class="n">consolidated</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">347</span>     <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">348</span>         <span class="n">zarr_group</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open_consolidated</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">**</span><span class="n">open_kwargs</span><span class="p">)</span>
@@ -532,7 +533,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">363</span>             <span class="n">stacklevel</span><span class="o">=</span><span class="n">stacklevel</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">364</span>         <span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/convenience.py:1181,</span> in <span class="ni">open_consolidated</span><span class="nt">(store, metadata_key, mode, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/convenience.py:1181,</span> in <span class="ni">open_consolidated</span><span class="nt">(store, metadata_key, mode, **kwargs)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1178</span> <span class="kn">from</span> <span class="nn">.storage</span> <span class="kn">import</span> <span class="n">ConsolidatedMetadataStore</span>
 <span class="g g-Whitespace">   </span><span class="mi">1180</span> <span class="c1"># normalize parameters</span>
 <span class="ne">-&gt; </span><span class="mi">1181</span> <span class="n">store</span> <span class="o">=</span> <span class="n">normalize_store_arg</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">storage_options</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
@@ -540,47 +541,47 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">   </span><span class="mi">1183</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;invalid mode, expected either &#39;r&#39; or &#39;r+&#39;; found </span><span class="si">{!r}</span><span class="s2">&quot;</span>
 <span class="g g-Whitespace">   </span><span class="mi">1184</span>                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:114,</span> in <span class="ni">normalize_store_arg</span><span class="nt">(store, storage_options, mode)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/storage.py:114,</span> in <span class="ni">normalize_store_arg</span><span class="nt">(store, storage_options, mode)</span>
 <span class="g g-Whitespace">    </span><span class="mi">112</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">113</span>     <span class="k">if</span> <span class="s2">&quot;://&quot;</span> <span class="ow">in</span> <span class="n">store</span> <span class="ow">or</span> <span class="s2">&quot;::&quot;</span> <span class="ow">in</span> <span class="n">store</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">114</span>         <span class="k">return</span> <span class="n">FSStore</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">storage_options</span> <span class="ow">or</span> <span class="p">{}))</span>
 <span class="g g-Whitespace">    </span><span class="mi">115</span>     <span class="k">elif</span> <span class="n">storage_options</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">116</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;storage_options passed with non-fsspec path&quot;</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:1140,</span> in <span class="ni">FSStore.__init__</span><span class="nt">(self, url, normalize_keys, key_separator, mode, exceptions, dimension_separator, **storage_options)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/storage.py:1140,</span> in <span class="ni">FSStore.__init__</span><span class="nt">(self, url, normalize_keys, key_separator, mode, exceptions, dimension_separator, **storage_options)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1138</span> <span class="c1"># Pass attributes to array creation</span>
 <span class="g g-Whitespace">   </span><span class="mi">1139</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dimension_separator</span> <span class="o">=</span> <span class="n">dimension_separator</span>
 <span class="ne">-&gt; </span><span class="mi">1140</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span>
 <span class="g g-Whitespace">   </span><span class="mi">1141</span>     <span class="k">raise</span> <span class="n">FSPathExistNotDir</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:86,</span> in <span class="ni">sync_wrapper.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/asyn.py:86,</span> in <span class="ni">sync_wrapper.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">83</span> <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">84</span> <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="g g-Whitespace">     </span><span class="mi">85</span>     <span class="bp">self</span> <span class="o">=</span> <span class="n">obj</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="ne">---&gt; </span><span class="mi">86</span>     <span class="k">return</span> <span class="n">sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:66,</span> in <span class="ni">sync</span><span class="nt">(loop, func, timeout, *args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/asyn.py:66,</span> in <span class="ni">sync</span><span class="nt">(loop, func, timeout, *args, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">64</span>     <span class="k">raise</span> <span class="n">FSTimeoutError</span> <span class="kn">from</span> <span class="nn">return_result</span>
 <span class="g g-Whitespace">     </span><span class="mi">65</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">return_result</span><span class="p">,</span> <span class="ne">BaseException</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">66</span>     <span class="k">raise</span> <span class="n">return_result</span>
 <span class="g g-Whitespace">     </span><span class="mi">67</span> <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">68</span>     <span class="k">return</span> <span class="n">return_result</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:26,</span> in <span class="ni">_runner</span><span class="nt">(event, coro, result, timeout)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/asyn.py:26,</span> in <span class="ni">_runner</span><span class="nt">(event, coro, result, timeout)</span>
 <span class="g g-Whitespace">     </span><span class="mi">24</span>     <span class="n">coro</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">coro</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">---&gt; </span><span class="mi">26</span>     <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coro</span>
 <span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">28</span>     <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">ex</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:888,</span> in <span class="ni">S3FileSystem._exists</span><span class="nt">(self, path)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:888,</span> in <span class="ni">S3FileSystem._exists</span><span class="nt">(self, path)</span>
 <span class="g g-Whitespace">    </span><span class="mi">886</span>     <span class="k">return</span> <span class="kc">False</span>
 <span class="g g-Whitespace">    </span><span class="mi">887</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">888</span>     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_info</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">bucket</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">version_id</span><span class="o">=</span><span class="n">version_id</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">889</span>     <span class="k">return</span> <span class="kc">True</span>
 <span class="g g-Whitespace">    </span><span class="mi">890</span> <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:1140,</span> in <span class="ni">S3FileSystem._info</span><span class="nt">(self, path, bucket, key, refresh, version_id)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:1140,</span> in <span class="ni">S3FileSystem._info</span><span class="nt">(self, path, bucket, key, refresh, version_id)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1138</span> <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
 <span class="g g-Whitespace">   </span><span class="mi">1139</span>     <span class="k">try</span><span class="p">:</span>
 <span class="ne">-&gt; </span><span class="mi">1140</span>         <span class="n">out</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_s3</span><span class="p">(</span>
@@ -599,13 +600,13 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">   </span><span class="mi">1157</span>         <span class="p">}</span>
 <span class="g g-Whitespace">   </span><span class="mi">1158</span>     <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:325,</span> in <span class="ni">S3FileSystem._call_s3</span><span class="nt">(self, method, *akwarglist, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:325,</span> in <span class="ni">S3FileSystem._call_s3</span><span class="nt">(self, method, *akwarglist, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">324</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">_call_s3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">akwarglist</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="ne">--&gt; </span><span class="mi">325</span>     <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_session</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">326</span>     <span class="n">s3</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_s3</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Bucket&quot;</span><span class="p">))</span>
 <span class="g g-Whitespace">    </span><span class="mi">327</span>     <span class="n">method</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">s3</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:473,</span> in <span class="ni">S3FileSystem.set_session</span><span class="nt">(self, refresh, kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:473,</span> in <span class="ni">S3FileSystem.set_session</span><span class="nt">(self, refresh, kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">469</span> <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">470</span>     <span class="n">s3creator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">471</span>         <span class="s2">&quot;s3&quot;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">conf</span><span class="p">,</span> <span class="o">**</span><span class="n">init_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">client_kwargs</span>
@@ -615,12 +616,12 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">476</span> <span class="c1"># the following actually closes the aiohttp connection; use of privates</span>
 <span class="g g-Whitespace">    </span><span class="mi">477</span> <span class="c1"># might break in the future, would cause exception at gc time</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/session.py:22,</span> in <span class="ni">ClientCreatorContext.__aenter__</span><span class="nt">(self)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/session.py:22,</span> in <span class="ni">ClientCreatorContext.__aenter__</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="k">async</span> <span class="k">def</span> <span class="fm">__aenter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AioBaseClient</span><span class="p">:</span>
 <span class="ne">---&gt; </span><span class="mi">22</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coro</span>
 <span class="g g-Whitespace">     </span><span class="mi">23</span>     <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="fm">__aenter__</span><span class="p">()</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/session.py:102,</span> in <span class="ni">AioSession._create_client</span><span class="nt">(self, service_name, region_name, api_version, use_ssl, verify, endpoint_url, aws_access_key_id, aws_secret_access_key, aws_session_token, config)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/session.py:102,</span> in <span class="ni">AioSession._create_client</span><span class="nt">(self, service_name, region_name, api_version, use_ssl, verify, endpoint_url, aws_access_key_id, aws_secret_access_key, aws_session_token, config)</span>
 <span class="g g-Whitespace">     </span><span class="mi">97</span>     <span class="k">raise</span> <span class="n">PartialCredentialsError</span><span class="p">(</span>
 <span class="g g-Whitespace">     </span><span class="mi">98</span>         <span class="n">provider</span><span class="o">=</span><span class="s1">&#39;explicit&#39;</span><span class="p">,</span>
 <span class="g g-Whitespace">     </span><span class="mi">99</span>         <span class="n">cred_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_missing_cred_vars</span><span class="p">(</span><span class="n">aws_access_key_id</span><span class="p">,</span>
@@ -630,42 +631,42 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">103</span> <span class="n">endpoint_resolver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_component</span><span class="p">(</span><span class="s1">&#39;endpoint_resolver&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">104</span> <span class="n">exceptions_factory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_internal_component</span><span class="p">(</span><span class="s1">&#39;exceptions_factory&#39;</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/session.py:133,</span> in <span class="ni">AioSession.get_credentials</span><span class="nt">(self)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/session.py:133,</span> in <span class="ni">AioSession.get_credentials</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">    </span><span class="mi">131</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">get_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">132</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">133</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span> <span class="o">=</span> <span class="k">await</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">get_component</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">134</span>             <span class="s1">&#39;credential_provider&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">load_credentials</span><span class="p">())</span>
 <span class="g g-Whitespace">    </span><span class="mi">135</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_credentials</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/credentials.py:814,</span> in <span class="ni">AioCredentialResolver.load_credentials</span><span class="nt">(self)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/credentials.py:814,</span> in <span class="ni">AioCredentialResolver.load_credentials</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">    </span><span class="mi">812</span> <span class="k">for</span> <span class="n">provider</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">providers</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">813</span>     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Looking for credentials via: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">provider</span><span class="o">.</span><span class="n">METHOD</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">814</span>     <span class="n">creds</span> <span class="o">=</span> <span class="k">await</span> <span class="n">provider</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">815</span>     <span class="k">if</span> <span class="n">creds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">816</span>         <span class="k">return</span> <span class="n">creds</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/credentials.py:486,</span> in <span class="ni">AioInstanceMetadataProvider.load</span><span class="nt">(self)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/credentials.py:486,</span> in <span class="ni">AioInstanceMetadataProvider.load</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">    </span><span class="mi">484</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">485</span>     <span class="n">fetcher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_role_fetcher</span>
 <span class="ne">--&gt; </span><span class="mi">486</span>     <span class="n">metadata</span> <span class="o">=</span> <span class="k">await</span> <span class="n">fetcher</span><span class="o">.</span><span class="n">retrieve_iam_role_credentials</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">487</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">metadata</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">488</span>         <span class="k">return</span> <span class="kc">None</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/utils.py:175,</span> in <span class="ni">AioInstanceMetadataFetcher.retrieve_iam_role_credentials</span><span class="nt">(self)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/utils.py:175,</span> in <span class="ni">AioInstanceMetadataFetcher.retrieve_iam_role_credentials</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">retrieve_iam_role_credentials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">174</span>     <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">175</span>         <span class="n">token</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fetch_metadata_token</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">176</span>         <span class="n">role_name</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_iam_role</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">177</span>         <span class="n">credentials</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_credentials</span><span class="p">(</span><span class="n">role_name</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/utils.py:88,</span> in <span class="ni">AioIMDSFetcher._fetch_metadata_token</span><span class="nt">(self)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/utils.py:88,</span> in <span class="ni">AioIMDSFetcher._fetch_metadata_token</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">     </span><span class="mi">86</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_num_attempts</span><span class="p">):</span>
 <span class="g g-Whitespace">     </span><span class="mi">87</span>     <span class="k">try</span><span class="p">:</span>
 <span class="ne">---&gt; </span><span class="mi">88</span>         <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">prepare</span><span class="p">())</span>
 <span class="g g-Whitespace">     </span><span class="mi">89</span>         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">90</span>             <span class="k">return</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/httpsession.py:210,</span> in <span class="ni">AIOHTTPSession.send</span><span class="nt">(self, request)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/httpsession.py:210,</span> in <span class="ni">AIOHTTPSession.send</span><span class="nt">(self, request)</span>
 <span class="g g-Whitespace">    </span><span class="mi">208</span> <span class="k">except</span> <span class="n">ServerTimeoutError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">209</span>     <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;connect&#39;</span><span class="p">):</span>
 <span class="ne">--&gt; </span><span class="mi">210</span>         <span class="k">raise</span> <span class="n">ConnectTimeoutError</span><span class="p">(</span><span class="n">endpoint_url</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="n">e</span><span class="p">)</span>
@@ -740,13 +741,13 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <p>Let’s also write a quick function for reading in s3 objects from http urls. This will come in handy when we’re trying to test multiple urls</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_in_s3</span><span class="p">(</span><span class="n">http_url</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_in_s3</span><span class="p">(</span><span class="n">http_url</span><span class="p">,</span> <span class="n">chunks</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">):</span>
     <span class="n">s3_url</span> <span class="o">=</span> <span class="n">http_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
     <span class="n">s3_url</span> <span class="o">=</span> <span class="n">s3_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.s3.amazonaws.com&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 
     <span class="n">datacube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">s3_url</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
                                 <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
-                                <span class="n">chunks</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+                                <span class="n">chunks</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">datacube</span>
 </pre></div>
@@ -775,7 +776,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/y9/k06gyzdx25z64l_tdt_q2xv9s680sz/T/ipykernel_52186/1060595601.py:5: RuntimeWarning: Failed to open Zarr store with consolidated metadata, falling back to try reading non-consolidated metadata. This is typically much slower for opening a dataset. To silence this warning, consider:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/y9/k06gyzdx25z64l_tdt_q2xv9s680sz/T/ipykernel_67343/4225930199.py:5: RuntimeWarning: Failed to open Zarr store with consolidated metadata, falling back to try reading non-consolidated metadata. This is typically much slower for opening a dataset. To silence this warning, consider:
 1. Consolidating metadata in this existing store with zarr.consolidate_metadata().
 2. Explicitly setting consolidated=False, to avoid trying to read consolidate metadata, or
 3. Explicitly setting consolidated=True, to raise an error in this case instead of falling back to try reading non-consolidated metadata.
@@ -784,12 +785,12 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NoSuchKey</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:110,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:110,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
 <span class="g g-Whitespace">    </span><span class="mi">109</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">110</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">111</span> <span class="k">except</span> <span class="n">S3_RETRYABLE_ERRORS</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/aiobotocore/client.py:265,</span> in <span class="ni">AioBaseClient._make_api_call</span><span class="nt">(self, operation_name, api_params)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/aiobotocore/client.py:265,</span> in <span class="ni">AioBaseClient._make_api_call</span><span class="nt">(self, operation_name, api_params)</span>
 <span class="g g-Whitespace">    </span><span class="mi">264</span>     <span class="n">error_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">from_code</span><span class="p">(</span><span class="n">error_code</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">265</span>     <span class="k">raise</span> <span class="n">error_class</span><span class="p">(</span><span class="n">parsed_response</span><span class="p">,</span> <span class="n">operation_name</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">266</span> <span class="k">else</span><span class="p">:</span>
@@ -799,26 +800,26 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
 
 <span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/mapping.py:137,</span> in <span class="ni">FSMap.__getitem__</span><span class="nt">(self, key, default)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/mapping.py:137,</span> in <span class="ni">FSMap.__getitem__</span><span class="nt">(self, key, default)</span>
 <span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">137</span>     <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">138</span> <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing_exceptions</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:86,</span> in <span class="ni">sync_wrapper.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/asyn.py:86,</span> in <span class="ni">sync_wrapper.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">85</span> <span class="bp">self</span> <span class="o">=</span> <span class="n">obj</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="ne">---&gt; </span><span class="mi">86</span> <span class="k">return</span> <span class="n">sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:66,</span> in <span class="ni">sync</span><span class="nt">(loop, func, timeout, *args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/asyn.py:66,</span> in <span class="ni">sync</span><span class="nt">(loop, func, timeout, *args, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">65</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">return_result</span><span class="p">,</span> <span class="ne">BaseException</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">66</span>     <span class="k">raise</span> <span class="n">return_result</span>
 <span class="g g-Whitespace">     </span><span class="mi">67</span> <span class="k">else</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:26,</span> in <span class="ni">_runner</span><span class="nt">(event, coro, result, timeout)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/asyn.py:26,</span> in <span class="ni">_runner</span><span class="nt">(event, coro, result, timeout)</span>
 <span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">---&gt; </span><span class="mi">26</span>     <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">coro</span>
 <span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:398,</span> in <span class="ni">AsyncFileSystem._cat</span><span class="nt">(self, path, recursive, on_error, batch_size, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/asyn.py:398,</span> in <span class="ni">AsyncFileSystem._cat</span><span class="nt">(self, path, recursive, on_error, batch_size, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">397</span>     <span class="k">if</span> <span class="n">ex</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">398</span>         <span class="k">raise</span> <span class="n">ex</span>
 <span class="g g-Whitespace">    </span><span class="mi">399</span> <span class="k">if</span> <span class="p">(</span>
@@ -827,25 +828,25 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">402</span>     <span class="ow">or</span> <span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_strip_protocol</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">403</span> <span class="p">):</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/asyncio/tasks.py:408,</span> in <span class="ni">wait_for</span><span class="nt">(fut, timeout)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/asyncio/tasks.py:408,</span> in <span class="ni">wait_for</span><span class="nt">(fut, timeout)</span>
 <span class="g g-Whitespace">    </span><span class="mi">407</span> <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">408</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">fut</span>
 <span class="g g-Whitespace">    </span><span class="mi">410</span> <span class="k">if</span> <span class="n">timeout</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:955,</span> in <span class="ni">S3FileSystem._cat_file</span><span class="nt">(self, path, version_id, start, end)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:955,</span> in <span class="ni">S3FileSystem._cat_file</span><span class="nt">(self, path, version_id, start, end)</span>
 <span class="g g-Whitespace">    </span><span class="mi">953</span>         <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;Body&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="ne">--&gt; </span><span class="mi">955</span> <span class="k">return</span> <span class="k">await</span> <span class="n">_error_wrapper</span><span class="p">(</span><span class="n">_call_and_read</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:137,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:137,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
 <span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="n">err</span> <span class="o">=</span> <span class="n">translate_boto_error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">137</span> <span class="k">raise</span> <span class="n">err</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:110,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:110,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
 <span class="g g-Whitespace">    </span><span class="mi">109</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">110</span>     <span class="k">return</span> <span class="k">await</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">111</span> <span class="k">except</span> <span class="n">S3_RETRYABLE_ERRORS</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:942,</span> in <span class="ni">S3FileSystem._cat_file.&lt;locals&gt;._call_and_read</span><span class="nt">()</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:942,</span> in <span class="ni">S3FileSystem._cat_file.&lt;locals&gt;._call_and_read</span><span class="nt">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">941</span> <span class="k">async</span> <span class="k">def</span> <span class="nf">_call_and_read</span><span class="p">():</span>
 <span class="ne">--&gt; </span><span class="mi">942</span>     <span class="n">resp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call_s3</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">943</span>         <span class="s2">&quot;get_object&quot;</span><span class="p">,</span>
@@ -857,13 +858,13 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">949</span>     <span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">950</span>     <span class="k">try</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:332,</span> in <span class="ni">S3FileSystem._call_s3</span><span class="nt">(self, method, *akwarglist, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:332,</span> in <span class="ni">S3FileSystem._call_s3</span><span class="nt">(self, method, *akwarglist, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">331</span> <span class="n">additional_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_s3_method_kwargs</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="o">*</span><span class="n">akwarglist</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">332</span> <span class="k">return</span> <span class="k">await</span> <span class="n">_error_wrapper</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">333</span>     <span class="n">method</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">additional_kwargs</span><span class="p">,</span> <span class="n">retries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retries</span>
 <span class="g g-Whitespace">    </span><span class="mi">334</span> <span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/s3fs/core.py:137,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/s3fs/core.py:137,</span> in <span class="ni">_error_wrapper</span><span class="nt">(func, args, kwargs, retries)</span>
 <span class="g g-Whitespace">    </span><span class="mi">136</span> <span class="n">err</span> <span class="o">=</span> <span class="n">translate_boto_error</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">137</span> <span class="k">raise</span> <span class="n">err</span>
 
@@ -872,12 +873,12 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
 <span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:1164,</span> in <span class="ni">FSStore.__getitem__</span><span class="nt">(self, key)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/storage.py:1164,</span> in <span class="ni">FSStore.__getitem__</span><span class="nt">(self, key)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1163</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">-&gt; </span><span class="mi">1164</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 <span class="g g-Whitespace">   </span><span class="mi">1165</span> <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">exceptions</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/mapping.py:141,</span> in <span class="ni">FSMap.__getitem__</span><span class="nt">(self, key, default)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/mapping.py:141,</span> in <span class="ni">FSMap.__getitem__</span><span class="nt">(self, key, default)</span>
 <span class="g g-Whitespace">    </span><span class="mi">140</span>         <span class="k">return</span> <span class="n">default</span>
 <span class="ne">--&gt; </span><span class="mi">141</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">142</span> <span class="k">return</span> <span class="n">result</span>
@@ -887,22 +888,22 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
 
 <span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:348,</span> in <span class="ni">ZarrStore.open_group</span><span class="nt">(cls, store, mode, synchronizer, group, consolidated, consolidate_on_close, chunk_store, storage_options, append_dim, write_region, safe_chunks, stacklevel)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/zarr.py:348,</span> in <span class="ni">ZarrStore.open_group</span><span class="nt">(cls, store, mode, synchronizer, group, consolidated, consolidate_on_close, chunk_store, storage_options, append_dim, write_region, safe_chunks, stacklevel)</span>
 <span class="g g-Whitespace">    </span><span class="mi">347</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">348</span>     <span class="n">zarr_group</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open_consolidated</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">**</span><span class="n">open_kwargs</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">349</span> <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/convenience.py:1187,</span> in <span class="ni">open_consolidated</span><span class="nt">(store, metadata_key, mode, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/convenience.py:1187,</span> in <span class="ni">open_consolidated</span><span class="nt">(store, metadata_key, mode, **kwargs)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1186</span> <span class="c1"># setup metadata store</span>
 <span class="ne">-&gt; </span><span class="mi">1187</span> <span class="n">meta_store</span> <span class="o">=</span> <span class="n">ConsolidatedMetadataStore</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">metadata_key</span><span class="o">=</span><span class="n">metadata_key</span><span class="p">)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1189</span> <span class="c1"># pass through</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:2644,</span> in <span class="ni">ConsolidatedMetadataStore.__init__</span><span class="nt">(self, store, metadata_key)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/storage.py:2644,</span> in <span class="ni">ConsolidatedMetadataStore.__init__</span><span class="nt">(self, store, metadata_key)</span>
 <span class="g g-Whitespace">   </span><span class="mi">2643</span> <span class="c1"># retrieve consolidated metadata</span>
 <span class="ne">-&gt; </span><span class="mi">2644</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">json_loads</span><span class="p">(</span><span class="n">store</span><span class="p">[</span><span class="n">metadata_key</span><span class="p">])</span>
 <span class="g g-Whitespace">   </span><span class="mi">2646</span> <span class="c1"># check format of consolidated metadata</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:1166,</span> in <span class="ni">FSStore.__getitem__</span><span class="nt">(self, key)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/storage.py:1166,</span> in <span class="ni">FSStore.__getitem__</span><span class="nt">(self, key)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1165</span> <span class="k">except</span> <span class="bp">self</span><span class="o">.</span><span class="n">exceptions</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <span class="ne">-&gt; </span><span class="mi">1166</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
 
@@ -916,15 +917,15 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">url2</span> <span class="o">=</span> <span class="s1">&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/wrong_url_here.zarr&#39;</span>
 <span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">dc2</span> <span class="o">=</span> <span class="n">read_in_s3</span><span class="p">(</span><span class="n">url2</span><span class="p">)</span>
 
-<span class="nn">Input In [5],</span> in <span class="ni">read_in_s3</span><span class="nt">(http_url)</span>
+<span class="nn">Input In [5],</span> in <span class="ni">read_in_s3</span><span class="nt">(http_url, chunks)</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">http_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">s3_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.s3.amazonaws.com&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 <span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">datacube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">s3_url</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
 <span class="g g-Whitespace">      </span><span class="mi">6</span>                             <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>                             <span class="n">chunks</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>                             <span class="n">chunks</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="k">return</span> <span class="n">datacube</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/api.py:495,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, backend_kwargs, *args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/api.py:495,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, backend_kwargs, *args, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">483</span> <span class="n">decoders</span> <span class="o">=</span> <span class="n">_resolve_decoders_kwargs</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">484</span>     <span class="n">decode_cf</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">485</span>     <span class="n">open_backend_dataset_parameters</span><span class="o">=</span><span class="n">backend</span><span class="o">.</span><span class="n">open_dataset_parameters</span><span class="p">,</span>
@@ -946,7 +947,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">511</span> <span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">512</span> <span class="k">return</span> <span class="n">ds</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:800,</span> in <span class="ni">ZarrBackendEntrypoint.open_dataset</span><span class="nt">(self, filename_or_obj, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta, group, mode, synchronizer, consolidated, chunk_store, storage_options, stacklevel)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/zarr.py:800,</span> in <span class="ni">ZarrBackendEntrypoint.open_dataset</span><span class="nt">(self, filename_or_obj, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta, group, mode, synchronizer, consolidated, chunk_store, storage_options, stacklevel)</span>
 <span class="g g-Whitespace">    </span><span class="mi">780</span> <span class="k">def</span> <span class="nf">open_dataset</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">781</span>     <span class="bp">self</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">782</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
@@ -968,7 +969,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">812</span>     <span class="n">store_entrypoint</span> <span class="o">=</span> <span class="n">StoreBackendEntrypoint</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">813</span>     <span class="k">with</span> <span class="n">close_on_error</span><span class="p">(</span><span class="n">store</span><span class="p">):</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:365,</span> in <span class="ni">ZarrStore.open_group</span><span class="nt">(cls, store, mode, synchronizer, group, consolidated, consolidate_on_close, chunk_store, storage_options, append_dim, write_region, safe_chunks, stacklevel)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/zarr.py:365,</span> in <span class="ni">ZarrStore.open_group</span><span class="nt">(cls, store, mode, synchronizer, group, consolidated, consolidate_on_close, chunk_store, storage_options, append_dim, write_region, safe_chunks, stacklevel)</span>
 <span class="g g-Whitespace">    </span><span class="mi">349</span>     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">350</span>         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">351</span>             <span class="s2">&quot;Failed to open Zarr store with consolidated metadata, &quot;</span>
@@ -981,7 +982,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">367</span>     <span class="c1"># TODO: an option to pass the metadata_key keyword</span>
 <span class="g g-Whitespace">    </span><span class="mi">368</span>     <span class="n">zarr_group</span> <span class="o">=</span> <span class="n">zarr</span><span class="o">.</span><span class="n">open_consolidated</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">**</span><span class="n">open_kwargs</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/hierarchy.py:1182,</span> in <span class="ni">open_group</span><span class="nt">(store, mode, cache_attrs, synchronizer, path, chunk_store, storage_options)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/hierarchy.py:1182,</span> in <span class="ni">open_group</span><span class="nt">(store, mode, cache_attrs, synchronizer, path, chunk_store, storage_options)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1180</span>         <span class="k">if</span> <span class="n">contains_array</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">):</span>
 <span class="g g-Whitespace">   </span><span class="mi">1181</span>             <span class="k">raise</span> <span class="n">ContainsArrayError</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 <span class="ne">-&gt; </span><span class="mi">1182</span>         <span class="k">raise</span> <span class="n">GroupNotFoundError</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -997,7 +998,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 <div class="section" id="searching-its-live-catalog">
 <h2>Searching ITS_LIVE catalog<a class="headerlink" href="#searching-its-live-catalog" title="Permalink to this headline">¶</a></h2>
-<p>We know that some zarr objects are located at the supplied urls but that some aren’t. We have the entire catalog, but it would be a pain to look through each of those urls individually so let’s write a function to find out which urls are working and which arent.</p>
+<p>Let’s take a look at how we could search the ITS_LIVE data cube catalog for the data that we’re interested in. There are many ways to do this, this is just one example.</p>
 <p>First, we will read in the catalog geojson file:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1019,18 +1020,6 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <h3>Selecting data cubes by UTM zone<a class="headerlink" href="#selecting-data-cubes-by-utm-zone" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#http_url = itslive_catalog[&#39;features&#39;][0][&#39;properties&#39;][&#39;zarr_url&#39;]</span>
-<span class="c1">#s3_url_test = http_url.replace(&#39;http&#39;,&#39;s3&#39;).replace(&#39;.s3.amazonaws.com&#39;,&#39;&#39;)</span>
-<span class="c1">#s3_url_test</span>
-
-<span class="c1">#pathExists = os.path.lexists(s3_url_test)</span>
-<span class="c1">#pathExists</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">s3fs</span>
 <span class="n">fs</span>  <span class="o">=</span> <span class="n">s3fs</span><span class="o">.</span><span class="n">S3FileSystem</span><span class="p">(</span><span class="n">anon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">fs</span>
@@ -1040,15 +1029,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;s3fs.core.S3FileSystem at 0x194b41900&gt;
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#xr.open_dataset(s3_url_test, engine=&#39;zarr&#39;,</span>
-<span class="c1">#                storage_options = {&#39;anon&#39;:True})</span>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;s3fs.core.S3FileSystem at 0x165381ed0&gt;
 </pre></div>
 </div>
 </div>
@@ -1077,78 +1058,44 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_granules_by_epsg</span><span class="p">(</span><span class="n">input_dict</span><span class="p">,</span> <span class="n">input_epsg</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;this function takes a dictionary that is a representation of itslive data cube geojson catalog as well as an </span>
-<span class="sd">    epsg code. it makes an intermediate object that is a list of all s3 urls for that utm region/epsg code. it</span>
-<span class="sd">    then tried to open each zarr url as an xarray dataset and returns a list of the ones that are able to be opened</span>
-<span class="sd">    successuflly (ie. the zarr file exists at the s3 url). each element of the return list is an xr dataset&#39;&#39;&#39;</span>
-    
-    <span class="n">epsg_ls</span> <span class="o">=</span> <span class="p">[]</span>
-        
-    <span class="k">for</span> <span class="n">granule</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">input_dict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">])):</span>
-        
-        <span class="k">if</span> <span class="n">input_dict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="n">granule</span><span class="p">][</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;data_epsg&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">input_epsg</span><span class="p">:</span>
-            
-            <span class="n">http_url</span> <span class="o">=</span> <span class="n">input_dict</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">][</span><span class="n">granule</span><span class="p">][</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;zarr_url&#39;</span><span class="p">]</span>
-            <span class="n">s3_url</span> <span class="o">=</span> <span class="n">http_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span> <span class="s1">&#39;s3&#39;</span><span class="p">)</span>
-            <span class="n">s3_url</span> <span class="o">=</span> <span class="n">s3_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.s3.amazonaws.com&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-            <span class="n">epsg_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s3_url</span><span class="p">)</span>
-     
-    <span class="n">datacube_ls</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">epsg_ls</span><span class="p">)):</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1">#datacube_ls.append(read_in_s3(epsg_ls[element]))</span>
-            <span class="n">datacube_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">epsg_ls</span><span class="p">[</span><span class="n">element</span><span class="p">],</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
-                                <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">}))</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nothing there ¯\_(ツ)_/¯ &#39;</span><span class="p">)</span>
-            
-    <span class="k">return</span> <span class="n">datacube_ls</span>
-   
-</pre></div>
-</div>
-</div>
-</div>
 <div class="cell tag_output-scroll docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">granule_ls_32645</span> <span class="o">=</span> <span class="n">find_granules_by_zone</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="s1">&#39;EPSG:32645&#39;</span><span class="p">)</span>
-<span class="n">granule_ls_32645</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">granule_ls_32645</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;s3://its-live-data/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y3250000.zarr&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;s3://its-live-data/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y3150000.zarr&#39;
 </pre></div>
 </div>
 </div>
 </div>
+<p>If we wanted to look at the spatial extent of all of the data cubes pointed to in the above list, we could use the <code class="docutils literal notranslate"><span class="pre">get_bbox_gropu()</span></code> function, but we’d first need to read in the data cubes at the urls as <code class="docutils literal notranslate"><span class="pre">xr.Datasets</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">granule_ls1</span> <span class="o">=</span> <span class="n">find_granules_by_epsg</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="s1">&#39;EPSG:32645&#39;</span><span class="p">)</span>
-<span class="n">granule_ls1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">read_in_s3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">granule_ls_32645</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="nn">Input In [15],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">granule_ls1</span> <span class="o">=</span> <span class="n">find_granules_by_epsg</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="s1">&#39;EPSG:32645&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">granule_ls1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nn">Input In [12],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc_ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">read_in_s3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">granule_ls_32645</span><span class="p">]</span>
 
-<span class="nn">Input In [13],</span> in <span class="ni">find_granules_by_epsg</span><span class="nt">(input_dict, input_epsg)</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">epsg_ls</span><span class="p">)):</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>         <span class="c1">#datacube_ls.append(read_in_s3(epsg_ls[element]))</span>
-<span class="ne">---&gt; </span><span class="mi">23</span>         <span class="n">datacube_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">epsg_ls</span><span class="p">[</span><span class="n">element</span><span class="p">],</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>                             <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">}))</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span>     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-<span class="g g-Whitespace">     </span><span class="mi">26</span>         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;nothing there ¯\_(ツ)_/¯ &#39;</span><span class="p">)</span>
+<span class="nn">Input In [12],</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc_ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">read_in_s3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">granule_ls_32645</span><span class="p">]</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/api.py:495,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, backend_kwargs, *args, **kwargs)</span>
+<span class="nn">Input In [5],</span> in <span class="ni">read_in_s3</span><span class="nt">(http_url, chunks)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">http_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">s3_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.s3.amazonaws.com&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">datacube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">s3_url</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span>                             <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>                             <span class="n">chunks</span> <span class="o">=</span> <span class="n">chunks</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="k">return</span> <span class="n">datacube</span>
+
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/api.py:495,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, backend_kwargs, *args, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">483</span> <span class="n">decoders</span> <span class="o">=</span> <span class="n">_resolve_decoders_kwargs</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">484</span>     <span class="n">decode_cf</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">485</span>     <span class="n">open_backend_dataset_parameters</span><span class="o">=</span><span class="n">backend</span><span class="o">.</span><span class="n">open_dataset_parameters</span><span class="p">,</span>
@@ -1170,7 +1117,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">511</span> <span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">512</span> <span class="k">return</span> <span class="n">ds</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:814,</span> in <span class="ni">ZarrBackendEntrypoint.open_dataset</span><span class="nt">(self, filename_or_obj, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta, group, mode, synchronizer, consolidated, chunk_store, storage_options, stacklevel)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/zarr.py:814,</span> in <span class="ni">ZarrBackendEntrypoint.open_dataset</span><span class="nt">(self, filename_or_obj, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta, group, mode, synchronizer, consolidated, chunk_store, storage_options, stacklevel)</span>
 <span class="g g-Whitespace">    </span><span class="mi">812</span> <span class="n">store_entrypoint</span> <span class="o">=</span> <span class="n">StoreBackendEntrypoint</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">813</span> <span class="k">with</span> <span class="n">close_on_error</span><span class="p">(</span><span class="n">store</span><span class="p">):</span>
 <span class="ne">--&gt; </span><span class="mi">814</span>     <span class="n">ds</span> <span class="o">=</span> <span class="n">store_entrypoint</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
@@ -1185,7 +1132,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">823</span>     <span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">824</span> <span class="k">return</span> <span class="n">ds</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/store.py:39,</span> in <span class="ni">StoreBackendEntrypoint.open_dataset</span><span class="nt">(self, store, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/store.py:39,</span> in <span class="ni">StoreBackendEntrypoint.open_dataset</span><span class="nt">(self, store, mask_and_scale, decode_times, concat_characters, decode_coords, drop_variables, use_cftime, decode_timedelta)</span>
 <span class="g g-Whitespace">     </span><span class="mi">25</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">get_encoding</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">27</span> <span class="nb">vars</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">coord_names</span> <span class="o">=</span> <span class="n">conventions</span><span class="o">.</span><span class="n">decode_cf_variables</span><span class="p">(</span>
 <span class="g g-Whitespace">     </span><span class="mi">28</span>     <span class="nb">vars</span><span class="p">,</span>
@@ -1197,7 +1144,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">     </span><span class="mi">40</span> <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">set_coords</span><span class="p">(</span><span class="n">coord_names</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">vars</span><span class="p">))</span>
 <span class="g g-Whitespace">     </span><span class="mi">41</span> <span class="n">ds</span><span class="o">.</span><span class="n">set_close</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/dataset.py:750,</span> in <span class="ni">Dataset.__init__</span><span class="nt">(self, data_vars, coords, attrs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/dataset.py:750,</span> in <span class="ni">Dataset.__init__</span><span class="nt">(self, data_vars, coords, attrs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">747</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">748</span>     <span class="n">coords</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">variables</span>
 <span class="ne">--&gt; </span><span class="mi">750</span> <span class="n">variables</span><span class="p">,</span> <span class="n">coord_names</span><span class="p">,</span> <span class="n">dims</span><span class="p">,</span> <span class="n">indexes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">merge_data_and_coords</span><span class="p">(</span>
@@ -1206,14 +1153,14 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">754</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span> <span class="k">if</span> <span class="n">attrs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
 <span class="g g-Whitespace">    </span><span class="mi">755</span> <span class="bp">self</span><span class="o">.</span><span class="n">_close</span> <span class="o">=</span> <span class="kc">None</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/merge.py:483,</span> in <span class="ni">merge_data_and_coords</span><span class="nt">(data, coords, compat, join)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/merge.py:483,</span> in <span class="ni">merge_data_and_coords</span><span class="nt">(data, coords, compat, join)</span>
 <span class="g g-Whitespace">    </span><span class="mi">481</span> <span class="n">explicit_coords</span> <span class="o">=</span> <span class="n">coords</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">482</span> <span class="n">indexes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_extract_indexes_from_coords</span><span class="p">(</span><span class="n">coords</span><span class="p">))</span>
 <span class="ne">--&gt; </span><span class="mi">483</span> <span class="k">return</span> <span class="n">merge_core</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">484</span>     <span class="n">objects</span><span class="p">,</span> <span class="n">compat</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">explicit_coords</span><span class="o">=</span><span class="n">explicit_coords</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span>
 <span class="g g-Whitespace">    </span><span class="mi">485</span> <span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/merge.py:632,</span> in <span class="ni">merge_core</span><span class="nt">(objects, compat, join, combine_attrs, priority_arg, explicit_coords, indexes, fill_value)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/merge.py:632,</span> in <span class="ni">merge_core</span><span class="nt">(objects, compat, join, combine_attrs, priority_arg, explicit_coords, indexes, fill_value)</span>
 <span class="g g-Whitespace">    </span><span class="mi">628</span> <span class="n">coerced</span> <span class="o">=</span> <span class="n">coerce_pandas_values</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">629</span> <span class="n">aligned</span> <span class="o">=</span> <span class="n">deep_align</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">630</span>     <span class="n">coerced</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="n">join</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">indexes</span><span class="o">=</span><span class="n">indexes</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span>
@@ -1224,14 +1171,14 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">636</span>     <span class="n">collected</span><span class="p">,</span> <span class="n">prioritized</span><span class="p">,</span> <span class="n">compat</span><span class="o">=</span><span class="n">compat</span><span class="p">,</span> <span class="n">combine_attrs</span><span class="o">=</span><span class="n">combine_attrs</span>
 <span class="g g-Whitespace">    </span><span class="mi">637</span> <span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/merge.py:291,</span> in <span class="ni">collect_variables_and_indexes</span><span class="nt">(list_of_mappings)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/merge.py:291,</span> in <span class="ni">collect_variables_and_indexes</span><span class="nt">(list_of_mappings)</span>
 <span class="g g-Whitespace">    </span><span class="mi">288</span>     <span class="n">indexes</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">289</span>     <span class="n">append_all</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">indexes</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">291</span> <span class="n">variable</span> <span class="o">=</span> <span class="n">as_variable</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">293</span> <span class="k">if</span> <span class="n">variable</span><span class="o">.</span><span class="n">dims</span> <span class="o">==</span> <span class="p">(</span><span class="n">name</span><span class="p">,):</span>
 <span class="g g-Whitespace">    </span><span class="mi">294</span>     <span class="n">idx_variable</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">to_index_variable</span><span class="p">()</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/variable.py:154,</span> in <span class="ni">as_variable</span><span class="nt">(obj, name)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/variable.py:154,</span> in <span class="ni">as_variable</span><span class="nt">(obj, name)</span>
 <span class="g g-Whitespace">    </span><span class="mi">148</span>     <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">149</span>         <span class="k">raise</span> <span class="n">MissingDimensionsError</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">150</span>             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> has more than 1-dimension and the same name as one of its &quot;</span>
@@ -1241,36 +1188,57 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="ne">--&gt; </span><span class="mi">154</span>     <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">to_index_variable</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">156</span> <span class="k">return</span> <span class="n">obj</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/variable.py:528,</span> in <span class="ni">Variable.to_index_variable</span><span class="nt">(self)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/variable.py:528,</span> in <span class="ni">Variable.to_index_variable</span><span class="nt">(self)</span>
 <span class="g g-Whitespace">    </span><span class="mi">526</span> <span class="k">def</span> <span class="nf">to_index_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">527</span>     <span class="sd">&quot;&quot;&quot;Return this variable as an xarray.IndexVariable&quot;&quot;&quot;</span>
 <span class="ne">--&gt; </span><span class="mi">528</span>     <span class="k">return</span> <span class="n">IndexVariable</span><span class="p">(</span>
 <span class="g g-Whitespace">    </span><span class="mi">529</span>         <span class="bp">self</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_encoding</span><span class="p">,</span> <span class="n">fastpath</span><span class="o">=</span><span class="kc">True</span>
 <span class="g g-Whitespace">    </span><span class="mi">530</span>     <span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/variable.py:2672,</span> in <span class="ni">IndexVariable.__init__</span><span class="nt">(self, dims, data, attrs, encoding, fastpath)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/variable.py:2672,</span> in <span class="ni">IndexVariable.__init__</span><span class="nt">(self, dims, data, attrs, encoding, fastpath)</span>
 <span class="g g-Whitespace">   </span><span class="mi">2670</span> <span class="c1"># Unlike in Variable, always eagerly load values into memory</span>
 <span class="g g-Whitespace">   </span><span class="mi">2671</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">,</span> <span class="n">PandasIndexingAdapter</span><span class="p">):</span>
 <span class="ne">-&gt; </span><span class="mi">2672</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">PandasIndexingAdapter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/indexing.py:1272,</span> in <span class="ni">PandasIndexingAdapter.__init__</span><span class="nt">(self, array, dtype)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/indexing.py:1272,</span> in <span class="ni">PandasIndexingAdapter.__init__</span><span class="nt">(self, array, dtype)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1271</span> <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">array</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">DTypeLike</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="ne">-&gt; </span><span class="mi">1272</span>     <span class="bp">self</span><span class="o">.</span><span class="n">array</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">safe_cast_to_index</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1274</span>     <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 <span class="g g-Whitespace">   </span><span class="mi">1275</span>         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">PeriodIndex</span><span class="p">):</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/utils.py:115,</span> in <span class="ni">safe_cast_to_index</span><span class="nt">(array)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/utils.py:115,</span> in <span class="ni">safe_cast_to_index</span><span class="nt">(array)</span>
 <span class="g g-Whitespace">    </span><span class="mi">113</span>     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;O&quot;</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">114</span>         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;dtype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">object</span>
 <span class="ne">--&gt; </span><span class="mi">115</span>     <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">array</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">116</span> <span class="k">return</span> <span class="n">_maybe_cast_to_cftimeindex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/core/indexing.py:423,</span> in <span class="ni">LazilyIndexedArray.__array__</span><span class="nt">(self, dtype)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/indexing.py:423,</span> in <span class="ni">LazilyIndexedArray.__array__</span><span class="nt">(self, dtype)</span>
 <span class="g g-Whitespace">    </span><span class="mi">421</span> <span class="k">def</span> <span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">422</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">as_indexable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">423</span>     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/xarray/backends/zarr.py:73,</span> in <span class="ni">ZarrArrayWrapper.__getitem__</span><span class="nt">(self, key)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/coding/variables.py:70,</span> in <span class="ni">_ElementwiseFunctionArray.__array__</span><span class="nt">(self, dtype)</span>
+<span class="g g-Whitespace">     </span><span class="mi">69</span> <span class="k">def</span> <span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">70</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/coding/times.py:254,</span> in <span class="ni">decode_cf_datetime</span><span class="nt">(num_dates, units, calendar, use_cftime)</span>
+<span class="g g-Whitespace">    </span><span class="mi">239</span> <span class="k">def</span> <span class="nf">decode_cf_datetime</span><span class="p">(</span><span class="n">num_dates</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">calendar</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_cftime</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">240</span>     <span class="sd">&quot;&quot;&quot;Given an array of numeric dates in netCDF format, convert it into a</span>
+<span class="g g-Whitespace">    </span><span class="mi">241</span><span class="sd">     numpy array of date time objects.</span>
+<span class="g g-Whitespace">    </span><span class="mi">242</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">    </span><span class="mi">252</span><span class="sd">     cftime.num2date</span>
+<span class="g g-Whitespace">    </span><span class="mi">253</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">254</span>     <span class="n">num_dates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">num_dates</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">255</span>     <span class="n">flat_num_dates</span> <span class="o">=</span> <span class="n">num_dates</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">256</span>     <span class="k">if</span> <span class="n">calendar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/core/indexing.py:423,</span> in <span class="ni">LazilyIndexedArray.__array__</span><span class="nt">(self, dtype)</span>
+<span class="g g-Whitespace">    </span><span class="mi">421</span> <span class="k">def</span> <span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">422</span>     <span class="n">array</span> <span class="o">=</span> <span class="n">as_indexable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">array</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">423</span>     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/xarray/backends/zarr.py:73,</span> in <span class="ni">ZarrArrayWrapper.__getitem__</span><span class="nt">(self, key)</span>
 <span class="g g-Whitespace">     </span><span class="mi">71</span> <span class="n">array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_array</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">72</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">indexing</span><span class="o">.</span><span class="n">BasicIndexer</span><span class="p">):</span>
 <span class="ne">---&gt; </span><span class="mi">73</span>     <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">tuple</span><span class="p">]</span>
@@ -1279,20 +1247,20 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">     </span><span class="mi">76</span>         <span class="n">indexing</span><span class="o">.</span><span class="n">_arrayize_vectorized_indexer</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">tuple</span>
 <span class="g g-Whitespace">     </span><span class="mi">77</span>     <span class="p">]</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/core.py:720,</span> in <span class="ni">Array.__getitem__</span><span class="nt">(self, selection)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/core.py:720,</span> in <span class="ni">Array.__getitem__</span><span class="nt">(self, selection)</span>
 <span class="g g-Whitespace">    </span><span class="mi">718</span>     <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vindex</span><span class="p">[</span><span class="n">selection</span><span class="p">]</span>
 <span class="g g-Whitespace">    </span><span class="mi">719</span> <span class="k">else</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">720</span>     <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_basic_selection</span><span class="p">(</span><span class="n">pure_selection</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">721</span> <span class="k">return</span> <span class="n">result</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/core.py:846,</span> in <span class="ni">Array.get_basic_selection</span><span class="nt">(self, selection, out, fields)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/core.py:846,</span> in <span class="ni">Array.get_basic_selection</span><span class="nt">(self, selection, out, fields)</span>
 <span class="g g-Whitespace">    </span><span class="mi">843</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_basic_selection_zd</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="n">selection</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">844</span>                                         <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">845</span> <span class="k">else</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">846</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_basic_selection_nd</span><span class="p">(</span><span class="n">selection</span><span class="o">=</span><span class="n">selection</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">847</span>                                         <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/core.py:889,</span> in <span class="ni">Array._get_basic_selection_nd</span><span class="nt">(self, selection, out, fields)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/core.py:889,</span> in <span class="ni">Array._get_basic_selection_nd</span><span class="nt">(self, selection, out, fields)</span>
 <span class="g g-Whitespace">    </span><span class="mi">883</span> <span class="k">def</span> <span class="nf">_get_basic_selection_nd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selection</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="g g-Whitespace">    </span><span class="mi">884</span>     <span class="c1"># implementation of basic selection for array with at least one dimension</span>
 <span class="g g-Whitespace">    </span><span class="mi">885</span> 
@@ -1300,7 +1268,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">    </span><span class="mi">887</span>     <span class="n">indexer</span> <span class="o">=</span> <span class="n">BasicIndexer</span><span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 <span class="ne">--&gt; </span><span class="mi">889</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_selection</span><span class="p">(</span><span class="n">indexer</span><span class="o">=</span><span class="n">indexer</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/core.py:1184,</span> in <span class="ni">Array._get_selection</span><span class="nt">(self, indexer, out, fields)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/core.py:1184,</span> in <span class="ni">Array._get_selection</span><span class="nt">(self, indexer, out, fields)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1181</span> <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">   </span><span class="mi">1182</span>     <span class="c1"># allow storage to get multiple items at once</span>
 <span class="g g-Whitespace">   </span><span class="mi">1183</span>     <span class="n">lchunk_coords</span><span class="p">,</span> <span class="n">lchunk_selection</span><span class="p">,</span> <span class="n">lout_selection</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">indexer</span><span class="p">)</span>
@@ -1309,14 +1277,14 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">   </span><span class="mi">1187</span> <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
 <span class="g g-Whitespace">   </span><span class="mi">1188</span>     <span class="k">return</span> <span class="n">out</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/core.py:1917,</span> in <span class="ni">Array._chunk_getitems</span><span class="nt">(self, lchunk_coords, lchunk_selection, out, lout_selection, drop_axes, fields)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/core.py:1917,</span> in <span class="ni">Array._chunk_getitems</span><span class="nt">(self, lchunk_coords, lchunk_selection, out, lout_selection, drop_axes, fields)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1915</span> <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">   </span><span class="mi">1916</span>     <span class="n">partial_read_decode</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="ne">-&gt; </span><span class="mi">1917</span>     <span class="n">cdatas</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chunk_store</span><span class="o">.</span><span class="n">getitems</span><span class="p">(</span><span class="n">ckeys</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="s2">&quot;omit&quot;</span><span class="p">)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1918</span> <span class="k">for</span> <span class="n">ckey</span><span class="p">,</span> <span class="n">chunk_select</span><span class="p">,</span> <span class="n">out_select</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ckeys</span><span class="p">,</span> <span class="n">lchunk_selection</span><span class="p">,</span> <span class="n">lout_selection</span><span class="p">):</span>
 <span class="g g-Whitespace">   </span><span class="mi">1919</span>     <span class="k">if</span> <span class="n">ckey</span> <span class="ow">in</span> <span class="n">cdatas</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/zarr/storage.py:1156,</span> in <span class="ni">FSStore.getitems</span><span class="nt">(self, keys, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/zarr/storage.py:1156,</span> in <span class="ni">FSStore.getitems</span><span class="nt">(self, keys, **kwargs)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1154</span> <span class="k">def</span> <span class="nf">getitems</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="g g-Whitespace">   </span><span class="mi">1155</span>     <span class="n">keys_transformed</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_normalize_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
 <span class="ne">-&gt; </span><span class="mi">1156</span>     <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">map</span><span class="o">.</span><span class="n">getitems</span><span class="p">(</span><span class="n">keys_transformed</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="s2">&quot;omit&quot;</span><span class="p">)</span>
@@ -1324,20 +1292,20 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">   </span><span class="mi">1158</span>     <span class="c1"># So we send the values returned by self.map.getitems back into the original key space.</span>
 <span class="g g-Whitespace">   </span><span class="mi">1159</span>     <span class="k">return</span> <span class="p">{</span><span class="n">keys</span><span class="p">[</span><span class="n">keys_transformed</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">rk</span><span class="p">)]:</span> <span class="n">rv</span> <span class="k">for</span> <span class="n">rk</span><span class="p">,</span> <span class="n">rv</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/mapping.py:92,</span> in <span class="ni">FSMap.getitems</span><span class="nt">(self, keys, on_error)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/mapping.py:92,</span> in <span class="ni">FSMap.getitems</span><span class="nt">(self, keys, on_error)</span>
 <span class="g g-Whitespace">     </span><span class="mi">90</span> <span class="n">oe</span> <span class="o">=</span> <span class="n">on_error</span> <span class="k">if</span> <span class="n">on_error</span> <span class="o">==</span> <span class="s2">&quot;raise&quot;</span> <span class="k">else</span> <span class="s2">&quot;return&quot;</span>
 <span class="g g-Whitespace">     </span><span class="mi">91</span> <span class="k">try</span><span class="p">:</span>
 <span class="ne">---&gt; </span><span class="mi">92</span>     <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">keys2</span><span class="p">,</span> <span class="n">on_error</span><span class="o">=</span><span class="n">oe</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">93</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">):</span>
 <span class="g g-Whitespace">     </span><span class="mi">94</span>         <span class="n">out</span> <span class="o">=</span> <span class="p">{</span><span class="n">keys2</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">out</span><span class="p">}</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:86,</span> in <span class="ni">sync_wrapper.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/asyn.py:86,</span> in <span class="ni">sync_wrapper.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">83</span> <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">84</span> <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="g g-Whitespace">     </span><span class="mi">85</span>     <span class="bp">self</span> <span class="o">=</span> <span class="n">obj</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="ne">---&gt; </span><span class="mi">86</span>     <span class="k">return</span> <span class="n">sync</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">loop</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/site-packages/fsspec/asyn.py:54,</span> in <span class="ni">sync</span><span class="nt">(loop, func, timeout, *args, **kwargs)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/site-packages/fsspec/asyn.py:54,</span> in <span class="ni">sync</span><span class="nt">(loop, func, timeout, *args, **kwargs)</span>
 <span class="g g-Whitespace">     </span><span class="mi">51</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">run_coroutine_threadsafe</span><span class="p">(</span><span class="n">_runner</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">coro</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">timeout</span><span class="p">),</span> <span class="n">loop</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">52</span> <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">53</span>     <span class="c1"># this loops allows thread to get interrupted</span>
@@ -1345,13 +1313,13 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <span class="g g-Whitespace">     </span><span class="mi">55</span>         <span class="k">break</span>
 <span class="g g-Whitespace">     </span><span class="mi">56</span>     <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/threading.py:600,</span> in <span class="ni">Event.wait</span><span class="nt">(self, timeout)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/threading.py:600,</span> in <span class="ni">Event.wait</span><span class="nt">(self, timeout)</span>
 <span class="g g-Whitespace">    </span><span class="mi">598</span> <span class="n">signaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flag</span>
 <span class="g g-Whitespace">    </span><span class="mi">599</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">signaled</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">600</span>     <span class="n">signaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cond</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
 <span class="g g-Whitespace">    </span><span class="mi">601</span> <span class="k">return</span> <span class="n">signaled</span>
 
-<span class="nn">File ~/miniconda3/envs/mynewbook/lib/python3.10/threading.py:324,</span> in <span class="ni">Condition.wait</span><span class="nt">(self, timeout)</span>
+<span class="nn">File ~/miniconda3/envs/itslivetools_env/lib/python3.10/threading.py:324,</span> in <span class="ni">Condition.wait</span><span class="nt">(self, timeout)</span>
 <span class="g g-Whitespace">    </span><span class="mi">322</span> <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">323</span>     <span class="k">if</span> <span class="n">timeout</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 <span class="ne">--&gt; </span><span class="mi">324</span>         <span class="n">gotit</span> <span class="o">=</span> <span class="n">waiter</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
@@ -1424,7 +1392,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_bbox_group</span><span class="p">(</span><span class="n">granule_ls_32645</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_bbox_group</span><span class="p">(</span><span class="n">dc_ls</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1432,7 +1400,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <p>Let’s take a closer look at the region of interest, we can do that by specifying bounds when we call the function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_bbox_group</span><span class="p">(</span><span class="n">granule_ls_32645</span><span class="p">,</span> <span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_bbox_group</span><span class="p">(</span><span class="n">dc_ls</span><span class="p">,</span> <span class="p">[</span><span class="mi">70</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">60</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1443,8 +1411,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <h2>Selecting granules by a single point<a class="headerlink" href="#selecting-granules-by-a-single-point" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#might need to add a try, except statement to this in case the url doesn&#39;t work, or maybe to read_in_s3 fn...</span>
-<span class="k">def</span> <span class="nf">find_granule_by_point</span><span class="p">(</span><span class="n">input_dict</span><span class="p">,</span> <span class="n">input_point</span><span class="p">):</span> <span class="c1">#[lon,lat]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">find_granule_by_point</span><span class="p">(</span><span class="n">input_dict</span><span class="p">,</span> <span class="n">input_point</span><span class="p">):</span> <span class="c1">#[lon,lat]</span>
     <span class="sd">&#39;&#39;&#39;Takes an inputu dictionary (a geojson catalog) and a point to represent AOI.</span>
 <span class="sd">    this returns a list of the s3 urls corresponding to zarr datacubes whose footprint covers the AOI&#39;&#39;&#39;</span>
     <span class="c1">#print([input_points][0])</span>
@@ -1478,7 +1445,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nepal_url_ls</span> <span class="o">=</span> <span class="n">find_granule_by_point</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="p">[</span><span class="mf">86.7</span><span class="p">,</span> <span class="mf">28.07</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url_ls</span> <span class="o">=</span> <span class="n">find_granule_by_point</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="p">[</span><span class="mf">86.7</span><span class="p">,</span> <span class="mf">28.07</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1486,7 +1453,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <p>Great, this function returned a single url corresponding to the data cube covering the point we supplied</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nepal_url_ls</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url_ls</span>
 </pre></div>
 </div>
 </div>
@@ -1494,7 +1461,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <p>Let’s use the <code class="docutils literal notranslate"><span class="pre">read_in_s3</span></code> function we defined to open the datacube as an <code class="docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nepal_dc</span> <span class="o">=</span> <span class="n">read_in_s3</span><span class="p">(</span><span class="n">nepal_url_ls</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc1</span> <span class="o">=</span> <span class="n">read_in_s3</span><span class="p">(</span><span class="n">url_ls</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1502,7 +1469,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <p>and then the <code class="docutils literal notranslate"><span class="pre">get_bbox_single</span></code> function to take a look at the footprint:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_bbox_single</span><span class="p">(</span><span class="n">nepal_dc</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_bbox_single</span><span class="p">(</span><span class="n">dc1</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1511,12 +1478,19 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <p>Let’s take a quick first look at this data cube. The next notebooks will go into more examples of inspecting and working with this data</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nepal_dc</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span> <span class="o">=</span> <span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>The above plot shows the mean of the magnitude of velocity variable along the time dimension. It looks like the footpring we’re viewing has glaciated terrain in the southern region as well as non-glaciated terrain in the northern region. The rest of the notebooks in this chapter will demonstrate how to subset this spatially-large data object to specific areas of interest.</p>
+<p>The above plot shows the mean of the magnitude of velocity variable along the time dimension. It looks like the footprint we’re viewing has glaciated terrain in the southern region as well as non-glaciated terrain in the northern region. The rest of the notebooks in this chapter will demonstrate how to subset this spatially-large data object to specific areas of interest.</p>
 </div>
 </div>
 
@@ -1529,16 +1503,16 @@ This catalog provides http links to the zarr objects. To successfully point to t
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "mynewbook"
+            mode: "conda-env-itslivetools-py"
         },
         kernelOptions: {
-            kernelName: "mynewbook",
+            kernelName: "conda-env-itslivetools-py",
             path: "./."
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'mynewbook'</script>
+    <script>kernelName = 'conda-env-itslivetools-py'</script>
 
               </div>
               
@@ -1555,7 +1529,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
     <a class='right-next' id="next-link" href="ind_glacier_data_inspection_analysis.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Individual glacier analysis 1</p>
+        <p class="prev-next-title">Individual glacier data inspection</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

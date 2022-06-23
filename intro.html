@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Glacier surface velocity processing and analysis with xarray &#8212; Xarray workflow example - glacier surface velocities</title>
+    <title>Introduction &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,7 +53,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="To do for this book" href="still_to_do.html" />
+    <link rel="next" title="Software and Data" href="software.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -75,14 +75,9 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="index.html">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
-        
       
       
-      <img src="_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Xarray workflow example - glacier surface velocities</h1>
+      <h1 class="site-logo" id="site-title">Using xarray to examine cloud-based glacier surface velocity data</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
@@ -93,16 +88,11 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav">
  <li class="toctree-l1 current">
   <a class="reference internal" href="#">
-   Glacier surface velocity processing and analysis with xarray
+   Introduction
   </a>
  </li>
 </ul>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="still_to_do.html">
-   To do for this book
-  </a>
- </li>
  <li class="toctree-l1">
   <a class="reference internal" href="software.html">
    Software and Data
@@ -115,7 +105,17 @@ const thebe_selector_output = ".output, .cell_output"
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ind_glacier_data_inspection_analysis.html">
-   Individual glacier analysis 1
+   Individual glacier data inspection
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ind_glacier_analysis_new.html">
+   Individual glacier surface velocity analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="glacier_analysis_grouped.html">
+   Region-scale glacier analysis
   </a>
  </li>
  <li class="toctree-l1">
@@ -235,7 +235,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Glacier surface velocity processing and analysis with xarray</h1>
+                <h1>Introduction</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -264,32 +264,36 @@ const thebe_selector_output = ".output, .cell_output"
             
               <div>
                 
-  <div class="tex2jax_ignore mathjax_ignore section" id="glacier-surface-velocity-processing-and-analysis-with-xarray">
-<h1>Glacier surface velocity processing and analysis with <strong>xarray</strong><a class="headerlink" href="#glacier-surface-velocity-processing-and-analysis-with-xarray" title="Permalink to this headline">¶</a></h1>
-<p>In this this tutorial, we will demonstrate how to access and work with with multi-dimensional remote sensing data using the python package and open source project <code class="docutils literal notranslate"><span class="pre">xarray</span></code>. This example will use an ice velocity dataset called <a class="reference external" href="https://its-live.jpl.nasa.gov/">ITS_LIVE</a>.</p>
+  <div class="tex2jax_ignore mathjax_ignore section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial will demonstrate how to access and work with with multi-dimensional remote sensing data using the python package and open source project <code class="docutils literal notranslate"><span class="pre">xarray</span></code>. This example will use a glacier surface velocity dataset called <a class="reference external" href="https://its-live.jpl.nasa.gov/">ITS_LIVE</a>.</p>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <p>This tutorial contains a number of jupyter notebooks demonstrating various steps of a typical workflow for accessing, processing and analyzing remote sensing data. The structure is as follows:
-1. Data access (Two examples of accessing ITS_LIVE velocity data)
+1. Data access (accessing ITS_LIVE data stored in s3 buckets on Amazon Web Services (AWS))
 2. Processing and analysis at the scale of an individual glacier
-3. Processing and analysis of a group of glaciers at a sub-regional to regional scale</p>
+a. Clipping large raster to a smaller area of interest and preliminary dataset inspection
+b. Using xarray for data analysis and visualization
+3. Processing and analysis of a group of glaciers within a sub-region</p>
 </div>
 <div class="section" id="learning-objectives">
 <h2>Learning objectives<a class="headerlink" href="#learning-objectives" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>data access (downloading and cloud-based)</p></li>
-<li><p>basic raster manipulation and organizing in <strong>xarray</strong></p></li>
+<li><p>accessing cloud-based data with <strong>xarray</strong></p></li>
+<li><p>using <strong>dask</strong> with <strong>xarray</strong></p></li>
+<li><p>raster manipulation and organizing with <strong>xarray</strong></p></li>
 <li><p>using <strong>geopandas</strong> to query raster data in <strong>xarray</strong>-format</p></li>
-<li><p>aggregating using xarray groupby</p></li>
+<li><p>xarray functionality including groupby, reductions and visualization</p></li>
 <li><p>xarray to pandas/geopandas</p></li>
 </ul>
 <p>Navigate to the other pages in this jupyter book to find out more about this tutorial. You can check out the data and open source python tools we’ll be using before we get started with the notebook.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="still_to_do.html">To do for this book</a></li>
 <li class="toctree-l1"><a class="reference internal" href="software.html">Software and Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="accessing_s3_data.html">Accessing ITS_LIVE data via S3 bucket</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ind_glacier_data_inspection_analysis.html">Individual glacier analysis 1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ind_glacier_data_inspection_analysis.html">Individual glacier data inspection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ind_glacier_analysis_new.html">Individual glacier surface velocity analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glacier_analysis_grouped.html">Region-scale glacier analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
 </ul>
@@ -322,10 +326,10 @@ const thebe_selector_output = ".output, .cell_output"
             
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='right-next' id="next-link" href="still_to_do.html" title="next page">
+    <a class='right-next' id="next-link" href="software.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">To do for this book</p>
+        <p class="prev-next-title">Software and Data</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>

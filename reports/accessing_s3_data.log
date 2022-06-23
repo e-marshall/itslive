@@ -32,7 +32,6 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-granule_ls1 = find_granules_by_epsg(itslive_catalog, 'EPSG:32645')
-granule_ls1[1]
+dc_ls = [read_in_s3(x) for x in granule_ls_32645]
 -------------------
 
