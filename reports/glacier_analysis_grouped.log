@@ -32,15 +32,7 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-#compute zonal stats groupedd by ID
-grid_mean_sp = grouped_ID.mean(dim=['mid_date','stacked_y_x']).rename({'v': 'speed_mean'}).compute()
-grid_min_sp = grouped_ID.min(dim=['mid_date','stacked_y_x']).rename({'v': 'speed_min'}).compute()
-grid_max_sp = grouped_ID.max(dim=['mid_date','stacked_y_x']).rename({'v': 'speed_max'}).compute()
-grid_std_sp = grouped_ID.std(dim=['mid_date','stacked_y_x']).rename({'v': 'speed_std'}).compute()
-    
-#merge each zonal stat xr obj into a single xr obj, convert to pandas df
-#zonal_stats = xr.merge([grid_mean_sp, grid_min_sp, grid_max_sp, grid_std_sp]).to_dataframe()
-#zonal_stats = zonal_stats.reset_index()
-#zonal_stats
+out_grid_sub = out_grid.sel(mid_date = slice('2015-01-01','2015-02-01')).compute()
+out_grid_sub
 -------------------
 
