@@ -302,7 +302,7 @@ const thebe_selector_output = ".output, .cell_output"
   <div class="tex2jax_ignore mathjax_ignore section" id="accessing-its-live-data-via-s3-bucket">
 <h1>Accessing ITS_LIVE data via S3 bucket<a class="headerlink" href="#accessing-its-live-data-via-s3-bucket" title="Permalink to this headline">¶</a></h1>
 <p>This notebook will demonstrate how to access cloud-hosted Inter-mission Time Series of Land Ice Velocity and Elevation (ITS_LIVE) data from AWS S3 buckets. Here you will find examples of how to successfully access cloud-hosted data as well as some common errors and issues you may run into along the way, what they mean, and how to resolve them.</p>
-<p>Learning goals:</p>
+<p><em>Learning goals:</em></p>
 <ul class="simple">
 <li><p>accessing data stored in s3 buckets</p></li>
 </ul>
@@ -353,7 +353,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 <div class="section" id="accessing-its-live-data-from-python">
 <h2>Accessing ITS_LIVE data from python<a class="headerlink" href="#accessing-its-live-data-from-python" title="Permalink to this headline">¶</a></h2>
 <p>We’ve found the url associated with the tile we want to access, let’s try to open the data cube using <code class="docutils literal notranslate"><span class="pre">xarray</span></code>:</p>
-<div class="cell tag_raises-exception tag_output-scroll docutils container">
+<div class="cell tag_raises-exception tag_output-scroll tag_output_scroll docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url1</span> <span class="o">=</span> <span class="s1">&#39;s3://its-live-data/datacubes/v02/N40E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y4750000.zarr&#39;</span>
 <span class="n">dc1</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">url1</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">)</span>
@@ -767,7 +767,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 <p>Now we can see where this granule lies.</p>
 <p>Let’s try a url that we know won’t work. Sometimes data cubes are moved around within the cloud repositories and it is helpful to know the error that arises in this situation:</p>
-<div class="cell tag_&quot;output_scroll&quot; tag_&quot;raises_exception&quot; docutils container">
+<div class="cell tag_&quot;output_scroll&quot; tag_&quot;raises_exception&quot; tag_output-scroll tag_raises-exception tag_output_scroll docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#this url doen&#39;st work</span>
 <span class="n">url2</span> <span class="o">=</span> <span class="s1">&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/wrong_url_here.zarr&#39;</span>
@@ -776,7 +776,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/y9/k06gyzdx25z64l_tdt_q2xv9s680sz/T/ipykernel_79133/4225930199.py:5: RuntimeWarning: Failed to open Zarr store with consolidated metadata, falling back to try reading non-consolidated metadata. This is typically much slower for opening a dataset. To silence this warning, consider:
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/var/folders/y9/k06gyzdx25z64l_tdt_q2xv9s680sz/T/ipykernel_79887/4225930199.py:5: RuntimeWarning: Failed to open Zarr store with consolidated metadata, falling back to try reading non-consolidated metadata. This is typically much slower for opening a dataset. To silence this warning, consider:
 1. Consolidating metadata in this existing store with zarr.consolidate_metadata().
 2. Explicitly setting consolidated=False, to avoid trying to read consolidate metadata, or
 3. Explicitly setting consolidated=True, to raise an error in this case instead of falling back to try reading non-consolidated metadata.
@@ -1029,7 +1029,7 @@ This catalog provides http links to the zarr objects. To successfully point to t
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;s3fs.core.S3FileSystem at 0x1660e6350&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;s3fs.core.S3FileSystem at 0x18aff2350&gt;
 </pre></div>
 </div>
 </div>
