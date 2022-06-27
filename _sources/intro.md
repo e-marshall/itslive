@@ -14,23 +14,23 @@ This tutorial contains a number of jupyter notebooks demonstrating various steps
 ## Learning objectives
 This tutorial demonstrates how to use xarray for scientific investigation of remote sensing data. The learning goals include **high-level science goals** as well as specific *python and xarray techniques*. 
 
-**Load ITS_LIVE data from Amazon sS3 cloud**
+* **Load ITS_LIVE data from Amazon sS3 cloud**
 *Lazily load cloud datasets using xarray, dask and zarr*
 
-**Convert vector polygons to raster**
+* **Convert vector polygons to raster**
 *Data manipulation with geopandas, xarray and geocube*
 
-**Inspect large, multi-dimensional dataset**
+* **Inspect large, multi-dimensional dataset**
 *Use xarray label-based and index-based selection methods*
 
-**Analyze glacier surface velocity data at multiple spatial scales**
+* **Analyze glacier surface velocity data at multiple spatial scales**
 *Use rioxarray's .clip() to subset data to scale of individual glacier*
 *Use geocube, xarray's `groupby()` and pandas dataframes to compute reductions on groups of glaciers*
 
-**Examine dense time series of surface velocity data**
+* **Examine dense time series of surface velocity data**
 *Leverage xarray tools such as `.resample()`, `map()` and `reduce()`*
 
-**Construct seasonal averages of glacier velocity**
+* **Construct seasonal averages of glacier velocity**
 *Use's xarray's groupby and functionality*
 
 Navigate to the other pages in this jupyter book to find out more about this tutorial. You can check out the data and open source python tools we'll be using before we get started with the notebook. 
