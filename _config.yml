@@ -14,7 +14,7 @@ only_build_toc_files: true
 execute:
   execute_notebooks: 'force'
   allow_errors: true
-  timeout: 200
+  timeout: 500
   
 #enable parsing of latex-stype math blocks
 parse:
