@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Introduction &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
+    <title>Introduction &#8212; Using xarray to examine cloud-hosted glacier surface velocity data</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -77,7 +77,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <h1 class="site-logo" id="site-title">Using xarray to examine cloud-based glacier surface velocity data</h1>
+      <h1 class="site-logo" id="site-title">Using xarray to examine cloud-hosted glacier surface velocity data</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
@@ -225,6 +225,11 @@ const thebe_selector_output = ".output, .cell_output"
    Learning objectives
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tutorial-structure">
+   Tutorial structure
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -253,6 +258,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#learning-objectives">
    Learning objectives
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#tutorial-structure">
+   Tutorial structure
   </a>
  </li>
 </ul>
@@ -288,12 +298,15 @@ b. Using xarray for data analysis and visualization
 <em>Use xarray label-based and index-based selection methods</em></p></li>
 <li><p><strong>Analyze glacier surface velocity data at multiple spatial scales</strong>
 <em>Use rioxarray’s .clip() to subset data to scale of individual glacier</em>
-<em>Use geocube, xarray’s <code class="docutils literal notranslate"><span class="pre">groupby()</span></code> and pandas dataframes to compute reductions on groups of glaciers</em></p></li>
+<em>Use geocube, xarray’s <code class="docutils literal notranslate"><span class="pre">.groupby()</span></code> and pandas dataframes to compute reductions on groups of glaciers</em></p></li>
 <li><p><strong>Examine dense time series of surface velocity data</strong>
-<em>Leverage xarray tools such as <code class="docutils literal notranslate"><span class="pre">.resample()</span></code>, <code class="docutils literal notranslate"><span class="pre">map()</span></code> and <code class="docutils literal notranslate"><span class="pre">reduce()</span></code></em></p></li>
+<em>Leverage xarray tools such as <code class="docutils literal notranslate"><span class="pre">.resample()</span></code>, <code class="docutils literal notranslate"><span class="pre">.map()</span></code> and <code class="docutils literal notranslate"><span class="pre">.reduce()</span></code></em></p></li>
 <li><p><strong>Construct seasonal averages of glacier velocity</strong>
 <em>Use’s xarray’s groupby and functionality</em></p></li>
 </ul>
+</div>
+<div class="section" id="tutorial-structure">
+<h2>Tutorial structure<a class="headerlink" href="#tutorial-structure" title="Permalink to this headline">¶</a></h2>
 <p>Navigate to the other pages in this jupyter book to find out more about this tutorial. You can check out the data and open source python tools we’ll be using before we get started with the notebook.</p>
 <div class="toctree-wrapper compound">
 <ul>
