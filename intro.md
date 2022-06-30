@@ -25,14 +25,15 @@ This tutorial demonstrates how to use xarray for scientific investigation of rem
 
 * **Analyze glacier surface velocity data at multiple spatial scales**
 *Use rioxarray's .clip() to subset data to scale of individual glacier*
-*Use geocube, xarray's `groupby()` and pandas dataframes to compute reductions on groups of glaciers*
+*Use geocube, xarray's `.groupby()` and pandas dataframes to compute reductions on groups of glaciers*
 
 * **Examine dense time series of surface velocity data**
-*Leverage xarray tools such as `.resample()`, `map()` and `reduce()`*
+*Leverage xarray tools such as `.resample()`, `.map()` and `.reduce()`*
 
 * **Construct seasonal averages of glacier velocity**
 *Use's xarray's groupby and functionality*
 
+## Tutorial structure
 Navigate to the other pages in this jupyter book to find out more about this tutorial. You can check out the data and open source python tools we'll be using before we get started with the notebook. 
 
 ```{tableofcontents}
