@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Software and Data &#8212; Using xarray to examine cloud-hosted glacier surface velocity data</title>
+    <title>Software and Data &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -78,7 +78,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <h1 class="site-logo" id="site-title">Using xarray to examine cloud-hosted glacier surface velocity data</h1>
+      <h1 class="site-logo" id="site-title">Using xarray to examine cloud-based glacier surface velocity data</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
@@ -211,7 +211,7 @@ const thebe_selector_output = ".output, .cell_output"
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/e-marshall/itslive/master?urlpath=tree/docs/software.ipynb"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/e-marshall/itslive/master?urlpath=lab/tree/software.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
                     src="_static/images/logo_binder.svg"
@@ -236,6 +236,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#computing-environment">
    Computing environment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-tutorial-on-the-cloud">
+   Running tutorial on the cloud
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -271,6 +276,11 @@ const thebe_selector_output = ".output, .cell_output"
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#computing-environment">
    Computing environment
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#running-tutorial-on-the-cloud">
+   Running tutorial on the cloud
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -328,17 +338,19 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-<p>The package ‘itslivetools’ contains functions to help reading in and inspecting ITS_LIVE data. </br></p>
-<p>Installation: </br>
-<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">https://github.com/e-marshall/itslivetools.git&#64;main</span></code></p>
+<p>This tutorial also uses the package <a class="reference external" href="https://github.com/e-marshall/itslivetools">itslivetools</a> with functions to help reading in and inspecting ITS_LIVE data, which you can install separately:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">git+https://github.com/e-marshall/itslivetools.git&#64;main</span></code></p>
+</div>
+<div class="section" id="running-tutorial-on-the-cloud">
+<h2>Running tutorial on the cloud<a class="headerlink" href="#running-tutorial-on-the-cloud" title="Permalink to this headline">¶</a></h2>
+<p>This link will launch a preconfigured jupyterlab environment on mybinder.org:</p>
+<p>https://mybinder.org/v2/gh/e-marshall/itslive/HEAD?labpath=accessing_s3_data.ipynb</p>
 </div>
 <div class="section" id="running-tutorial-material-locally">
 <h2>Running tutorial material locally<a class="headerlink" href="#running-tutorial-material-locally" title="Permalink to this headline">¶</a></h2>
-<p>To run the notebooks contained in this tutorial on your local machine, follow these steps:</p>
-<ol class="simple">
-<li><p>create a conda env based on the <code class="docutils literal notranslate"><span class="pre">itslivetools_environment.yml</span></code> file <a class="reference external" href="https://github.com/e-marshall/mynewbook/blob/master/itslivetools_environment.yml">here</a></p></li>
-<li><p>activate the environment and pip install the <code class="docutils literal notranslate"><span class="pre">itslivetools</span></code> package following the instructions above</p></li>
-</ol>
+<p>To run the notebooks contained in this tutorial on your local machine</p>
+<p>create the <code class="docutils literal notranslate"><span class="pre">itslivetools_env</span></code> conda environment (<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">create</span> <span class="pre">-f</span> <span class="pre">environment-unpinned.yml</span></code>) based on the <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file <a class="reference external" href="https://github.com/e-marshall/mynewbook/blob/master/environment.yml">here</a>. This should work on any platform (linux, osx, windows) and will install the latest versions of all dependencies.</p>
+<p>Alternatively, the code repository for this tutorial (https://github.com/e-marshall/itslive) also contains “lock” files for Linux (conda-linux-64.lock.yml) and MacOS (conda-osx-64.lock.yml) that pin exact versions of all required python packages for a <a class="reference external" href="https://mybinder.readthedocs.io/en/latest/tutorials/reproducibility.html">reproducible computing environment</a>.</p>
 </div>
 <div class="section" id="data">
 <h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
