@@ -1,0 +1,21 @@
+name: itslivetools_env
+channels: 
+ - conda-forge
+dependencies:
+- cartopy
+- flox
+- gdal
+- geocube
+- geopandas
+- jupyter-book
+- jupyterlab
+- pip
+- python
+- matplotlib-base
+- rioxarray
+- scikit-image
+- seaborn
+- shapely
+- s3fs
+- pip:
+   - git+https://github.com/e-marshall/itslivetools.git@main
