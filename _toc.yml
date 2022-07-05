@@ -10,4 +10,5 @@ chapters:
 - file: ind_glacier_analysis_new.ipynb
 - file: glacier_analysis_grouped.ipynb
 - file: Summary.md
+- file: Acknowledgements.md
 - file: References.md
