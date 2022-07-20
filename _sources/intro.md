@@ -14,7 +14,7 @@ This tutorial contains a number of jupyter notebooks demonstrating various steps
 ## Learning objectives
 This tutorial demonstrates how to use xarray for scientific investigation of remote sensing data. The learning goals include **high-level science goals** as well as specific *python and xarray techniques*. 
 
-* **Load ITS_LIVE data from Amazon sS3 cloud**
+* **Load ITS_LIVE data from AWS S3 buckets**
 *Lazily load cloud datasets using xarray, dask and zarr*
 
 * **Convert vector polygons to raster**
