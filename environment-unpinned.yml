@@ -17,5 +17,6 @@ dependencies:
 - seaborn
 - shapely
 - s3fs
+- zarr
 - pip:
    - git+https://github.com/e-marshall/itslivetools.git@main
