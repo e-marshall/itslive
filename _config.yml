@@ -44,3 +44,11 @@ launch_buttons:
 html:
   use_issues_button: true
   use_repository_button: true
+
+sphinx:
+  extra_extensions:
+  - sphinxext.opengraph
+  config:
+    ogp_site_url: "https://e-marshall.github.io/itslive/intro.html"
+    ogp_image: "https://e-marshall.github.io/itslive/_static/itslive_explore_img.png"
+    ogp_description_length: 200
