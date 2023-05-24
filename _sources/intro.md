@@ -5,11 +5,11 @@ This tutorial will demonstrate how to access and work with with multi-dimensiona
 ## Overview
 
 This tutorial contains a number of jupyter notebooks demonstrating various steps of a typical workflow for accessing, processing and analyzing remote sensing data. The structure is as follows:  
-    1. Data access (accessing ITS_LIVE data stored in s3 buckets on Amazon Web Services (AWS))  
-    2. Processing and analysis at the scale of an individual glacier  
-        a. Clipping large raster to a smaller area of interest and preliminary dataset inspection  
-        b. Using xarray for data analysis and visualization  
-    3. Processing and analysis of a group of glaciers within a sub-region  
+>     1. Data access (accessing ITS_LIVE data stored in s3 buckets on Amazon Web Services (AWS))  
+>     2. Processing and analysis at the scale of an individual glacier  
+>>        a. Clipping large raster to a smaller area of interest and preliminary dataset inspection  
+>>        b. Using xarray for data analysis and visualization  
+>    3. Processing and analysis of a group of glaciers within a sub-region  
 
 ## Learning objectives
 This tutorial demonstrates how to use xarray for scientific investigation of remote sensing data. The learning goals include **high-level science goals** as well as specific *python and xarray techniques*. 
@@ -34,7 +34,7 @@ This tutorial demonstrates how to use xarray for scientific investigation of rem
 *Use's xarray's groupby and functionality*
 
 ## Tutorial structure
-Navigate to the other pages in this jupyter book to find out more about this tutorial. You can check out the data and open source python tools we'll be using before we get started with the notebook. 
+Navigate to the other pages in this jupyter book to find out more about this tutorial. You can check out the data and open source python tools we'll be using before we get started with the notebook in the [Software and Data](software.ipynb) page. 
 
 ```{tableofcontents}
 ```
