@@ -4,5 +4,5 @@ This tutorial was developed as a part of the UCAR Summer Internships in Parallel
 
 The author is grateful to Deepak Cherian, Scott Henderson, Jessica Scheick and Kevin Paul for insight, advice and feedback during the project as well as Virginia Do and the SIParCS program. 
 
-Please direct correspondence to Emma Marshall at [emarshall@ucar.edu](emarshall@ucar.edu) or [e-marshall](http://github.com/e-marshall).
+Please direct correspondence to Emma Marshall at [emma.marshall@utah.edu](emma.marshall@utah.edu) or [e-marshall](http://github.com/e-marshall).
 
