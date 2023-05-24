@@ -454,20 +454,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">10</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
-<span class="ne">---&gt; </span><span class="mi">10</span> <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">cartopy.mpl.gridliner</span> <span class="kn">import</span> <span class="n">LONGITUDE_FORMATTER</span><span class="p">,</span> <span class="n">LATITUDE_FORMATTER</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="kn">import</span> <span class="nn">cartopy</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;cartopy&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <section id="reading-in-its-live-data">
 <h2>Reading in ITS_LIVE data<a class="headerlink" href="#reading-in-its-live-data" title="Permalink to this headline">#</a></h2>
@@ -475,16 +461,6 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itslivetools</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">itslivetools</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;itslivetools&#39;
 </pre></div>
 </div>
 </div>
@@ -499,14 +475,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s1">&#39;https://its-live-data.s3.amazonaws.com/datacubes/catalog_v02.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">url_catalog</span><span class="p">:</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">itslive_catalog</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">url_catalog</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">itslive_catalog</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-
-<span class="ne">NameError</span>: name &#39;urllib&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;type&#39;, &#39;features&#39;])
 </pre></div>
 </div>
 </div>
@@ -521,13 +490,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">url</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">find_granule_by_point</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="p">[</span><span class="mf">84.56</span><span class="p">,</span> <span class="mf">28.54</span><span class="p">])</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">url</span>
-
-<span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y3150000.zarr&#39;]
 </pre></div>
 </div>
 </div>
@@ -541,12 +504,82 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
 <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">read_in_s3</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">dc</span>
 
-<span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
+<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/itslivetools/utility_fns.py:20,</span> in <span class="ni">read_in_s3</span><span class="nt">(http_url)</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">http_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">s3_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.s3.amazonaws.com&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">20</span> <span class="n">datacube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">s3_url</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span>                             <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span>                             <span class="n">chunks</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="k">return</span> <span class="n">datacube</span>
+
+<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/backends/api.py:572,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, inline_array, chunked_array_type, from_array_kwargs, backend_kwargs, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">565</span> <span class="n">overwrite_encoded_chunks</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;overwrite_encoded_chunks&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">566</span> <span class="n">backend_ds</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">567</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">568</span>     <span class="n">drop_variables</span><span class="o">=</span><span class="n">drop_variables</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">569</span>     <span class="o">**</span><span class="n">decoders</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">570</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">571</span> <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">572</span> <span class="n">ds</span> <span class="o">=</span> <span class="n">_dataset_from_backend_dataset</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">573</span>     <span class="n">backend_ds</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">574</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">575</span>     <span class="n">engine</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">576</span>     <span class="n">chunks</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">577</span>     <span class="n">cache</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">578</span>     <span class="n">overwrite_encoded_chunks</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">579</span>     <span class="n">inline_array</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">580</span>     <span class="n">chunked_array_type</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">581</span>     <span class="n">from_array_kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">582</span>     <span class="n">drop_variables</span><span class="o">=</span><span class="n">drop_variables</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">583</span>     <span class="o">**</span><span class="n">decoders</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="k">return</span> <span class="n">ds</span>
+
+<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/backends/api.py:367,</span> in <span class="ni">_dataset_from_backend_dataset</span><span class="nt">(backend_ds, filename_or_obj, engine, chunks, cache, overwrite_encoded_chunks, inline_array, chunked_array_type, from_array_kwargs, **extra_tokens)</span>
+<span class="g g-Whitespace">    </span><span class="mi">365</span>     <span class="n">ds</span> <span class="o">=</span> <span class="n">backend_ds</span>
+<span class="g g-Whitespace">    </span><span class="mi">366</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">367</span>     <span class="n">ds</span> <span class="o">=</span> <span class="n">_chunk_ds</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">368</span>         <span class="n">backend_ds</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">369</span>         <span class="n">filename_or_obj</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">370</span>         <span class="n">engine</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">371</span>         <span class="n">chunks</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">372</span>         <span class="n">overwrite_encoded_chunks</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">373</span>         <span class="n">inline_array</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">374</span>         <span class="n">chunked_array_type</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">375</span>         <span class="n">from_array_kwargs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">376</span>         <span class="o">**</span><span class="n">extra_tokens</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">377</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">379</span> <span class="n">ds</span><span class="o">.</span><span class="n">set_close</span><span class="p">(</span><span class="n">backend_ds</span><span class="o">.</span><span class="n">_close</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">381</span> <span class="c1"># Ensure source filename always stored in dataset object</span>
+
+<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/backends/api.py:315,</span> in <span class="ni">_chunk_ds</span><span class="nt">(backend_ds, filename_or_obj, engine, chunks, overwrite_encoded_chunks, inline_array, chunked_array_type, from_array_kwargs, **extra_tokens)</span>
+<span class="g g-Whitespace">    </span><span class="mi">304</span> <span class="k">def</span> <span class="nf">_chunk_ds</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">305</span>     <span class="n">backend_ds</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">306</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">313</span>     <span class="o">**</span><span class="n">extra_tokens</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">314</span> <span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">315</span>     <span class="n">chunkmanager</span> <span class="o">=</span> <span class="n">guess_chunkmanager</span><span class="p">(</span><span class="n">chunked_array_type</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">317</span>     <span class="c1"># TODO refactor to move this dask-specific logic inside the DaskManager class</span>
+<span class="g g-Whitespace">    </span><span class="mi">318</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunkmanager</span><span class="p">,</span> <span class="n">DaskManager</span><span class="p">):</span>
+
+<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/core/parallelcompat.py:87,</span> in <span class="ni">guess_chunkmanager</span><span class="nt">(manager)</span>
+<span class="g g-Whitespace">     </span><span class="mi">85</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">86</span>     <span class="k">if</span> <span class="n">manager</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chunkmanagers</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">87</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">88</span>             <span class="sa">f</span><span class="s2">&quot;unrecognized chunk manager </span><span class="si">{</span><span class="n">manager</span><span class="si">}</span><span class="s2"> - must be one of: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">chunkmanagers</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">     </span><span class="mi">89</span>         <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">91</span>     <span class="k">return</span> <span class="n">chunkmanagers</span><span class="p">[</span><span class="n">manager</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">92</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="n">ChunkManagerEntrypoint</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">93</span>     <span class="c1"># already a valid ChunkManager so just pass through</span>
+
+<span class="ne">ValueError</span>: unrecognized chunk manager dask - must be one of: []
 </pre></div>
 </div>
 </div>
@@ -825,7 +858,7 @@ dc_timesorted_false</p>
 <span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">bbox_dc</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">get_bbox_single</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">bbox_dc</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
 
-<span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
+<span class="ne">NameError</span>: name &#39;dc&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -1004,7 +1037,7 @@ dc_timesorted_false</p>
 <span class="ne">NameError</span>: name &#39;sample_glacier_vec&#39; is not defined
 </pre></div>
 </div>
-<img alt="_images/5871863f76a8760a7f8dc1100e709f866db6ce9f3abe5429743715088f4c198b.png" src="_images/5871863f76a8760a7f8dc1100e709f866db6ce9f3abe5429743715088f4c198b.png" />
+<img alt="_images/3dac2c1aa325cb9de116241c70bacd9862eb7033620370d7185d3b0ee2149df2.png" src="_images/3dac2c1aa325cb9de116241c70bacd9862eb7033620370d7185d3b0ee2149df2.png" />
 </div>
 </div>
 <p>Now let’s take a look at the x and y components of velocity, again averaging over time:</p>
@@ -1028,7 +1061,7 @@ dc_timesorted_false</p>
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
 </pre></div>
 </div>
-<img alt="_images/b42611f0e846525143f70af3ddfe3a58c304eca6b57250ab6e9567272ea733d6.png" src="_images/b42611f0e846525143f70af3ddfe3a58c304eca6b57250ab6e9567272ea733d6.png" />
+<img alt="_images/ac8bcd217d3733a7eb3570c220a03e8ba0264d62da826096e082353e225b8b49.png" src="_images/ac8bcd217d3733a7eb3570c220a03e8ba0264d62da826096e082353e225b8b49.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1514,7 +1547,7 @@ dc_timesorted_false</p>
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
 </pre></div>
 </div>
-<img alt="_images/a8f035befc701fc88c8cb1ce81703fd5416877730dcd24d0f5e863f4506a4dfb.png" src="_images/a8f035befc701fc88c8cb1ce81703fd5416877730dcd24d0f5e863f4506a4dfb.png" />
+<img alt="_images/3b4d4654c674ade9ae914e8c780d458f6432a79cebf9f0c76e49473695890ef3.png" src="_images/3b4d4654c674ade9ae914e8c780d458f6432a79cebf9f0c76e49473695890ef3.png" />
 </div>
 </div>
 <p>But what if we wanted to explore the relative coverage of the different sensors that make up the its_live dataset as a whole?
