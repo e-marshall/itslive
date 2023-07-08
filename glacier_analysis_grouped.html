@@ -1,53 +1,46 @@
 
-
 <!DOCTYPE html>
 
-
-<html >
-
+<html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta property="og:title" content="Region-scale glacier analysis" />
+  
 <meta property="og:type" content="website" />
+  
 <meta property="og:url" content="https://e-marshall.github.io/itslive/glacier_analysis_grouped.html" />
-<meta property="og:site_name" content="Python" />
+  
 <meta property="og:description" content="The previous notebook demonstrated using xarray to analyze surface velocity data for an individual glacier. This notebook will show how we can examine spatial variability in surface velocity within..." />
+  
 <meta property="og:image" content="https://e-marshall.github.io/itslive/_static/itslive_explore_img.png" />
-<meta property="og:image:alt" content="Python" />
-<meta name="description" content="The previous notebook demonstrated using xarray to analyze surface velocity data for an individual glacier. This notebook will show how we can examine spatial variability in surface velocity within..." />
-
+  
+<meta property="og:image:alt" content="Region-scale glacier analysis" />
+  
     <title>Region-scale glacier analysis &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
-  
-  
-  
-  <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-  </script>
-  
+    
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
-  
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -55,12 +48,12 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -68,87 +61,56 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'glacier_analysis_grouped';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Summary" href="Summary.html" />
     <link rel="prev" title="Individual glacier surface velocity analysis" href="ind_glacier_analysis_new.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
 
-  
-  
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
-<form class="bd-search d-flex align-items-center"
-      action="search.html"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
-  
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
-  
-  <div class="bd-container">
-    <div class="bd-container__inner bd-page-width">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
       
-      <div class="bd-sidebar-primary bd-sidebar">
-        
-
-  
-  <div class="sidebar-header-items sidebar-primary__section">
-    
-    
-    
-    
-  </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-  
-
-<a class="navbar-brand logo" href="intro.html">
-  
-  
-  
-  
-  
-    <p class="title logo__title">Using xarray to examine cloud-based glacier surface velocity data</p>
-  
-</a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item navbar-nav active">
+      
+      
+      <h1 class="site-logo" id="site-title">Using xarray to examine cloud-based glacier surface velocity data</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
@@ -158,254 +120,322 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="software.html">Software and Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accessing_s3_data_noregion.html">Accessing ITS_LIVE data via S3 bucket</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ind_glacier_data_inspection_analysis.html">Individual glacier data inspection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ind_glacier_analysis_new.html">Individual glacier surface velocity analysis</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Region-scale glacier analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Acknowledgments.html">Acknowledgments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="software.html">
+   Software and Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="accessing_s3_data_noregion.html">
+   Accessing ITS_LIVE data via S3 bucket
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ind_glacier_data_inspection_analysis.html">
+   Individual glacier data inspection
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ind_glacier_analysis_new.html">
+   Individual glacier surface velocity analysis
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Region-scale glacier analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Summary.html">
+   Summary
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Acknowledgments.html">
+   Acknowledgments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="References.html">
+   References
+  </a>
+ </li>
 </ul>
 
     </div>
 </nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
     </div>
-  
-  
-  <div class="sidebar-primary-items__end sidebar-primary__section">
-  </div>
-  
-  <div id="rtd-footer-container"></div>
+    <div id="rtd-footer-container"></div>
+</div>
 
 
-      </div>
-      
-      <main id="main-content" class="bd-main">
-        
-        
+          
 
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
 <div class="sbt-scroll-pixel-helper"></div>
-
-          <div class="bd-content">
-            <div class="bd-article-container">
-              
-              <div class="bd-header-article">
-<div class="header-article-items header-article__inner">
-  
-    <div class="header-article-items__start">
-      
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <span class="fa-solid fa-bars"></span>
-</label></div>
-      
-    </div>
-  
-  
-    <div class="header-article-items__end">
-      
-        <div class="header-article-item">
-
-<div class="article-header-buttons">
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
 
 
 
-
-
-<div class="dropdown dropdown-launch-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
-    <i class="fas fa-rocket"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://mybinder.org/v2/gh/e-marshall/itslive/master?urlpath=lab/tree/glacier_analysis_grouped.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch onBinder"
-   data-bs-placement="left" data-bs-toggle="tooltip"
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
 >
   
 
-<span class="btn__icon-container">
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/e-marshall/itslive/master?urlpath=lab/tree/glacier_analysis_grouped.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
   
     <img src="_static/images/logo_binder.svg">
   </span>
-<span class="btn__text-container">Binder</span>
+<span class="headerbtn__text-container">Binder</span>
 </a>
-</li>
+
+      </li>
       
-  </ul>
+    </ul>
+  </div>
 </div>
-
-
-
-
-
-
-<div class="dropdown dropdown-source-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
-    <i class="fab fa-github"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://github.com/e-marshall/itslive" target="_blank"
-   class="btn btn-sm btn-source-repository-button dropdown-item"
-   title="Source repository"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="btn__text-container">Repository</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li><a href="https://github.com/e-marshall/itslive/issues/new?title=Issue%20on%20page%20%2Fglacier_analysis_grouped.html&body=Your%20issue%20content%20here." target="_blank"
-   class="btn btn-sm btn-source-issues-button dropdown-item"
-   title="Open an issue"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="btn__text-container">Open issue</span>
-</a>
-</li>
-      
-  </ul>
-</div>
-
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="_sources/glacier_analysis_grouped.ipynb" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.ipynb</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
-
-
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
-  title="Fullscreen mode"
-  data-bs-placement="bottom" data-bs-toggle="tooltip"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
 >
   
 
-<span class="btn__icon-container">
+<span class="headerbtn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
   </button>
-`);
-</script>
-
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
-</div></div>
-      
-    </div>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/e-marshall/itslive"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
   
-</div>
-</div>
-              
-              
 
-<div id="jb-print-docs-body" class="onlyprint">
-    <h1>Region-scale glacier analysis</h1>
-    <!-- Table of contents -->
-    <div id="print-main-content">
-        <div id="jb-print-toc">
-            
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-its-live-data">Accessing ITS_LIVE data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-data">Vector data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-projections">Handling projections</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rasterize-vector">Rasterize vector</a></li>
-</ul>
-            </nav>
-        </div>
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/e-marshall/itslive/issues/new?title=Issue%20on%20page%20%2Fglacier_analysis_grouped.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/glacier_analysis_grouped.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
     </div>
 </div>
 
-              
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#accessing-its-live-data">
+   Accessing ITS_LIVE data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vector-data">
+   Vector data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#handling-projections">
+   Handling projections
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rasterize-vector">
+   Rasterize vector
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Region-scale glacier analysis</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#accessing-its-live-data">
+   Accessing ITS_LIVE data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#vector-data">
+   Vector data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#handling-projections">
+   Handling projections
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#rasterize-vector">
+   Rasterize vector
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
                 
-<div id="searchbox"></div>
-                <article class="bd-article" role="main">
-                  
-  <section id="region-scale-glacier-analysis">
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="region-scale-glacier-analysis">
 <h1>Region-scale glacier analysis<a class="headerlink" href="#region-scale-glacier-analysis" title="Permalink to this headline">#</a></h1>
 <p>The previous notebook demonstrated using xarray to analyze surface velocity data for an individual glacier. This notebook will show how we can examine spatial variability in surface velocity within a group of glaciers. To do this we will use <strong>xarray</strong> as well as <strong>geopandas</strong>, <strong>geocube</strong>, and <strong>pandas</strong>. We will start by using <code class="docutils literal notranslate"><span class="pre">.make_geocube()</span></code> to rasterize a vector object in the shape of an <strong>ITS_LIVE</strong> velocity raster object. We will then use the rasterized vector to group the <strong>ITS_LIVE</strong> object by individual glaciers and then calculate summary statistics of surface velocity for each glacier. The goal in this work flow is to end up with a <strong>pandas dataframe</strong> where each row is an individual glacier and columns for various surface velocity summary statistics.</p>
 <p><em>Learning goals:</em></p>
@@ -446,7 +476,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">9</span>
+<span class="nn">Input In [1],</span> in <span class="ni">&lt;cell line: 9&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
 <span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="ne">----&gt; </span><span class="mi">9</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span> 
@@ -464,8 +494,18 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="nn">Input In [2],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">itslivetools</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;itslivetools&#39;
+</pre></div>
 </div>
-<section id="accessing-its-live-data">
+</div>
+</div>
+<div class="section" id="accessing-its-live-data">
 <h2>Accessing ITS_LIVE data<a class="headerlink" href="#accessing-its-live-data" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -489,7 +529,13 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y3150000.zarr&#39;]
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">Input In [4],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">url</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">find_granule_by_point</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="p">[</span><span class="mf">84.56</span><span class="p">,</span> <span class="mf">28.54</span><span class="p">])</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">url</span>
+
+<span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -503,82 +549,12 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">Input In [5],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">read_in_s3</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">dc</span>
 
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/itslivetools/utility_fns.py:20,</span> in <span class="ni">read_in_s3</span><span class="nt">(http_url)</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">http_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">s3_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.s3.amazonaws.com&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">20</span> <span class="n">datacube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">s3_url</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span>                             <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>                             <span class="n">chunks</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="k">return</span> <span class="n">datacube</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/backends/api.py:572,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, inline_array, chunked_array_type, from_array_kwargs, backend_kwargs, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">565</span> <span class="n">overwrite_encoded_chunks</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;overwrite_encoded_chunks&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">566</span> <span class="n">backend_ds</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">567</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">568</span>     <span class="n">drop_variables</span><span class="o">=</span><span class="n">drop_variables</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">569</span>     <span class="o">**</span><span class="n">decoders</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">570</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">571</span> <span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">572</span> <span class="n">ds</span> <span class="o">=</span> <span class="n">_dataset_from_backend_dataset</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">573</span>     <span class="n">backend_ds</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">574</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">575</span>     <span class="n">engine</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">576</span>     <span class="n">chunks</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">577</span>     <span class="n">cache</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">578</span>     <span class="n">overwrite_encoded_chunks</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">579</span>     <span class="n">inline_array</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">580</span>     <span class="n">chunked_array_type</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">581</span>     <span class="n">from_array_kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">582</span>     <span class="n">drop_variables</span><span class="o">=</span><span class="n">drop_variables</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">583</span>     <span class="o">**</span><span class="n">decoders</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="k">return</span> <span class="n">ds</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/backends/api.py:367,</span> in <span class="ni">_dataset_from_backend_dataset</span><span class="nt">(backend_ds, filename_or_obj, engine, chunks, cache, overwrite_encoded_chunks, inline_array, chunked_array_type, from_array_kwargs, **extra_tokens)</span>
-<span class="g g-Whitespace">    </span><span class="mi">365</span>     <span class="n">ds</span> <span class="o">=</span> <span class="n">backend_ds</span>
-<span class="g g-Whitespace">    </span><span class="mi">366</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">367</span>     <span class="n">ds</span> <span class="o">=</span> <span class="n">_chunk_ds</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">368</span>         <span class="n">backend_ds</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">369</span>         <span class="n">filename_or_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">370</span>         <span class="n">engine</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">371</span>         <span class="n">chunks</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">372</span>         <span class="n">overwrite_encoded_chunks</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">373</span>         <span class="n">inline_array</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">374</span>         <span class="n">chunked_array_type</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">375</span>         <span class="n">from_array_kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">376</span>         <span class="o">**</span><span class="n">extra_tokens</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">377</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">379</span> <span class="n">ds</span><span class="o">.</span><span class="n">set_close</span><span class="p">(</span><span class="n">backend_ds</span><span class="o">.</span><span class="n">_close</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">381</span> <span class="c1"># Ensure source filename always stored in dataset object</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/backends/api.py:315,</span> in <span class="ni">_chunk_ds</span><span class="nt">(backend_ds, filename_or_obj, engine, chunks, overwrite_encoded_chunks, inline_array, chunked_array_type, from_array_kwargs, **extra_tokens)</span>
-<span class="g g-Whitespace">    </span><span class="mi">304</span> <span class="k">def</span> <span class="nf">_chunk_ds</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">305</span>     <span class="n">backend_ds</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">306</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">313</span>     <span class="o">**</span><span class="n">extra_tokens</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">314</span> <span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">315</span>     <span class="n">chunkmanager</span> <span class="o">=</span> <span class="n">guess_chunkmanager</span><span class="p">(</span><span class="n">chunked_array_type</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">317</span>     <span class="c1"># TODO refactor to move this dask-specific logic inside the DaskManager class</span>
-<span class="g g-Whitespace">    </span><span class="mi">318</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunkmanager</span><span class="p">,</span> <span class="n">DaskManager</span><span class="p">):</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/core/parallelcompat.py:87,</span> in <span class="ni">guess_chunkmanager</span><span class="nt">(manager)</span>
-<span class="g g-Whitespace">     </span><span class="mi">85</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">86</span>     <span class="k">if</span> <span class="n">manager</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chunkmanagers</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">87</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">88</span>             <span class="sa">f</span><span class="s2">&quot;unrecognized chunk manager </span><span class="si">{</span><span class="n">manager</span><span class="si">}</span><span class="s2"> - must be one of: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">chunkmanagers</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">89</span>         <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">91</span>     <span class="k">return</span> <span class="n">chunkmanagers</span><span class="p">[</span><span class="n">manager</span><span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">92</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="n">ChunkManagerEntrypoint</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">93</span>     <span class="c1"># already a valid ChunkManager so just pass through</span>
-
-<span class="ne">ValueError</span>: unrecognized chunk manager dask - must be one of: []
+<span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -593,7 +569,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [6],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;dc&#39; is not defined
@@ -610,7 +586,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [7],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc</span>
 
 <span class="ne">NameError</span>: name &#39;dc&#39; is not defined
@@ -618,8 +594,8 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-<section id="vector-data">
+</div>
+<div class="section" id="vector-data">
 <h2>Vector data<a class="headerlink" href="#vector-data" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -692,7 +668,7 @@ document.write(`
       <td>0</td>
       <td>9</td>
       <td>9</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>POLYGON ((102.03759 29.93828, 102.03759 29.938...</td>
     </tr>
     <tr>
@@ -716,7 +692,7 @@ document.write(`
       <td>0</td>
       <td>9</td>
       <td>9</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>POLYGON ((102.04195 29.99030, 102.04197 29.990...</td>
     </tr>
     <tr>
@@ -740,7 +716,7 @@ document.write(`
       <td>0</td>
       <td>9</td>
       <td>9</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>POLYGON ((102.03710 29.99774, 102.03719 29.998...</td>
     </tr>
   </tbody>
@@ -756,7 +732,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>209
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13119
 </pre></div>
 </div>
 </div>
@@ -785,8 +761,8 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <p>The vector dataset is in WGS 84, meaning that its coordinates are in degrees latitude and longitude rather than meters N and E. We will project this dataset to match the projection of the netcdf dataset.</p>
-</section>
-<section id="handling-projections">
+</div>
+<div class="section" id="handling-projections">
 <h2>Handling projections<a class="headerlink" href="#handling-projections" title="Permalink to this headline">#</a></h2>
 <p>Let’s project this dataframe to match the CRS of the itslive dataset</p>
 <div class="cell docutils container">
@@ -861,7 +837,7 @@ Datum: World Geodetic System 1984 ensemble
       <td>0</td>
       <td>9</td>
       <td>9</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>POLYGON ((1959630.570 3408951.748, 1959630.394...</td>
     </tr>
     <tr>
@@ -885,7 +861,7 @@ Datum: World Geodetic System 1984 ensemble
       <td>0</td>
       <td>9</td>
       <td>9</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>POLYGON ((1959271.126 3414873.173, 1959273.308...</td>
     </tr>
     <tr>
@@ -909,7 +885,7 @@ Datum: World Geodetic System 1984 ensemble
       <td>0</td>
       <td>9</td>
       <td>9</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>POLYGON ((1958682.136 3415647.929, 1958684.710...</td>
     </tr>
   </tbody>
@@ -1003,13 +979,109 @@ Datum: World Geodetic System 1984 ensemble
       <td>0</td>
       <td>9</td>
       <td>9</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>POLYGON ((1695874.226 3459798.452, 1695912.482...</td>
       <td>1500186</td>
     </tr>
+    <tr>
+      <th>233</th>
+      <td>RGI60-15.00234</td>
+      <td>G097476E28353N</td>
+      <td>20000927</td>
+      <td>-9999999</td>
+      <td>97.475654</td>
+      <td>28.352548</td>
+      <td>15</td>
+      <td>3</td>
+      <td>8.507</td>
+      <td>4372</td>
+      <td>...</td>
+      <td>5000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((1530972.986 3179732.967, 1530916.956...</td>
+      <td>1500234</td>
+    </tr>
+    <tr>
+      <th>367</th>
+      <td>RGI60-15.00368</td>
+      <td>G098674E28425N</td>
+      <td>20011203</td>
+      <td>-9999999</td>
+      <td>98.674072</td>
+      <td>28.425392</td>
+      <td>15</td>
+      <td>3</td>
+      <td>8.219</td>
+      <td>3165</td>
+      <td>...</td>
+      <td>8634</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((1649734.256 3201594.805, 1649822.535...</td>
+      <td>1500368</td>
+    </tr>
+    <tr>
+      <th>405</th>
+      <td>RGI60-15.00406</td>
+      <td>G098182E28652N</td>
+      <td>20011203</td>
+      <td>-9999999</td>
+      <td>98.181747</td>
+      <td>28.651985</td>
+      <td>15</td>
+      <td>3</td>
+      <td>7.800</td>
+      <td>4544</td>
+      <td>...</td>
+      <td>5205</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((1599037.782 3218762.806, 1599005.727...</td>
+      <td>1500406</td>
+    </tr>
+    <tr>
+      <th>502</th>
+      <td>RGI60-15.00503</td>
+      <td>G098653E28454N</td>
+      <td>20011203</td>
+      <td>-9999999</td>
+      <td>98.652981</td>
+      <td>28.453739</td>
+      <td>15</td>
+      <td>3</td>
+      <td>7.006</td>
+      <td>3917</td>
+      <td>...</td>
+      <td>9013</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((1646656.890 3205777.105, 1646650.233...</td>
+      <td>1500503</td>
+    </tr>
   </tbody>
 </table>
-<p>1 rows × 24 columns</p>
+<p>5 rows × 24 columns</p>
 </div></div></div>
 </div>
 <p>Next, want to subset the RGI dataset by the spatial extent of the ITS_LIVE data.
@@ -1023,10 +1095,10 @@ First, get the bbox of the ITS_LIVE data as a vector</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [14],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc_bbox</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">get_bbox_single</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span>
 
-<span class="ne">NameError</span>: name &#39;dc&#39; is not defined
+<span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -1041,7 +1113,7 @@ First, get the bbox of the ITS_LIVE data as a vector</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [15],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc_bbox_prj</span> <span class="o">=</span> <span class="n">dc_bbox</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:32645&#39;</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;dc_bbox&#39; is not defined
@@ -1049,8 +1121,8 @@ First, get the bbox of the ITS_LIVE data as a vector</p>
 </div>
 </div>
 </div>
-</section>
-<section id="rasterize-vector">
+</div>
+<div class="section" id="rasterize-vector">
 <h2>Rasterize vector<a class="headerlink" href="#rasterize-vector" title="Permalink to this headline">#</a></h2>
 <p>Subset RGI dataset:
 To do this we will use a <a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.sjoin.html">spatial join</a>. Here we use an <code class="docutils literal notranslate"><span class="pre">inner</span> <span class="pre">join</span></code> but there are various methods to customize the spatial join operation. Find more info <a class="reference external" href="https://geopandas.org/en/stable/gallery/spatial_joins.html">here</a>.</p>
@@ -1066,7 +1138,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [16],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rgi_sub</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">sjoin</span><span class="p">(</span><span class="n">se_asia_prj</span><span class="p">,</span> <span class="n">dc_bbox_prj</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1"># need to set the type as string here bc for some reason its object intead of str</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">rgi_sub</span><span class="p">[</span><span class="s2">&quot;RGIId&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgi_sub</span><span class="o">.</span><span class="n">RGIId</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
@@ -1085,7 +1157,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">17</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [17],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rgi_sub</span><span class="p">[</span><span class="s1">&#39;RGIId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 
 <span class="ne">NameError</span>: name &#39;rgi_sub&#39; is not defined
@@ -1103,7 +1175,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [18],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epsg:</span><span class="si">{</span><span class="n">dc</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;spatial_epsg&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;dc&#39; is not defined
@@ -1120,7 +1192,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">19</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [19],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rgi_sub</span> <span class="o">=</span> <span class="n">rgi_sub</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;index_right&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;rgi_sub&#39; is not defined
@@ -1137,7 +1209,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [20],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rgi_sub</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;rgi_sub&#39; is not defined
@@ -1160,7 +1232,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">21</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [21],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">out_grid</span> <span class="o">=</span> <span class="n">make_geocube</span><span class="p">(</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">vector_data</span> <span class="o">=</span> <span class="n">rgi_sub</span><span class="p">,</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">measurements</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;RGI_int&quot;</span><span class="p">],</span>
@@ -1183,7 +1255,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">22</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [22],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">out_grid</span><span class="o">.</span><span class="n">RGI_int</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;out_grid&#39; is not defined
@@ -1202,7 +1274,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">23</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [23],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">out_grid</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="n">v</span> 
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">out_grid</span>
 
@@ -1222,7 +1294,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">24</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [24],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">out_grid_sub</span> <span class="o">=</span> <span class="n">out_grid</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="s1">&#39;2015-01-01&#39;</span><span class="p">,</span><span class="s1">&#39;2015-02-01&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">out_grid_sub</span>
 
@@ -1241,7 +1313,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">25</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [25],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">grouped_ID</span> <span class="o">=</span> <span class="n">out_grid_sub</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;spatial_ref&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">out_grid_sub</span><span class="p">[</span><span class="s1">&#39;RGI_int&#39;</span><span class="p">])</span>
 
 <span class="ne">NameError</span>: name &#39;out_grid_sub&#39; is not defined
@@ -1262,7 +1334,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">26</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [26],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">grid_mean_sp</span> <span class="o">=</span> <span class="n">grouped_ID</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=...</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;speed_mean&#39;</span><span class="p">})</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">grid_min_sp</span> <span class="o">=</span> <span class="n">grouped_ID</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">dim</span><span class="o">=...</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;speed_min&#39;</span><span class="p">})</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">grid_max_sp</span> <span class="o">=</span> <span class="n">grouped_ID</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">dim</span><span class="o">=...</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;speed_max&#39;</span><span class="p">})</span>
@@ -1282,7 +1354,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">27</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [27],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">grid_mean_sp</span><span class="o">.</span><span class="n">RGI_int</span><span class="o">.</span><span class="n">equals</span><span class="p">([</span><span class="n">grid_max_sp</span><span class="o">.</span><span class="n">RGI_int</span><span class="p">,</span> <span class="n">grid_min_sp</span><span class="o">.</span><span class="n">RGI_int</span><span class="p">])</span>
 
 <span class="ne">NameError</span>: name &#39;grid_mean_sp&#39; is not defined
@@ -1303,7 +1375,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">28</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="nn">Input In [28],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#merge each zonal stat xr obj into a single xr obj, convert to pandas df</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">zonal_stats</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">([</span><span class="n">grid_mean_sp</span><span class="p">,</span> <span class="n">grid_min_sp</span><span class="p">,</span> <span class="n">grid_max_sp</span><span class="p">])</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">zonal_stats</span> <span class="o">=</span> <span class="n">zonal_stats</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
@@ -1324,7 +1396,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">29</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [29],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rgi_itslive</span> <span class="o">=</span> <span class="n">rgi_sub</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">rgi_sub</span><span class="p">[</span><span class="s1">&#39;Area&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">5.</span><span class="p">]</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">zonal_stats</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;RGI_int&#39;</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;rgi_sub&#39; is not defined
@@ -1341,7 +1413,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">30</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [30],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rgi_itslive</span><span class="o">.</span><span class="n">columns</span>
 
 <span class="ne">NameError</span>: name &#39;rgi_itslive&#39; is not defined
@@ -1358,7 +1430,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">31</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [31],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rgi_itslive</span><span class="p">[</span><span class="s1">&#39;RGIId&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;rgi_itslive&#39; is not defined
@@ -1376,7 +1448,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [32],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">rgi_itslive</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Area&#39;</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="s1">&#39;speed_mean&#39;</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;darkblue&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
@@ -1394,7 +1466,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">33</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [33],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rgi_itslive</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">column</span><span class="o">=</span><span class="s1">&#39;speed_mean&#39;</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;rgi_itslive&#39; is not defined
@@ -1411,7 +1483,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">34</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [34],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">rgi_itslive</span><span class="o">.</span><span class="n">explore</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;rgi_itslive&#39; is not defined
@@ -1420,8 +1492,8 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
 </div>
 </div>
 <p>Awesome! We have encoded vector data onto a raster object that let’s us examine raster data for multiple spatial units simultaneously.</p>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1435,7 +1507,7 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
             mode: "python"
         },
         kernelOptions: {
-            name: "python3",
+            kernelName: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1443,108 +1515,50 @@ To do this we will use a <a class="reference external" href="https://geopandas.o
     </script>
     <script>kernelName = 'python3'</script>
 
-                </article>
+              </div>
               
-
-              
-              
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-    <a class="left-prev"
-       href="ind_glacier_analysis_new.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Individual glacier surface velocity analysis</p>
-      </div>
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="ind_glacier_analysis_new.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Individual glacier surface velocity analysis</p>
+        </div>
     </a>
-    <a class="right-next"
-       href="Summary.html"
-       title="next page">
-      <div class="prev-next-info">
+    <a class='right-next' id="next-link" href="Summary.html" title="next page">
+    <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Summary</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
-</div></div>
-  
-</div>
-
-                </footer>
-              
-            </div>
-            
-            
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-its-live-data">Accessing ITS_LIVE data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-data">Vector data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handling-projections">Handling projections</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rasterize-vector">Rasterize vector</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
-            
-          </div>
-          <footer class="bd-footer-content">
-            
-<div class="bd-footer-content__inner container">
-  
-  <div class="footer-item">
-    
-<p class="component-author">
-By emma marshall
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  <p class="copyright">
-    
-      © Copyright 2022.
-      <br/>
-    
-  </p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-</div>
-          </footer>
-        
-
-      </main>
     </div>
-  </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By emma marshall<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
 
-  <footer class="bd-footer">
-  </footer>
+
   </body>
 </html>

@@ -1,53 +1,46 @@
 
-
 <!DOCTYPE html>
 
-
-<html >
-
+<html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta property="og:title" content="Individual glacier data inspection" />
+  
 <meta property="og:type" content="website" />
+  
 <meta property="og:url" content="https://e-marshall.github.io/itslive/ind_glacier_data_inspection_analysis.html" />
-<meta property="og:site_name" content="Python" />
+  
 <meta property="og:description" content="This notebook will walk through steps to read in and organize velocity data and clip it to the extent of a single glacier. The tools we will use include xarray, rioxarray, geopandas, and flox. To c..." />
+  
 <meta property="og:image" content="https://e-marshall.github.io/itslive/_static/itslive_explore_img.png" />
-<meta property="og:image:alt" content="Python" />
-<meta name="description" content="This notebook will walk through steps to read in and organize velocity data and clip it to the extent of a single glacier. The tools we will use include xarray, rioxarray, geopandas, and flox. To c..." />
-
+  
+<meta property="og:image:alt" content="Individual glacier data inspection" />
+  
     <title>Individual glacier data inspection &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
-  
-  
-  
-  <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
-  </script>
-  
+    
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
 
-  
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
-  
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -55,12 +48,12 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -68,87 +61,56 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'ind_glacier_data_inspection_analysis';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Individual glacier surface velocity analysis" href="ind_glacier_analysis_new.html" />
     <link rel="prev" title="Accessing ITS_LIVE data via S3 bucket" href="accessing_s3_data_noregion.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="docsearch:language" content="None"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
   </head>
-  
-  
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
 
-  
-  
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
-<form class="bd-search d-flex align-items-center"
-      action="search.html"
-      method="get">
-  <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search"
-         class="form-control"
-         name="q"
-         id="search-input"
-         placeholder="Search this book..."
-         aria-label="Search this book..."
-         autocomplete="off"
-         autocorrect="off"
-         autocapitalize="off"
-         spellcheck="false"/>
-  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
-  
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
-  
-  <div class="bd-container">
-    <div class="bd-container__inner bd-page-width">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
       
-      <div class="bd-sidebar-primary bd-sidebar">
-        
-
-  
-  <div class="sidebar-header-items sidebar-primary__section">
-    
-    
-    
-    
-  </div>
-  
-    <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item">
-  
-
-<a class="navbar-brand logo" href="intro.html">
-  
-  
-  
-  
-  
-    <p class="title logo__title">Using xarray to examine cloud-based glacier surface velocity data</p>
-  
-</a></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item navbar-nav active">
+      
+      
+      <h1 class="site-logo" id="site-title">Using xarray to examine cloud-based glacier surface velocity data</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
@@ -158,263 +120,404 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="software.html">Software and Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accessing_s3_data_noregion.html">Accessing ITS_LIVE data via S3 bucket</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Individual glacier data inspection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ind_glacier_analysis_new.html">Individual glacier surface velocity analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glacier_analysis_grouped.html">Region-scale glacier analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Acknowledgments.html">Acknowledgments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="software.html">
+   Software and Data
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="accessing_s3_data_noregion.html">
+   Accessing ITS_LIVE data via S3 bucket
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Individual glacier data inspection
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ind_glacier_analysis_new.html">
+   Individual glacier surface velocity analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="glacier_analysis_grouped.html">
+   Region-scale glacier analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Summary.html">
+   Summary
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="Acknowledgments.html">
+   Acknowledgments
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="References.html">
+   References
+  </a>
+ </li>
 </ul>
 
     </div>
 </nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
     </div>
-  
-  
-  <div class="sidebar-primary-items__end sidebar-primary__section">
-  </div>
-  
-  <div id="rtd-footer-container"></div>
+    <div id="rtd-footer-container"></div>
+</div>
 
 
-      </div>
-      
-      <main id="main-content" class="bd-main">
-        
-        
+          
 
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
 <div class="sbt-scroll-pixel-helper"></div>
-
-          <div class="bd-content">
-            <div class="bd-article-container">
-              
-              <div class="bd-header-article">
-<div class="header-article-items header-article__inner">
-  
-    <div class="header-article-items__start">
-      
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <span class="fa-solid fa-bars"></span>
-</label></div>
-      
-    </div>
-  
-  
-    <div class="header-article-items__end">
-      
-        <div class="header-article-item">
-
-<div class="article-header-buttons">
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
 
 
 
-
-
-<div class="dropdown dropdown-launch-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
-    <i class="fas fa-rocket"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://mybinder.org/v2/gh/e-marshall/itslive/master?urlpath=lab/tree/ind_glacier_data_inspection_analysis.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch onBinder"
-   data-bs-placement="left" data-bs-toggle="tooltip"
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
 >
   
 
-<span class="btn__icon-container">
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/e-marshall/itslive/master?urlpath=lab/tree/ind_glacier_data_inspection_analysis.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
   
     <img src="_static/images/logo_binder.svg">
   </span>
-<span class="btn__text-container">Binder</span>
+<span class="headerbtn__text-container">Binder</span>
 </a>
-</li>
+
+      </li>
       
-  </ul>
+    </ul>
+  </div>
 </div>
-
-
-
-
-
-
-<div class="dropdown dropdown-source-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
-    <i class="fab fa-github"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://github.com/e-marshall/itslive" target="_blank"
-   class="btn btn-sm btn-source-repository-button dropdown-item"
-   title="Source repository"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fab fa-github"></i>
-  </span>
-<span class="btn__text-container">Repository</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li><a href="https://github.com/e-marshall/itslive/issues/new?title=Issue%20on%20page%20%2Find_glacier_data_inspection_analysis.html&body=Your%20issue%20content%20here." target="_blank"
-   class="btn btn-sm btn-source-issues-button dropdown-item"
-   title="Open an issue"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-lightbulb"></i>
-  </span>
-<span class="btn__text-container">Open issue</span>
-</a>
-</li>
-      
-  </ul>
-</div>
-
-
-
-
-
-
-<div class="dropdown dropdown-download-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
-    <i class="fas fa-download"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="_sources/ind_glacier_data_inspection_analysis.ipynb" target="_blank"
-   class="btn btn-sm btn-download-source-button dropdown-item"
-   title="Download source file"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file"></i>
-  </span>
-<span class="btn__text-container">.ipynb</span>
-</a>
-</li>
-      
-      
-      
-      
-      <li>
-<button onclick="window.print()"
-  class="btn btn-sm btn-download-pdf-button dropdown-item"
-  title="Print to PDF"
-  data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  <i class="fas fa-file-pdf"></i>
-  </span>
-<span class="btn__text-container">.pdf</span>
-</button>
-</li>
-      
-  </ul>
-</div>
-
-
-
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
-  title="Fullscreen mode"
-  data-bs-placement="bottom" data-bs-toggle="tooltip"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
 >
   
 
-<span class="btn__icon-container">
+<span class="headerbtn__icon-container">
   <i class="fas fa-expand"></i>
   </span>
 
 </button>
 
-
-<script>
-document.write(`
-  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
   </button>
-`);
-</script>
-
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</label>
-</div></div>
-      
-    </div>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/e-marshall/itslive"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
   
-</div>
-</div>
-              
-              
 
-<div id="jb-print-docs-body" class="onlyprint">
-    <h1>Individual glacier data inspection</h1>
-    <!-- Table of contents -->
-    <div id="print-main-content">
-        <div id="jb-print-toc">
-            
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-in-its-live-data">Reading in ITS_LIVE data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-vector-data">Read in vector data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crop-rgi-to-its-live-extent">Crop RGI to ITS_LIVE extent</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clip-its-live-dataset-to-individual-glacier-extent">Clip ITS_LIVE dataset to individual glacier extent</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-its-live-data">Exploring ITS_LIVE data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examining-velocity-data-from-each-satellite-in-its-live-dataset">Examining velocity data from each satellite in <code class="docutils literal notranslate"><span class="pre">ITS_LIVE</span></code> dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-coverage-along-a-dimension">Checking coverage along a dimension</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#looking-into-mid-dates-dimension">Looking into <code class="docutils literal notranslate"><span class="pre">mid_dates</span></code> dimension…</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-data-coverage-over-time-series">Exploring data coverage over time series</a></li>
-</ul>
-            </nav>
-        </div>
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/e-marshall/itslive/issues/new?title=Issue%20on%20page%20%2Find_glacier_data_inspection_analysis.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/ind_glacier_data_inspection_analysis.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
     </div>
 </div>
 
-              
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-in-its-live-data">
+   Reading in ITS_LIVE data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-in-vector-data">
+   Read in vector data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#crop-rgi-to-its-live-extent">
+   Crop RGI to ITS_LIVE extent
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#clip-its-live-dataset-to-individual-glacier-extent">
+     Clip ITS_LIVE dataset to individual glacier extent
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exploring-its-live-data">
+   Exploring ITS_LIVE data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examining-velocity-data-from-each-satellite-in-its-live-dataset">
+   Examining velocity data from each satellite in
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     ITS_LIVE
+    </span>
+   </code>
+   dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#checking-coverage-along-a-dimension">
+   Checking coverage along a dimension
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#looking-into-mid-dates-dimension">
+     Looking into
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       mid_dates
+      </span>
+     </code>
+     dimension…
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exploring-data-coverage-over-time-series">
+   Exploring data coverage over time series
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Individual glacier data inspection</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#reading-in-its-live-data">
+   Reading in ITS_LIVE data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-in-vector-data">
+   Read in vector data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#crop-rgi-to-its-live-extent">
+   Crop RGI to ITS_LIVE extent
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#clip-its-live-dataset-to-individual-glacier-extent">
+     Clip ITS_LIVE dataset to individual glacier extent
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exploring-its-live-data">
+   Exploring ITS_LIVE data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#examining-velocity-data-from-each-satellite-in-its-live-dataset">
+   Examining velocity data from each satellite in
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     ITS_LIVE
+    </span>
+   </code>
+   dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#checking-coverage-along-a-dimension">
+   Checking coverage along a dimension
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#looking-into-mid-dates-dimension">
+     Looking into
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       mid_dates
+      </span>
+     </code>
+     dimension…
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#exploring-data-coverage-over-time-series">
+   Exploring data coverage over time series
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
                 
-<div id="searchbox"></div>
-                <article class="bd-article" role="main">
-                  
-  <section id="individual-glacier-data-inspection">
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="individual-glacier-data-inspection">
 <h1>Individual glacier data inspection<a class="headerlink" href="#individual-glacier-data-inspection" title="Permalink to this headline">#</a></h1>
 <p>This notebook will walk through steps to read in and organize velocity data and clip it to the extent of a single glacier. The tools we will use include <strong>xarray</strong>, <strong>rioxarray</strong>, <strong>geopandas</strong>, and <strong>flox</strong>.</p>
 <p>To clip its_live data to the extent of a single glacier we will use a vector dataset of glacier outlines, the <a class="reference external" href="https://nsidc.org/data/nsidc-0770">Randolph Glacier Inventory</a>.</p>
@@ -454,13 +557,37 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="nn">Input In [1],</span> in <span class="ni">&lt;cell line: 10&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Polygon</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="ne">---&gt; </span><span class="mi">10</span> <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">cartopy.mpl.gridliner</span> <span class="kn">import</span> <span class="n">LONGITUDE_FORMATTER</span><span class="p">,</span> <span class="n">LATITUDE_FORMATTER</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="kn">import</span> <span class="nn">cartopy</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;cartopy&#39;
+</pre></div>
 </div>
-<section id="reading-in-its-live-data">
+</div>
+</div>
+<div class="section" id="reading-in-its-live-data">
 <h2>Reading in ITS_LIVE data<a class="headerlink" href="#reading-in-its-live-data" title="Permalink to this headline">#</a></h2>
 <p>We will use some of the functions we defined in the data access notebook in this notebook and others within this tutorial. They will all be within the <code class="docutils literal notranslate"><span class="pre">itslivetools</span></code> package.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itslivetools</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="nn">Input In [2],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">itslivetools</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;itslivetools&#39;
 </pre></div>
 </div>
 </div>
@@ -475,7 +602,14 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dict_keys([&#39;type&#39;, &#39;features&#39;])
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">Input In [3],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s1">&#39;https://its-live-data.s3.amazonaws.com/datacubes/catalog_v02.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">url_catalog</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">itslive_catalog</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">url_catalog</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">itslive_catalog</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+<span class="ne">NameError</span>: name &#39;urllib&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -490,7 +624,13 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;http://its-live-data.s3.amazonaws.com/datacubes/v02/N20E080/ITS_LIVE_vel_EPSG32645_G0120_X250000_Y3150000.zarr&#39;]
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">Input In [4],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">url</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">find_granule_by_point</span><span class="p">(</span><span class="n">itslive_catalog</span><span class="p">,</span> <span class="p">[</span><span class="mf">84.56</span><span class="p">,</span> <span class="mf">28.54</span><span class="p">])</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">url</span>
+
+<span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -504,82 +644,12 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">Input In [5],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">read_in_s3</span><span class="p">(</span><span class="n">url</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">dc</span>
 
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/itslivetools/utility_fns.py:20,</span> in <span class="ni">read_in_s3</span><span class="nt">(http_url)</span>
-<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">http_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">,</span><span class="s1">&#39;s3&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="n">s3_url</span> <span class="o">=</span> <span class="n">s3_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.s3.amazonaws.com&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">20</span> <span class="n">datacube</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">s3_url</span><span class="p">,</span> <span class="n">engine</span> <span class="o">=</span> <span class="s1">&#39;zarr&#39;</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span>                             <span class="n">storage_options</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;anon&#39;</span><span class="p">:</span><span class="kc">True</span><span class="p">},</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>                             <span class="n">chunks</span> <span class="o">=</span> <span class="s1">&#39;auto&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span> <span class="k">return</span> <span class="n">datacube</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/backends/api.py:572,</span> in <span class="ni">open_dataset</span><span class="nt">(filename_or_obj, engine, chunks, cache, decode_cf, mask_and_scale, decode_times, decode_timedelta, use_cftime, concat_characters, decode_coords, drop_variables, inline_array, chunked_array_type, from_array_kwargs, backend_kwargs, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">565</span> <span class="n">overwrite_encoded_chunks</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;overwrite_encoded_chunks&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">566</span> <span class="n">backend_ds</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">567</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">568</span>     <span class="n">drop_variables</span><span class="o">=</span><span class="n">drop_variables</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">569</span>     <span class="o">**</span><span class="n">decoders</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">570</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">571</span> <span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">572</span> <span class="n">ds</span> <span class="o">=</span> <span class="n">_dataset_from_backend_dataset</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">573</span>     <span class="n">backend_ds</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">574</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">575</span>     <span class="n">engine</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">576</span>     <span class="n">chunks</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">577</span>     <span class="n">cache</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">578</span>     <span class="n">overwrite_encoded_chunks</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">579</span>     <span class="n">inline_array</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">580</span>     <span class="n">chunked_array_type</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">581</span>     <span class="n">from_array_kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">582</span>     <span class="n">drop_variables</span><span class="o">=</span><span class="n">drop_variables</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">583</span>     <span class="o">**</span><span class="n">decoders</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">584</span>     <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">585</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">586</span> <span class="k">return</span> <span class="n">ds</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/backends/api.py:367,</span> in <span class="ni">_dataset_from_backend_dataset</span><span class="nt">(backend_ds, filename_or_obj, engine, chunks, cache, overwrite_encoded_chunks, inline_array, chunked_array_type, from_array_kwargs, **extra_tokens)</span>
-<span class="g g-Whitespace">    </span><span class="mi">365</span>     <span class="n">ds</span> <span class="o">=</span> <span class="n">backend_ds</span>
-<span class="g g-Whitespace">    </span><span class="mi">366</span> <span class="k">else</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">367</span>     <span class="n">ds</span> <span class="o">=</span> <span class="n">_chunk_ds</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">368</span>         <span class="n">backend_ds</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">369</span>         <span class="n">filename_or_obj</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">370</span>         <span class="n">engine</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">371</span>         <span class="n">chunks</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">372</span>         <span class="n">overwrite_encoded_chunks</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">373</span>         <span class="n">inline_array</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">374</span>         <span class="n">chunked_array_type</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">375</span>         <span class="n">from_array_kwargs</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">376</span>         <span class="o">**</span><span class="n">extra_tokens</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">377</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">379</span> <span class="n">ds</span><span class="o">.</span><span class="n">set_close</span><span class="p">(</span><span class="n">backend_ds</span><span class="o">.</span><span class="n">_close</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">381</span> <span class="c1"># Ensure source filename always stored in dataset object</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/backends/api.py:315,</span> in <span class="ni">_chunk_ds</span><span class="nt">(backend_ds, filename_or_obj, engine, chunks, overwrite_encoded_chunks, inline_array, chunked_array_type, from_array_kwargs, **extra_tokens)</span>
-<span class="g g-Whitespace">    </span><span class="mi">304</span> <span class="k">def</span> <span class="nf">_chunk_ds</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">305</span>     <span class="n">backend_ds</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">306</span>     <span class="n">filename_or_obj</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">313</span>     <span class="o">**</span><span class="n">extra_tokens</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">314</span> <span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">315</span>     <span class="n">chunkmanager</span> <span class="o">=</span> <span class="n">guess_chunkmanager</span><span class="p">(</span><span class="n">chunked_array_type</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">317</span>     <span class="c1"># TODO refactor to move this dask-specific logic inside the DaskManager class</span>
-<span class="g g-Whitespace">    </span><span class="mi">318</span>     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunkmanager</span><span class="p">,</span> <span class="n">DaskManager</span><span class="p">):</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/xarray/core/parallelcompat.py:87,</span> in <span class="ni">guess_chunkmanager</span><span class="nt">(manager)</span>
-<span class="g g-Whitespace">     </span><span class="mi">85</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">86</span>     <span class="k">if</span> <span class="n">manager</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chunkmanagers</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">87</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">88</span>             <span class="sa">f</span><span class="s2">&quot;unrecognized chunk manager </span><span class="si">{</span><span class="n">manager</span><span class="si">}</span><span class="s2"> - must be one of: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">chunkmanagers</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">89</span>         <span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">91</span>     <span class="k">return</span> <span class="n">chunkmanagers</span><span class="p">[</span><span class="n">manager</span><span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">92</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">manager</span><span class="p">,</span> <span class="n">ChunkManagerEntrypoint</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">93</span>     <span class="c1"># already a valid ChunkManager so just pass through</span>
-
-<span class="ne">ValueError</span>: unrecognized chunk manager dask - must be one of: []
+<span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -598,7 +668,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [6],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc</span><span class="o">.</span><span class="n">chunksizes</span>
 
 <span class="ne">NameError</span>: name &#39;dc&#39; is not defined
@@ -615,7 +685,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [7],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc</span><span class="o">.</span><span class="n">chunks</span>
 
 <span class="ne">NameError</span>: name &#39;dc&#39; is not defined
@@ -637,7 +707,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [8],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc</span><span class="o">.</span><span class="n">mapping</span>
 
 <span class="ne">NameError</span>: name &#39;dc&#39; is not defined
@@ -657,7 +727,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="nn">Input In [9],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
 <span class="ne">----&gt; </span><span class="mi">3</span>     <span class="nb">print</span><span class="p">(</span><span class="n">dc</span><span class="o">.</span><span class="n">mid_date</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
@@ -677,7 +747,7 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [10],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc_timesorted</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="n">dc</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">dc_timesorted</span>
 
@@ -702,7 +772,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [11],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc_timesorted</span>
 
 <span class="ne">NameError</span>: name &#39;dc_timesorted&#39; is not defined
@@ -721,7 +791,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="nn">Input In [12],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
 <span class="ne">----&gt; </span><span class="mi">3</span>     <span class="nb">print</span><span class="p">(</span><span class="n">dc_timesorted</span><span class="o">.</span><span class="n">mid_date</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 
@@ -730,8 +800,8 @@ dc_timesorted_false</p>
 </div>
 </div>
 </div>
-</section>
-<section id="read-in-vector-data">
+</div>
+<div class="section" id="read-in-vector-data">
 <h2>Read in vector data<a class="headerlink" href="#read-in-vector-data" title="Permalink to this headline">#</a></h2>
 <p>We are going to read in RGI region 15 (SouthAsiaEast). RGI data is downloaded in lat/lon coordinates. We will project it to match the CRS of the ITS_LIVE dataset and then select an individual glacier to begin our analysis.</p>
 <div class="cell docutils container">
@@ -742,78 +812,124 @@ dc_timesorted_false</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">CPLE_HttpResponseError</span><span class="g g-Whitespace">                    </span>Traceback (most recent call last)
-<span class="nn">File fiona/ogrext.pyx:136,</span> in <span class="ni">fiona.ogrext.gdal_open_vector</span><span class="nt">()</span>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="nn">File fiona/_err.pyx:291,</span> in <span class="ni">fiona._err.exc_wrap_pointer</span><span class="nt">()</span>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-<span class="ne">CPLE_HttpResponseError</span>: HTTP response code: 429
-
-<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
-
-<span class="ne">DriverError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">se_asia</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">&#39;https://github.com/e-marshall/itslive/raw/master/rgi15_southasiaeast.geojson&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">se_asia</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/geopandas/io/file.py:248,</span> in <span class="ni">_read_file</span><span class="nt">(filename, bbox, mask, rows, engine, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">245</span>     <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">246</span>         <span class="n">path_or_bytes</span> <span class="o">=</span> <span class="n">filename</span>
-<span class="ne">--&gt; </span><span class="mi">248</span>     <span class="k">return</span> <span class="n">_read_file_fiona</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">249</span>         <span class="n">path_or_bytes</span><span class="p">,</span> <span class="n">from_bytes</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="n">bbox</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">rows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-<span class="g g-Whitespace">    </span><span class="mi">250</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">252</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">253</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown engine &#39;</span><span class="si">{</span><span class="n">engine</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/geopandas/io/file.py:289,</span> in <span class="ni">_read_file_fiona</span><span class="nt">(path_or_bytes, from_bytes, bbox, mask, rows, where, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">286</span>     <span class="n">reader</span> <span class="o">=</span> <span class="n">fiona</span><span class="o">.</span><span class="n">open</span>
-<span class="g g-Whitespace">    </span><span class="mi">288</span> <span class="k">with</span> <span class="n">fiona_env</span><span class="p">():</span>
-<span class="ne">--&gt; </span><span class="mi">289</span>     <span class="k">with</span> <span class="n">reader</span><span class="p">(</span><span class="n">path_or_bytes</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">as</span> <span class="n">features</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">290</span>         <span class="n">crs</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">crs_wkt</span>
-<span class="g g-Whitespace">    </span><span class="mi">291</span>         <span class="c1"># attempt to get EPSG code</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/fiona/env.py:457,</span> in <span class="ni">ensure_env_with_credentials.&lt;locals&gt;.wrapper</span><span class="nt">(*args, **kwds)</span>
-<span class="g g-Whitespace">    </span><span class="mi">454</span>     <span class="n">session</span> <span class="o">=</span> <span class="n">DummySession</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">456</span> <span class="k">with</span> <span class="n">env_ctor</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">457</span>     <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/fiona/__init__.py:292,</span> in <span class="ni">open</span><span class="nt">(fp, mode, driver, schema, crs, encoding, layer, vfs, enabled_drivers, crs_wkt, allow_unsupported_drivers, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">289</span>     <span class="n">path</span> <span class="o">=</span> <span class="n">parse_path</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">291</span> <span class="k">if</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">292</span>     <span class="n">colxn</span> <span class="o">=</span> <span class="n">Collection</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">293</span>         <span class="n">path</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">294</span>         <span class="n">mode</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">295</span>         <span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">296</span>         <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">297</span>         <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">298</span>         <span class="n">enabled_drivers</span><span class="o">=</span><span class="n">enabled_drivers</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">299</span>         <span class="n">allow_unsupported_drivers</span><span class="o">=</span><span class="n">allow_unsupported_drivers</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">300</span>         <span class="o">**</span><span class="n">kwargs</span>
-<span class="g g-Whitespace">    </span><span class="mi">301</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">302</span> <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;w&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">303</span>     <span class="n">colxn</span> <span class="o">=</span> <span class="n">Collection</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">304</span>         <span class="n">path</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">305</span>         <span class="n">mode</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">314</span>         <span class="o">**</span><span class="n">kwargs</span>
-<span class="g g-Whitespace">    </span><span class="mi">315</span>     <span class="p">)</span>
-
-<span class="nn">File ~/miniconda3/envs/itslive_tutorial/lib/python3.11/site-packages/fiona/collection.py:243,</span> in <span class="ni">Collection.__init__</span><span class="nt">(self, path, mode, driver, schema, crs, encoding, layer, vsi, archive, enabled_drivers, crs_wkt, ignore_fields, ignore_geometry, include_fields, wkt_version, allow_unsupported_drivers, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">241</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">242</span>     <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
-<span class="ne">--&gt; </span><span class="mi">243</span>     <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">244</span> <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">245</span>     <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">WritingSession</span><span class="p">()</span>
-
-<span class="nn">File fiona/ogrext.pyx:588,</span> in <span class="ni">fiona.ogrext.Session.start</span><span class="nt">()</span>
-
-<span class="nn">File fiona/ogrext.pyx:143,</span> in <span class="ni">fiona.ogrext.gdal_open_vector</span><span class="nt">()</span>
-
-<span class="ne">DriverError</span>: HTTP response code: 429
-</pre></div>
-</div>
-</div>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RGIId</th>
+      <th>GLIMSId</th>
+      <th>BgnDate</th>
+      <th>EndDate</th>
+      <th>CenLon</th>
+      <th>CenLat</th>
+      <th>O1Region</th>
+      <th>O2Region</th>
+      <th>Area</th>
+      <th>Zmin</th>
+      <th>...</th>
+      <th>Aspect</th>
+      <th>Lmax</th>
+      <th>Status</th>
+      <th>Connect</th>
+      <th>Form</th>
+      <th>TermType</th>
+      <th>Surging</th>
+      <th>Linkages</th>
+      <th>Name</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>RGI60-15.00001</td>
+      <td>G102044E29941N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.044042</td>
+      <td>29.941000</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.438</td>
+      <td>4996</td>
+      <td>...</td>
+      <td>251</td>
+      <td>850</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((102.03759 29.93828, 102.03759 29.938...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>RGI60-15.00002</td>
+      <td>G102042E29987N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.042346</td>
+      <td>29.987019</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.644</td>
+      <td>4947</td>
+      <td>...</td>
+      <td>244</td>
+      <td>1021</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((102.04195 29.99030, 102.04197 29.990...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RGI60-15.00003</td>
+      <td>G102041E29997N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.041130</td>
+      <td>29.997311</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.225</td>
+      <td>5019</td>
+      <td>...</td>
+      <td>274</td>
+      <td>812</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((102.03710 29.99774, 102.03719 29.998...</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 23 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -825,21 +941,127 @@ dc_timesorted_false</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#project rgi data to match itslive</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1">#we know the epsg from looking at the &#39;spatial epsg&#39; attr of the mapping var of the dc object</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">se_asia_prj</span> <span class="o">=</span> <span class="n">se_asia</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:32645&#39;</span><span class="p">)</span> 
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">se_asia_prj</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="ne">NameError</span>: name &#39;se_asia&#39; is not defined
-</pre></div>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>RGIId</th>
+      <th>GLIMSId</th>
+      <th>BgnDate</th>
+      <th>EndDate</th>
+      <th>CenLon</th>
+      <th>CenLat</th>
+      <th>O1Region</th>
+      <th>O2Region</th>
+      <th>Area</th>
+      <th>Zmin</th>
+      <th>...</th>
+      <th>Aspect</th>
+      <th>Lmax</th>
+      <th>Status</th>
+      <th>Connect</th>
+      <th>Form</th>
+      <th>TermType</th>
+      <th>Surging</th>
+      <th>Linkages</th>
+      <th>Name</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>RGI60-15.00001</td>
+      <td>G102044E29941N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.044042</td>
+      <td>29.941000</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.438</td>
+      <td>4996</td>
+      <td>...</td>
+      <td>251</td>
+      <td>850</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((1959630.570 3408951.748, 1959630.394...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>RGI60-15.00002</td>
+      <td>G102042E29987N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.042346</td>
+      <td>29.987019</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.644</td>
+      <td>4947</td>
+      <td>...</td>
+      <td>244</td>
+      <td>1021</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((1959271.126 3414873.173, 1959273.308...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RGI60-15.00003</td>
+      <td>G102041E29997N</td>
+      <td>19990920</td>
+      <td>-9999999</td>
+      <td>102.041130</td>
+      <td>29.997311</td>
+      <td>15</td>
+      <td>3</td>
+      <td>0.225</td>
+      <td>5019</td>
+      <td>...</td>
+      <td>274</td>
+      <td>812</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>9</td>
+      <td>9</td>
+      <td>None</td>
+      <td>POLYGON ((1958682.136 3415647.929, 1958684.710...</td>
+    </tr>
+  </tbody>
+</table>
+<p>3 rows × 23 columns</p>
+</div></div></div>
 </div>
 </div>
-</div>
-</section>
-<section id="crop-rgi-to-its-live-extent">
+<div class="section" id="crop-rgi-to-its-live-extent">
 <h2>Crop RGI to ITS_LIVE extent<a class="headerlink" href="#crop-rgi-to-its-live-extent" title="Permalink to this headline">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -853,12 +1075,12 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="nn">Input In [15],</span> in <span class="ni">&lt;cell line: 3&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#first, get vector bbox of itslive</span>
 <span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">bbox_dc</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">get_bbox_single</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">bbox_dc</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
 
-<span class="ne">NameError</span>: name &#39;dc&#39; is not defined
+<span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -874,7 +1096,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">16</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="nn">Input In [16],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#project from latlon to local utm </span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">bbox_dc</span> <span class="o">=</span> <span class="n">bbox_dc</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:32645&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">bbox_dc</span>
@@ -896,13 +1118,13 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">17</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="nn">Input In [17],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#subset rgi to bounds </span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">se_asia_subset</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">se_asia_prj</span><span class="p">,</span> <span class="n">bbox_dc</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">se_asia_subset</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">se_asia_subset</span><span class="o">.</span><span class="n">explore</span><span class="p">()</span>
 
-<span class="ne">NameError</span>: name &#39;se_asia_prj&#39; is not defined
+<span class="ne">NameError</span>: name &#39;bbox_dc&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -917,7 +1139,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [18],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_vec</span> <span class="o">=</span> <span class="n">se_asia_subset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">se_asia_subset</span><span class="p">[</span><span class="s1">&#39;RGIId&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;RGI60-15.04714&#39;</span><span class="p">]</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">sample_glacier_vec</span>
 
@@ -926,7 +1148,7 @@ dc_timesorted_false</p>
 </div>
 </div>
 </div>
-<section id="clip-its-live-dataset-to-individual-glacier-extent">
+<div class="section" id="clip-its-live-dataset-to-individual-glacier-extent">
 <h3>Clip ITS_LIVE dataset to individual glacier extent<a class="headerlink" href="#clip-its-live-dataset-to-individual-glacier-extent" title="Permalink to this headline">#</a></h3>
 <p>First, we need to use <code class="docutils literal notranslate"><span class="pre">rio.write_crs()</span></code> to assign a CRS to the itslive object. If we don’t do that first the <code class="docutils literal notranslate"><span class="pre">rio.clip()</span></code> command will produce an error</p>
 <p><em>Note</em>: you can only run write_crs() once, because it switches mapping from being a <code class="docutils literal notranslate"><span class="pre">data_var</span></code> to a <code class="docutils literal notranslate"><span class="pre">coord</span></code> so if you run it again it will produce a key error looking for a var that doesnt’ exist</p>
@@ -939,7 +1161,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">19</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [19],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">dc_timesorted</span> <span class="o">=</span> <span class="n">dc_timesorted</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epsg:</span><span class="si">{</span><span class="n">dc_timesorted</span><span class="o">.</span><span class="n">mapping</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;spatial_epsg&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;dc_timesorted&#39; is not defined
@@ -958,7 +1180,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">File</span> <span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
+<span class="n">File</span> <span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 
 <span class="ne">NameError</span>: name &#39;dc_timesorted&#39; is not defined
 </pre></div>
@@ -975,7 +1197,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">21</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [21],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_raster</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
@@ -993,7 +1215,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">22</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [22],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_raster_timemean</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
@@ -1010,7 +1232,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">23</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [23],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sample_glacier_raster_timemean</span><span class="o">.</span><span class="n">vx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">sample_glacier_raster_timemean</span><span class="o">.</span><span class="n">vy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster_timemean&#39; is not defined
@@ -1029,15 +1251,15 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">24</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="nn">Input In [24],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">sample_glacier_vec</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">);</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_vec&#39; is not defined
 </pre></div>
 </div>
-<img alt="_images/3dac2c1aa325cb9de116241c70bacd9862eb7033620370d7185d3b0ee2149df2.png" src="_images/3dac2c1aa325cb9de116241c70bacd9862eb7033620370d7185d3b0ee2149df2.png" />
+<img alt="_images/ind_glacier_data_inspection_analysis_41_1.png" src="_images/ind_glacier_data_inspection_analysis_41_1.png" />
 </div>
 </div>
 <p>Now let’s take a look at the x and y components of velocity, again averaging over time:</p>
@@ -1053,15 +1275,15 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">25</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="nn">Input In [25],</span> in <span class="ni">&lt;cell line: 3&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span> <span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
 <span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">vx</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">vy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">vy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
 </pre></div>
 </div>
-<img alt="_images/ac8bcd217d3733a7eb3570c220a03e8ba0264d62da826096e082353e225b8b49.png" src="_images/ac8bcd217d3733a7eb3570c220a03e8ba0264d62da826096e082353e225b8b49.png" />
+<img alt="_images/ind_glacier_data_inspection_analysis_43_1.png" src="_images/ind_glacier_data_inspection_analysis_43_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1073,17 +1295,17 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">26</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">v_error</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+<span class="nn">Input In [26],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">v_error</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="exploring-its-live-data">
+</div>
+</div>
+<div class="section" id="exploring-its-live-data">
 <h2>Exploring ITS_LIVE data<a class="headerlink" href="#exploring-its-live-data" title="Permalink to this headline">#</a></h2>
 <p>ITS_LIVE data cubes come with many (53!) variables that carry information about the estimated surface velocities and the satellite images that were used to generate the surface velocity estimates. We won’t examine all of this information here but let’s look at a litte bit.</p>
 <p>To start with, let’s look at the satellite imagery used to generate the velocity data.</p>
@@ -1097,7 +1319,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">27</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [27],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
@@ -1114,7 +1336,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">28</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [28],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">satellite_img2</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
@@ -1127,8 +1349,8 @@ dc_timesorted_false</p>
 <code class="docutils literal notranslate"><span class="pre">2B</span></code> = Sentinel 2B, <code class="docutils literal notranslate"><span class="pre">8.</span></code> = Landsat8 and <code class="docutils literal notranslate"><span class="pre">9.</span></code> = Landsat9</p>
 <p>Let’s re-arrange these string arrays into a format that is easier to work with.</p>
 <p>First, we’ll make a set of all the different string values in the satellite image variables:</p>
-</section>
-<section id="examining-velocity-data-from-each-satellite-in-its-live-dataset">
+</div>
+<div class="section" id="examining-velocity-data-from-each-satellite-in-its-live-dataset">
 <h2>Examining velocity data from each satellite in <code class="docutils literal notranslate"><span class="pre">ITS_LIVE</span></code> dataset<a class="headerlink" href="#examining-velocity-data-from-each-satellite-in-its-live-dataset" title="Permalink to this headline">#</a></h2>
 <p>What if we only wanted to look at the velocity estimates from landat8?</p>
 <div class="cell docutils container">
@@ -1141,7 +1363,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">29</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [29],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">l8_data</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sample_glacier_raster</span><span class="p">[</span><span class="s1">&#39;satellite_img1&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;8.&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">l8_data</span>
 
@@ -1162,7 +1384,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">30</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [30],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">l8_condition</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span> <span class="o">==</span> <span class="s1">&#39;8.&#39;</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">l8_subset</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span><span class="o">=</span><span class="n">l8_condition</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">l8_subset</span>
@@ -1182,8 +1404,8 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">31</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">l8_subset</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+<span class="nn">Input In [31],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">l8_subset</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;l8_subset&#39; is not defined
 </pre></div>
@@ -1203,7 +1425,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [32],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">l9_condition</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span> <span class="o">==</span> <span class="s1">&#39;9.&#39;</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">l9_subset</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span><span class="o">=</span><span class="n">l9_condition</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">l9_subset</span>
@@ -1223,8 +1445,8 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">33</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">l9_subset</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+<span class="nn">Input In [33],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">l9_subset</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;l9_subset&#39; is not defined
 </pre></div>
@@ -1243,7 +1465,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">34</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [34],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">s1_condition</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;1A&#39;</span><span class="p">,</span><span class="s1">&#39;1B&#39;</span><span class="p">])</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">s1_subset</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span> <span class="o">=</span> <span class="n">s1_condition</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">s1_subset</span>
@@ -1262,8 +1484,8 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">35</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">s1_subset</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+<span class="nn">Input In [35],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">s1_subset</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;s1_subset&#39; is not defined
 </pre></div>
@@ -1281,7 +1503,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">36</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [36],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">s2_condition</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;2A&#39;</span><span class="p">,</span><span class="s1">&#39;2B&#39;</span><span class="p">])</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">s2_subset</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span><span class="o">=</span><span class="n">s2_condition</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">s2_subset</span>
@@ -1300,8 +1522,8 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">37</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">s2_subset</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+<span class="nn">Input In [37],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">s2_subset</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;s2_subset&#39; is not defined
 </pre></div>
@@ -1309,8 +1531,8 @@ dc_timesorted_false</p>
 </div>
 </div>
 <p>ITS_LIVE is exciting because it combines velocity data from a number of satellites into one accessible and efficient dataset. From this brief look, you can see snapshot overviews of the different data within the dataset and begin to think about processing steps you might take to work with the data further.</p>
-</section>
-<section id="checking-coverage-along-a-dimension">
+</div>
+<div class="section" id="checking-coverage-along-a-dimension">
 <h2>Checking coverage along a dimension<a class="headerlink" href="#checking-coverage-along-a-dimension" title="Permalink to this headline">#</a></h2>
 <p>It would be nice to be able to scan/visualize and observe coverage of a variable along a dimension</p>
 <p>First need to make a mask that will tell us all the possible ‘valid’ pixels. ie pixels over ice v. rock.</p>
@@ -1326,7 +1548,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">38</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [38],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">valid_pixels</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">valid_pix_max</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">sample_glacier_raster</span><span class="p">[</span><span class="s1">&#39;cov&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_pixels</span><span class="o">/</span><span class="n">valid_pix_max</span>
@@ -1336,7 +1558,7 @@ dc_timesorted_false</p>
 </div>
 </div>
 </div>
-<section id="looking-into-mid-dates-dimension">
+<div class="section" id="looking-into-mid-dates-dimension">
 <h3>Looking into <code class="docutils literal notranslate"><span class="pre">mid_dates</span></code> dimension…<a class="headerlink" href="#looking-into-mid-dates-dimension" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>how many duplicate time steps are there?</p></li>
@@ -1351,7 +1573,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">39</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="nn">Input In [39],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1">#how many time steps are duplicates?, there are 16872 unique vals in mid_dates</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">sample_glacier_raster</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
 
@@ -1371,7 +1593,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">40</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [40],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">test_gb</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">mid_date</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">type</span><span class="p">(</span><span class="n">test_gb</span><span class="o">.</span><span class="n">groups</span><span class="p">)</span>
 
@@ -1393,7 +1615,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">41</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [41],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">val_ls</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">test_gb</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span> 
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">val_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;num_vals&#39;</span><span class="p">:</span> <span class="n">val_ls</span><span class="p">})</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">val_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -1414,7 +1636,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">42</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [42],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">val_df_sub</span> <span class="o">=</span> <span class="n">val_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">val_df</span><span class="p">[</span><span class="s1">&#39;num_vals&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">val_df_sub</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
@@ -1433,7 +1655,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">43</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [43],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">val_df_sub</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">()</span>
 
 <span class="ne">NameError</span>: name &#39;val_df_sub&#39; is not defined
@@ -1452,7 +1674,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">44</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [44],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">duplicate_middate</span> <span class="o">=</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span> <span class="o">=</span> <span class="s1">&#39;2013-09-30T04:56:01.528083968&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">duplicate_middate</span>
 
@@ -1481,7 +1703,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">45</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [45],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;mid date: &#39;</span><span class="p">,</span> <span class="n">duplicate_middate</span><span class="o">.</span><span class="n">mid_date</span><span class="o">.</span><span class="n">mid_date</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;image 1 date for entries 1 and 2: &#39;</span><span class="p">,</span> <span class="n">duplicate_middate</span><span class="o">.</span><span class="n">acquisition_date_img1</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;image 2 date for entries 1 and 2: &#39;</span><span class="p">,</span> <span class="n">duplicate_middate</span><span class="o">.</span><span class="n">acquisition_date_img2</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -1517,7 +1739,7 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">47</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [47],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">find_dim_duplicates</span><span class="p">(</span><span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="s1">&#39;2013-01-01&#39;</span><span class="p">,</span><span class="s1">&#39;2014-01-01&#39;</span><span class="p">)))</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
@@ -1525,9 +1747,9 @@ dc_timesorted_false</p>
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="exploring-data-coverage-over-time-series">
+</div>
+</div>
+<div class="section" id="exploring-data-coverage-over-time-series">
 <h2>Exploring data coverage over time series<a class="headerlink" href="#exploring-data-coverage-over-time-series" title="Permalink to this headline">#</a></h2>
 <p>Let’s take a look at the data coverage over this glacier across the time series:</p>
 <div class="cell docutils container">
@@ -1540,14 +1762,14 @@ dc_timesorted_false</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">48</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="nn">Input In [48],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
 <span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span><span class="n">marker</span> <span class="o">=</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
 </pre></div>
 </div>
-<img alt="_images/3b4d4654c674ade9ae914e8c780d458f6432a79cebf9f0c76e49473695890ef3.png" src="_images/3b4d4654c674ade9ae914e8c780d458f6432a79cebf9f0c76e49473695890ef3.png" />
+<img alt="_images/ind_glacier_data_inspection_analysis_87_1.png" src="_images/ind_glacier_data_inspection_analysis_87_1.png" />
 </div>
 </div>
 <p>But what if we wanted to explore the relative coverage of the different sensors that make up the its_live dataset as a whole?
@@ -1561,7 +1783,7 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">49</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [49],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">cov</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
@@ -1578,7 +1800,7 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">50</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [50],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
@@ -1593,16 +1815,6 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">51</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">flox.xarray</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;flox&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <p>This is the <code class="docutils literal notranslate"><span class="pre">xr.DataArray</span></code> on which we will perform the grouping operation using <code class="docutils literal notranslate"><span class="pre">flox</span></code></p>
 <div class="cell docutils container">
@@ -1614,7 +1826,7 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">52</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [52],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">cov</span>
 
 <span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
@@ -1642,10 +1854,10 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">53</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">coverage</span> <span class="o">=</span> <span class="n">flox</span><span class="o">.</span><span class="n">xarray</span><span class="o">.</span><span class="n">xarray_reduce</span><span class="p">(</span>
+<span class="nn">Input In [53],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">coverage</span> <span class="o">=</span> <span class="n">flox</span><span class="o">.</span><span class="n">xarray</span><span class="o">.</span><span class="n">xarray_reduce</span><span class="p">(</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="c1"># array to reduce</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">cov</span><span class="p">,</span>
+<span class="ne">----&gt; </span><span class="mi">3</span>     <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">cov</span><span class="p">,</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="c1"># Grouping by two variables</span>
 <span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span><span class="o">.</span><span class="n">compute</span><span class="p">(),</span>
 <span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">sample_glacier_raster</span><span class="o">.</span><span class="n">mid_date</span><span class="p">,</span>
@@ -1655,7 +1867,7 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
 <span class="g g-Whitespace">     </span><span class="mi">10</span>     <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
 <span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="p">)</span>
 
-<span class="ne">NameError</span>: name &#39;flox&#39; is not defined
+<span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -1671,7 +1883,7 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">54</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="nn">Input In [54],</span> in <span class="ni">&lt;cell line: 1&gt;</span><span class="nt">()</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">plt</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">coverage</span><span class="o">.</span><span class="n">mid_date</span><span class="p">,</span> <span class="n">coverage</span><span class="o">.</span><span class="n">satellite_img1</span><span class="p">,</span> <span class="n">coverage</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
 
@@ -1681,8 +1893,8 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
 </div>
 </div>
 <p>This notebook displayed basic data inspection steps that you can take when working with a new dataset. The following notebooks will demonstrate further processing, analytical and visualization steps you can take.</p>
-</section>
-</section>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -1696,7 +1908,7 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
             mode: "python"
         },
         kernelOptions: {
-            name: "python3",
+            kernelName: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -1704,117 +1916,50 @@ We can use <code class="docutils literal notranslate"><span class="pre">groupby<
     </script>
     <script>kernelName = 'python3'</script>
 
-                </article>
+              </div>
               
-
-              
-              
-                <footer class="bd-footer-article">
-                  
-<div class="footer-article-items footer-article__inner">
-  
-    <div class="footer-article-item"><!-- Previous / next buttons -->
-<div class="prev-next-area">
-    <a class="left-prev"
-       href="accessing_s3_data_noregion.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Accessing ITS_LIVE data via S3 bucket</p>
-      </div>
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="accessing_s3_data_noregion.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Accessing ITS_LIVE data via S3 bucket</p>
+        </div>
     </a>
-    <a class="right-next"
-       href="ind_glacier_analysis_new.html"
-       title="next page">
-      <div class="prev-next-info">
+    <a class='right-next' id="next-link" href="ind_glacier_analysis_new.html" title="next page">
+    <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Individual glacier surface velocity analysis</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
-</div></div>
-  
-</div>
-
-                </footer>
-              
-            </div>
-            
-            
-              
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-in-its-live-data">Reading in ITS_LIVE data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-vector-data">Read in vector data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#crop-rgi-to-its-live-extent">Crop RGI to ITS_LIVE extent</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clip-its-live-dataset-to-individual-glacier-extent">Clip ITS_LIVE dataset to individual glacier extent</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-its-live-data">Exploring ITS_LIVE data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examining-velocity-data-from-each-satellite-in-its-live-dataset">Examining velocity data from each satellite in <code class="docutils literal notranslate"><span class="pre">ITS_LIVE</span></code> dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-coverage-along-a-dimension">Checking coverage along a dimension</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#looking-into-mid-dates-dimension">Looking into <code class="docutils literal notranslate"><span class="pre">mid_dates</span></code> dimension…</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exploring-data-coverage-over-time-series">Exploring data coverage over time series</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
-              
-            
-          </div>
-          <footer class="bd-footer-content">
-            
-<div class="bd-footer-content__inner container">
-  
-  <div class="footer-item">
-    
-<p class="component-author">
-By emma marshall
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  <p class="copyright">
-    
-      © Copyright 2022.
-      <br/>
-    
-  </p>
-
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-  <div class="footer-item">
-    
-  </div>
-  
-</div>
-          </footer>
-        
-
-      </main>
     </div>
-  </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By emma marshall<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
 
-  <footer class="bd-footer">
-  </footer>
+
   </body>
 </html>
