@@ -5,9 +5,9 @@ format: jb-book
 root: intro
 chapters:
 - file: software.ipynb
-- file: accessing_s3_data_noregion.ipynb
-- file: ind_glacier_data_inspection_analysis.ipynb
-- file: ind_glacier_analysis_new.ipynb
+- file: accessing_s3_data.ipynb
+- file: ind_glacier_data_inspection.ipynb
+- file: ind_glacier_analysis.ipynb
 - file: glacier_analysis_grouped.ipynb
 - file: Summary.md
 - file: Acknowledgments.md
