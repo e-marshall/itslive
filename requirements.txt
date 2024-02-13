@@ -12,5 +12,4 @@ rioxarray==0.13.3
 s3fs==2024.2.0
 seaborn==0.13.2
 Shapely==1.8.2
-skimage==0.0
 xarray==2023.2.0
