@@ -10,4 +10,7 @@ Thanks for taking a look at this tutorial! This page contains guidlelines for ra
 
 - Make fixes, add content or improvements using GitHub Pull Requests
 
+<<<<<<< HEAD
 ### PR guidelines
+=======
+>>>>>>> new_itslive_approach

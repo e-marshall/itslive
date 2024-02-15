@@ -1,138 +1,138 @@
 name: itslive_tutorial
 channels:
-  - jmcmurray
+ # - jmcmurray
   - pyviz
   - conda-forge
   - defaults
 dependencies:
-  - _libgcc_mutex=0.1=conda_forge
-  - _openmp_mutex=4.5=2_gnu
-  - accessible-pygments=0.0.4=pyhd8ed1ab_0
+#  - _libgcc_mutex=0.1=conda_forge
+#  - _openmp_mutex=4.5=2_gnu
+#  - accessible-pygments=0.0.4=pyhd8ed1ab_0
   - affine=2.4.0=pyhd8ed1ab_0
-  - aiobotocore=2.5.0=pyhd8ed1ab_0
-  - aiohttp=3.8.4=py311h2582759_0
-  - aioitertools=0.11.0=pyhd8ed1ab_0
-  - aiosignal=1.3.1=pyhd8ed1ab_0
-  - alabaster=0.7.13=pyhd8ed1ab_0
-  - anyio=3.6.2=pyhd8ed1ab_0
-  - appdirs=1.4.4=pyh9f0ad1d_0
-  - argon2-cffi=21.3.0=pyhd8ed1ab_0
-  - argon2-cffi-bindings=21.2.0=py311hd4cff14_3
-  - asciitree=0.3.3=py_2
-  - asttokens=2.2.1=pyhd8ed1ab_0
-  - async-lru=2.0.2=pyhd8ed1ab_0
-  - async-timeout=4.0.2=pyhd8ed1ab_0
-  - attrs=21.4.0=pyhd8ed1ab_0
-  - aws-c-auth=0.6.27=he072965_1
-  - aws-c-cal=0.5.26=hf677bf3_1
-  - aws-c-common=0.8.19=hd590300_0
-  - aws-c-compression=0.2.16=hbad4bc6_7
-  - aws-c-event-stream=0.2.20=hb4b372c_7
-  - aws-c-http=0.7.7=h2632f9a_4
-  - aws-c-io=0.13.21=h9fef7b8_5
-  - aws-c-mqtt=0.8.11=h2282364_1
-  - aws-c-s3=0.3.0=hcb5a9b2_2
-  - aws-c-sdkutils=0.1.9=hbad4bc6_2
-  - aws-checksums=0.1.14=hbad4bc6_7
-  - aws-crt-cpp=0.20.1=he0fdcb3_3
-  - aws-sdk-cpp=1.10.57=hb0b1f3a_12
-  - babel=2.12.1=pyhd8ed1ab_1
-  - backcall=0.2.0=pyh9f0ad1d_0
-  - backports=1.0=pyhd8ed1ab_3
-  - backports.functools_lru_cache=1.6.4=pyhd8ed1ab_0
-  - beautifulsoup4=4.12.2=pyha770c72_0
-  - bleach=6.0.0=pyhd8ed1ab_0
-  - blosc=1.21.4=h0f2a231_0
+#  - aiobotocore=2.5.0=pyhd8ed1ab_0
+#  - aiohttp=3.8.4=py311h2582759_0
+#  - aioitertools=0.11.0=pyhd8ed1ab_0
+ # - aiosignal=1.3.1=pyhd8ed1ab_0
+ # - alabaster=0.7.13=pyhd8ed1ab_0
+ # - anyio=3.6.2=pyhd8ed1ab_0
+ # - appdirs=1.4.4=pyh9f0ad1d_0
+ # - argon2-cffi=21.3.0=pyhd8ed1ab_0
+ # - argon2-cffi-bindings=21.2.0=py311hd4cff14_3
+ # - asciitree=0.3.3=py_2
+ # - asttokens=2.2.1=pyhd8ed1ab_0
+ # - async-lru=2.0.2=pyhd8ed1ab_0
+ # - async-timeout=4.0.2=pyhd8ed1ab_0
+ # - attrs=21.4.0=pyhd8ed1ab_0
+ # - aws-c-auth=0.6.27=he072965_1
+ # - aws-c-cal=0.5.26=hf677bf3_1
+ # - aws-c-common=0.8.19=hd590300_0
+ # - aws-c-compression=0.2.16=hbad4bc6_7
+ # - aws-c-event-stream=0.2.20=hb4b372c_7
+ # - aws-c-http=0.7.7=h2632f9a_4
+ # - aws-c-io=0.13.21=h9fef7b8_5
+ # - aws-c-mqtt=0.8.11=h2282364_1
+ # - aws-c-s3=0.3.0=hcb5a9b2_2
+ # - aws-c-sdkutils=0.1.9=hbad4bc6_2
+ # - aws-checksums=0.1.14=hbad4bc6_7
+ # - aws-crt-cpp=0.20.1=he0fdcb3_3
+ # - aws-sdk-cpp=1.10.57=hb0b1f3a_12
+ # - babel=2.12.1=pyhd8ed1ab_1
+ # - backcall=0.2.0=pyh9f0ad1d_0
+ # - backports=1.0=pyhd8ed1ab_3
+ # - backports.functools_lru_cache=1.6.4=pyhd8ed1ab_0
+ # - beautifulsoup4=4.12.2=pyha770c72_0
+ # - bleach=6.0.0=pyhd8ed1ab_0
+ # - blosc=1.21.4=h0f2a231_0
   - bokeh=3.1.1=pyhd8ed1ab_0
-  - boost-cpp=1.78.0=h6582d0a_3
+ # - boost-cpp=1.78.0=h6582d0a_3
   - botocore=1.29.76=pyhd8ed1ab_0
-  - branca=0.6.0=pyhd8ed1ab_0
-  - brotli=1.0.9=h166bdaf_8
-  - brotli-bin=1.0.9=h166bdaf_8
-  - brotlipy=0.7.0=py311hd4cff14_1005
-  - bzip2=1.0.8=h7f98852_4
-  - c-ares=1.19.1=hd590300_0
+ # - branca=0.6.0=pyhd8ed1ab_0
+ # - brotli=1.0.9=h166bdaf_8
+ # - brotli-bin=1.0.9=h166bdaf_8
+ # - brotlipy=0.7.0=py311hd4cff14_1005
+ # - bzip2=1.0.8=h7f98852_4
+ # - c-ares=1.19.1=hd590300_0
   - ca-certificates=2023.05.30=h06a4308_0
   - cachetools=5.3.0=pyhd8ed1ab_0
-  - cairo=1.16.0=hbbf8b49_1016
+ # - cairo=1.16.0=hbbf8b49_1016
   - cartopy=0.21.1=py311hd88b842_1
   - certifi=2023.5.7=pyhd8ed1ab_0
   - cffi=1.15.1=py311h409f033_3
   - cfitsio=4.2.0=hd9d235c_0
   - cftime=1.6.2=py311h4c7f6c3_1
-  - charset-normalizer=2.1.1=pyhd8ed1ab_0
-  - click=8.1.3=unix_pyhd8ed1ab_2
-  - click-plugins=1.1.1=py_0
-  - cligj=0.7.2=pyhd8ed1ab_1
+ # - charset-normalizer=2.1.1=pyhd8ed1ab_0
+ # - click=8.1.3=unix_pyhd8ed1ab_2
+ # - click-plugins=1.1.1=py_0
+ #- cligj=0.7.2=pyhd8ed1ab_1
   - cloudpickle=2.2.1=pyhd8ed1ab_0
   - colorama=0.4.6=pyhd8ed1ab_0
   - colorcet=3.0.1=py_0
   - comm=0.1.3=pyhd8ed1ab_0
   - contourpy=1.0.7=py311ha3edf6b_0
-  - cryptography=40.0.2=py311h9b4c7bb_0
+ # - cryptography=40.0.2=py311h9b4c7bb_0
   - curl=8.1.2=h409715c_0
   - cycler=0.11.0=pyhd8ed1ab_0
   - cytoolz=0.12.0=py311hd4cff14_1
   - dask=2023.5.0=pyhd8ed1ab_0
   - dask-core=2023.5.0=pyhd8ed1ab_0
-  - dataclasses=0.8=pyhc8e2a94_3
-  - debugpy=1.6.7=py311hcafe171_0
-  - decorator=5.1.1=pyhd8ed1ab_0
-  - defusedxml=0.7.1=pyhd8ed1ab_0
+ # - dataclasses=0.8=pyhc8e2a94_3
+ # - debugpy=1.6.7=py311hcafe171_0
+ # - decorator=5.1.1=pyhd8ed1ab_0
+ # - defusedxml=0.7.1=pyhd8ed1ab_0
   - distributed=2023.5.0=pyhd8ed1ab_0
-  - docutils=0.17.1=py311h38be061_3
-  - entrypoints=0.4=pyhd8ed1ab_0
-  - executing=1.2.0=pyhd8ed1ab_0
-  - expat=2.5.0=hcb278e6_1
-  - fasteners=0.17.3=pyhd8ed1ab_0
+ # - docutils=0.17.1=py311h38be061_3
+ # - entrypoints=0.4=pyhd8ed1ab_0
+ # - executing=1.2.0=pyhd8ed1ab_0
+ # - expat=2.5.0=hcb278e6_1
+ # - fasteners=0.17.3=pyhd8ed1ab_0
   - fiona=1.9.4=py311hbac4ec9_0
-  - flit-core=3.9.0=pyhd8ed1ab_0
+ # - flit-core=3.9.0=pyhd8ed1ab_0
   - flox=0.7.2=pyhd8ed1ab_0
   - folium=0.14.0=pyhd8ed1ab_0
-  - font-ttf-dejavu-sans-mono=2.37=hab24e00_0
-  - font-ttf-inconsolata=3.000=h77eed37_0
-  - font-ttf-source-code-pro=2.038=h77eed37_0
-  - font-ttf-ubuntu=0.83=hab24e00_0
-  - fontconfig=2.14.2=h14ed4e7_0
-  - fonts-conda-ecosystem=1=0
-  - fonts-conda-forge=1=0
-  - fonttools=4.39.4=py311h459d7ec_0
-  - freetype=2.12.1=hca18f0e_1
-  - freexl=1.0.6=h166bdaf_1
-  - frozenlist=1.3.3=py311hd4cff14_0
+ # - font-ttf-dejavu-sans-mono=2.37=hab24e00_0
+ # - font-ttf-inconsolata=3.000=h77eed37_0
+ # - font-ttf-source-code-pro=2.038=h77eed37_0
+ # - font-ttf-ubuntu=0.83=hab24e00_0
+ # - fontconfig=2.14.2=h14ed4e7_0
+ # - fonts-conda-ecosystem=1=0
+ # - fonts-conda-forge=1=0
+ # - fonttools=4.39.4=py311h459d7ec_0
+ # - freetype=2.12.1=hca18f0e_1
+ # - freexl=1.0.6=h166bdaf_1
+ # - frozenlist=1.3.3=py311hd4cff14_0
   - fsspec=2023.5.0=pyh1a96a4e_0
   - gdal=3.7.0=py311h1caf18b_3
   - geocube=0.4.2=pyhd8ed1ab_1
   - geopandas=0.13.0=pyhd8ed1ab_0
   - geopandas-base=0.13.0=pyha770c72_0
   - geos=3.11.2=hcb278e6_0
-  - geotiff=1.7.1=h22adcc9_9
-  - gettext=0.21.1=h27087fc_0
-  - gflags=2.2.2=he1b5a44_1004
-  - giflib=5.2.1=h0b41bf4_3
-  - glog=0.6.0=h6f12383_0
-  - greenlet=2.0.2=py311hb755f60_1
+ # - geotiff=1.7.1=h22adcc9_9
+ # - gettext=0.21.1=h27087fc_0
+ # - gflags=2.2.2=he1b5a44_1004
+ # - giflib=5.2.1=h0b41bf4_3
+ # - glog=0.6.0=h6f12383_0
+ # - greenlet=2.0.2=py311hb755f60_1
   - hdf4=4.2.15=h501b40f_6
   - hdf5=1.14.1=nompi_h4f84152_100
   - holoviews=1.16.2=py311h06a4308_0
   - hvplot=0.8.4=py_0
-  - icu=72.1=hcb278e6_0
-  - idna=3.4=pyhd8ed1ab_0
-  - imagesize=1.4.1=pyhd8ed1ab_0
-  - importlib-metadata=6.6.0=pyha770c72_0
-  - importlib_metadata=6.6.0=hd8ed1ab_0
-  - importlib_resources=5.12.0=pyhd8ed1ab_0
+ # - icu=72.1=hcb278e6_0
+ # - idna=3.4=pyhd8ed1ab_0
+ # - imagesize=1.4.1=pyhd8ed1ab_0
+ # - importlib-metadata=6.6.0=pyha770c72_0
+ # - importlib_metadata=6.6.0=hd8ed1ab_0
+ # - importlib_resources=5.12.0=pyhd8ed1ab_0
   - ipykernel=6.23.1=pyh210e3f2_0
   - ipython=8.13.2=pyh41d4057_0
-  - jedi=0.18.2=pyhd8ed1ab_0
-  - jinja2=3.1.2=pyhd8ed1ab_1
-  - jmespath=1.0.1=pyhd8ed1ab_0
-  - joblib=1.2.0=pyhd8ed1ab_0
+ # - jedi=0.18.2=pyhd8ed1ab_0
+ # - jinja2=3.1.2=pyhd8ed1ab_1
+ # - jmespath=1.0.1=pyhd8ed1ab_0
+  #- joblib=1.2.0=pyhd8ed1ab_0
   - json=0.1.1=0
   - json-c=0.16=hc379101_0
   - json5=0.9.5=pyh9f0ad1d_0
   - jsonschema=4.17.3=pyhd8ed1ab_0
-  - jupyter-book=0.15.1=pyhd8ed1ab_0
+ # - jupyter-book=0.15.1=pyhd8ed1ab_0
   - jupyter-cache=0.6.1=pyhd8ed1ab_0
   - jupyter-lsp=2.1.0=pyhd8ed1ab_0
   - jupyter_client=8.2.0=pyhd8ed1ab_0
@@ -143,12 +143,12 @@ dependencies:
   - jupyterlab=4.0.3=pyhd8ed1ab_0
   - jupyterlab_pygments=0.2.2=pyhd8ed1ab_0
   - jupyterlab_server=2.22.1=pyhd8ed1ab_0
-  - kealib=1.5.1=h3e6883b_4
-  - keyutils=1.6.1=h166bdaf_0
-  - kiwisolver=1.4.4=py311h4dd048b_1
-  - krb5=1.20.1=h81ceb04_0
-  - latexcodec=2.0.1=pyh9f0ad1d_0
-  - lcms2=2.15=haa2dc70_1
+ # - kealib=1.5.1=h3e6883b_4
+ # - keyutils=1.6.1=h166bdaf_0
+ # - kiwisolver=1.4.4=py311h4dd048b_1
+ # - krb5=1.20.1=h81ceb04_0
+ # - latexcodec=2.0.1=pyh9f0ad1d_0
+ # - lcms2=2.15=haa2dc70_1
   - ld_impl_linux-64=2.40=h41732ed_0
   - lerc=4.0.0=h27087fc_0
   - libabseil=20230125.2=cxx17_h59595ed_2
