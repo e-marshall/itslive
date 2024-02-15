@@ -1,4 +1,4 @@
-# ITS_LIVE Jupyter Book
+# ITS_LIVE + Xarray Tutorial Jupyter Book
 [![DOI](https://zenodo.org/badge/493498539.svg)](https://zenodo.org/badge/latestdoi/493498539)
 [![Jupyter Book Badge](https://jupyterbook.org/badge.svg)](https://e-marshall.github.io/itslive)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/e-marshall/itslive/HEAD?labpath=accessing_s3_data.ipynb)
