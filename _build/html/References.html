@@ -12,10 +12,10 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://e-marshall.github.io/itslive/References.html" />
 <meta property="og:site_name" content="Python" />
-<meta property="og:description" content="The material in this tutorial was developed with the aid of many online resources. They are: The xarray tutorial, specifically grouped computation, plotting and visualization and dask, Zonal statis..." />
+<meta property="og:description" content="The material in this tutorial was developed with the aid of many online resources. They are: Datasets: RGI 7.0 Consortium, 2023. Randolph Glacier Inventory - A Dataset of Global Glacier Outlines, V..." />
 <meta property="og:image" content="https://e-marshall.github.io/itslive/_static/itslive_explore_img.png" />
 <meta property="og:image:alt" content="Python" />
-<meta name="description" content="The material in this tutorial was developed with the aid of many online resources. They are: The xarray tutorial, specifically grouped computation, plotting and visualization and dask, Zonal statis..." />
+<meta name="description" content="The material in this tutorial was developed with the aid of many online resources. They are: Datasets: RGI 7.0 Consortium, 2023. Randolph Glacier Inventory - A Dataset of Global Glacier Outlines, V..." />
 
     <title>References &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
   
@@ -158,9 +158,9 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="software.html">Software and Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="accessing_s3_data_noregion.html">Accessing ITS_LIVE data via S3 bucket</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ind_glacier_data_inspection_analysis.html">Individual glacier data inspection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ind_glacier_analysis_new.html">Individual glacier surface velocity analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accessing_s3_data.html">Accessing ITS_LIVE data via S3 bucket</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ind_glacier_data_inspection.html">Individual glacier data inspection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ind_glacier_analysis.html">Individual glacier surface velocity analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glacier_analysis_grouped.html">Region-scale glacier analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Acknowledgments.html">Acknowledgments</a></li>
@@ -335,7 +335,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -351,6 +353,16 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasets">Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#open-source-software">Open-Source Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-resources">Other resources</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -364,11 +376,39 @@ document.write(`
 <h1>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h1>
 <p>The material in this tutorial was developed with the aid of many online resources.
 They are:</p>
+<section id="datasets">
+<h2>Datasets<a class="headerlink" href="#datasets" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>RGI 7.0 Consortium, 2023. Randolph Glacier Inventory - A Dataset of Global Glacier Outlines, Version 7.0. Boulder, Colorado USA. NSIDC: National Snow and Ice Data Center. doi:10.5067/f6jmovy5navz. Online access: <a class="reference external" href="https://doi.org/10.5067/f6jmovy5navz">https://doi.org/10.5067/f6jmovy5navz</a></p></li>
+<li><p>Gardner, A., M. Fahnestock, and T. Scambos. (2022). MEaSUREs ITS_LIVE Landsat Image-Pair Glacier and Ice Sheet Surface Velocities, Version 1 [Data Set]. Boulder, Colorado USA. NASA National Snow and Ice Data Center Distributed Active Archive Center. <a class="reference external" href="https://doi.org/10.5067/IMR9D3PEI28U">https://doi.org/10.5067/IMR9D3PEI28U</a>. Date Accessed 02-15-2024.</p></li>
+</ul>
+</section>
+<section id="open-source-software">
+<h2>Open-Source Software<a class="headerlink" href="#open-source-software" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>Alan D. Snow, David Brochart, Martin Raspaud, Mike Taves, Ray Bell, RichardScottOZ, Taher Chegini, Alessandro Amici, Rémi Braun, Andrew Annex, Carlos H Brandt, David Hoese, Fred Bunt, GBallesteros, Jessica Scheick, Joe Hamman, jonasViehweger, Markus Zehner, Mauricio Cordeiro, … pmallas. (2022). corteva/rioxarray: 0.12.1 (0.12.1). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.7080195">https://doi.org/10.5281/zenodo.7080195</a></p></li>
+<li><p>Gillies, S., van der Wel, C., Van den Bossche, J., Taves, M. W., Arnott, J., Ward, B. C., &amp; others. (2022). Shapely (2.0.0). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.7428463">https://doi.org/10.5281/zenodo.7428463</a></p></li>
+<li><p>Harris, C.R., Millman, K.J., van der Walt, S.J. et al. Array programming with NumPy. Nature 585, 357–362 (2020). <a class="reference external" href="https://doi.org/10.1038/s41586-020-2649-2">DOI: 10.1038/s41586-020-2649-2.</a></p></li>
+<li><p>Hoyer, S., &amp; Hamman, J. (2017). xarray: N-D labeled Arrays and Datasets in Python. Journal of Open Research Software, 5(1), 10. <a class="reference external" href="https://doi.org/10.5334/jors.148">https://doi.org/10.5334/jors.148</a></p></li>
+<li><p>Jupyter Book (2020) <a class="reference external" href="https://zenodo.org/records/4539666.">https://zenodo.org/records/4539666)</a>.</p></li>
+<li><p>Jupyter, P., Bussonnier, M., Forde, J., Freeman, J., Granger, B., Head, T., Holdgraf, C., Kelley, K., Nalvarte, G., Osheroff, A., Pacer, M., Panda, Y., Perez, F., Ragan-Kelley, B., &amp; Willing, C. (2018). Binder 2.0—Reproducible, interactive, sharable environments for science at scale. 113–120. <a class="reference external" href="https://doi.org/10.25080/Majora-4af1f417-011">https://doi.org/10.25080/Majora-4af1f417-011</a></p></li>
+<li><p>Kelsey Jordahl, Joris Van den Bossche, Martin Fleischmann, James McBride, Jacob Wasserman, Adrian Garcia Badaracco, Jeffrey Gerard, Alan D. Snow, Jeff Tratner, Matthew Perry, Carson Farmer, Geir Arne Hjelle, Micah Cochran, Sean Gillies, Lucas Culbertson, Matt Bartos, Brendan Ward, Giacomo Caria, Mike Taves, … Leah Wasser. (2021). geopandas/geopandas: v0.10.0 (v0.10.0). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.5546558">https://doi.org/10.5281/zenodo.5546558</a></p></li>
+<li><p>Kluyver, T., Ragan-Kelley, B., Pérez, F., Bussonnier, M., Frederic, J., Hamrick, J., Grout, J., Corlay, S., Ivanov, P., Abdalla, S., &amp; Willing, C. (2016). Jupyter Notebooks—A publishing format for reproducible computational workflows.</p></li>
+<li><p>Microsoft Open Source, Matt McFarland, Rob Emanuele, Dan Morris, &amp; Tom Augspurger. (2022). microsoft/PlanetaryComputer: October 2022 (2022.10.28). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.7261897">https://doi.org/10.5281/zenodo.7261897</a></p></li>
+<li><p>Miles, A., Kirkham, J., Durant, M., Bourbeau, J., Onalan, T., Hamman, J., Patel, Z., shikharsg, Rocklin, M., dussin, raphael, Schut, V., Andrade, E. S. de, Abernathey, R., Noyes, C., sbalmer, bot, pyup io, Tran, T., Saalfeld, S., Swaney, J., … Banihirwe, A. (2020). zarr-developers/zarr-python: V2.4.0 (v2.4.0) [Computer software]. Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.3773450">https://doi.org/10.5281/zenodo.3773450</a></p></li>
+<li><p>The pandas development team. (2024). pandas-dev/pandas: Pandas (v2.2.0). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.10537285">https://doi.org/10.5281/zenodo.10537285</a></p></li>
+<li><p>Thomas A Caswell, Michael Droettboom, Antony Lee, Elliott Sales de Andrade, Tim Hoffmann, John Hunter, Jody Klymak, Eric Firing, David Stansby, Nelle Varoquaux, Jens Hedegaard Nielsen, Benjamin Root, Ryan May, Phil Elson, Jouni K. Seppänen, Darren Dale, Jae-Joon Lee, Damon McDougall, Andrew Straw, … Paul Ivanov. (2021). matplotlib/matplotlib: REL: v3.5.1 (v3.5.1). Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.5773480">https://doi.org/10.5281/zenodo.5773480</a></p></li>
+<li><p>Zonca, A., Weakley, L. M., &amp; Standish, M. (2023, October 30). Interactive distributed computing with Jupyter, Python and Dask on Jetstream2 for Science Gateways. Science Gateways 2023 (SG23), Pittsburgh, PA. Zenodo. <a class="reference external" href="https://doi.org/10.5281/zenodo.10041240">https://doi.org/10.5281/zenodo.10041240</a></p></li>
+</ul>
+</section>
+<section id="other-resources">
+<h2>Other resources<a class="headerlink" href="#other-resources" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>The <a class="reference external" href="https://tutorial.xarray.dev/intro.html">xarray tutorial</a>, specifically <a class="reference external" href="https://tutorial.xarray.dev/fundamentals/03.2_groupby_with_xarray.html">grouped computation</a>, <a class="reference external" href="https://tutorial.xarray.dev/fundamentals/04.0_plotting.html">plotting and visualization</a> and <a class="reference external" href="https://tutorial.xarray.dev/intermediate/xarray_and_dask.html">dask</a></p></li>
 <li><p><a class="reference external" href="https://corteva.github.io/geocube/html/examples/zonal_statistics.html">Zonal statistics with <code class="docutils literal notranslate"><span class="pre">make_geocube()</span></code></a></p></li>
 <li><p><a class="reference external" href="https://github.com/nasa-jpl/its_live">ITS_LIVE notebooks</a></p></li>
 </ul>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -420,6 +460,22 @@ They are:</p>
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasets">Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#open-source-software">Open-Source Software</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#other-resources">Other resources</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
