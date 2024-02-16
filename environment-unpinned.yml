@@ -387,7 +387,7 @@ dependencies:
   - zstd=1.5.2=h3eb15da_6
   - pip:
       - geoviews==1.10.0
-      - itslivetools==0.0.2
+      #- itslivetools==0.0.2
       - sphinxext-opengraph==0.8.2
       - xmode==0.6.1
 prefix: /home/emmamarshall/miniconda3/envs/itslive_tutorial
