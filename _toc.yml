@@ -11,4 +11,5 @@ chapters:
 - file: glacier_analysis_grouped.ipynb
 - file: Summary.md
 - file: Acknowledgments.md
+- file: Contributing.md
 - file: References.md
