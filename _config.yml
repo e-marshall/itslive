@@ -5,8 +5,7 @@ title: Using xarray to examine cloud-based glacier surface velocity data
 author: emma marshall
 #logo: logo.png
 
-#only want to include files listed in toc (not sure this will work)
-# found here: https://github.com/executablebooks/jupyter-book/pull/1123
+#only want to include files listed in toc 
 only_build_toc_files: true
 
 # Force re-execution of notebooks on each build.
@@ -14,7 +13,7 @@ only_build_toc_files: true
 execute:
   execute_notebooks: 'force'
   allow_errors: true
-  timeout: 500
+  timeout: 1500
 
 #enable parsing of latex-stype math blocks
 parse:
@@ -27,8 +26,8 @@ latex:
     targetname: book.tex
 
 # Add a bibtex file so that we can create citations
-bibtex_bibfiles:
-  - references.bib
+#bibtex_bibfiles:
+#  - references.bib
 
 # Information about where the book exists on the web
 repository:
