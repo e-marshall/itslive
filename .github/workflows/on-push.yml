@@ -33,7 +33,7 @@ jobs:
     - name: Install Conda Environment
       uses: mamba-org/provision-with-micromamba@v13
       with:
-        environment-file: environment.yml
+        environment-file: /binder/environment.yml
         cache-env: true
         cache-env-key: ubuntu-latest-3.10
 
