@@ -1,0 +1,60 @@
+name: on-push
+permissions:
+  pull-requests: write
+  issues: write
+  repository-projects: write
+
+
+on:
+  push:
+    branches:
+    - master
+    tags:
+    - '*'
+  pull_request:
+    branches:
+    - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  jupyterbook:
+    name: build jupyter book
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Codespell with annotations
+      uses: codespell-project/actions-codespell@v1.0
+
+    
+    - name: Install Conda Environment
+      uses: mamba-org/provision-with-micromamba@v13
+      with:
+        environment-file: /binder/environment.yml
+        cache-env: true
+        cache-env-key: ubuntu-latest-3.10
+
+    - name: Build Jupyter Book
+      run: |
+        jupyter-book build .
+    
+    - name: Dump Build Logs
+      if: always()
+      run: |
+        if (test -a _build/html/reports/*log); then cat _build/html/reports/*log ; fi
+    
+    - name: Publish to GitHub Pages
+      if: github.ref == 'refs/heads/master'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: _build/html
+        publish_branch: gh-pages
