@@ -1,13 +1,15 @@
-name: deploy-book
+name: on-push
 
 on:
   push:
     branches:
     - master
-    #- main
     tags:
     - '*'
- 
+  pull_request:
+    branches:
+    - master
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -31,7 +33,7 @@ jobs:
     - name: Install Conda Environment
       uses: mamba-org/provision-with-micromamba@v13
       with:
-        environment-file: binder/environment.yml
+        environment-file: environment.yml
         cache-env: true
         cache-env-key: ubuntu-latest-3.10
 
