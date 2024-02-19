@@ -422,15 +422,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-coverage">Checking coverage</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-resampling">Temporal resampling</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ways-of-computing-monthly-resampled-magnitude-of-velocity">2 ways of computing monthly resampled magnitude of velocity</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#i-think-approach-2-is-most-appropriate-resample-over-time-dim-then-reduce-then-calculate-mag">I think approach 2 is most appropriate? resample over time dim, then reduce then calculate mag?</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-approach">1. first approach</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#second-approach">2. Second approach</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-resampling">Temporal resampling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-velocity-anomalies">Calculating velocity anomalies</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grouped-analysis-by-season">Grouped analysis by season</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-and-visualizing-data-at-a-single-point">Extracting and visualizing data at a single point</a><ul class="nav section-nav flex-column">
@@ -838,65 +830,6 @@ First, we want to know how many observations (not NaNs) exist along the time dim
 </div>
 </div>
 </div>
-<section id="ways-of-computing-monthly-resampled-magnitude-of-velocity">
-<h3>2 ways of computing monthly resampled magnitude of velocity<a class="headerlink" href="#ways-of-computing-monthly-resampled-magnitude-of-velocity" title="Permalink to this heading">#</a></h3>
-<ol class="arabic simple">
-<li><p>Calculate velocity magnitude first (ie. take spatial median of ds, then compute vmag = np.sqrt(vx<strong>2 + vy</strong>2)), then, resamply by month and take median of each month</p></li>
-</ol>
-<p>or</p>
-<ol class="arabic simple" start="2">
-<li><p>resample all obs by month, calculate median of ds, then compute vmag = np.sqrt(vx<strong>2 + vy</strong>2))</p></li>
-</ol>
-<p>^ these approaches produce  different results (shown below).</p>
-<section id="i-think-approach-2-is-most-appropriate-resample-over-time-dim-then-reduce-then-calculate-mag">
-<h4>I think approach 2 is most appropriate? resample over time dim, then reduce then calculate mag?<a class="headerlink" href="#i-think-approach-2-is-most-appropriate-resample-over-time-dim-then-reduce-then-calculate-mag" title="Permalink to this heading">#</a></h4>
-</section>
-</section>
-<section id="first-approach">
-<h3>1. first approach<a class="headerlink" href="#first-approach" title="Permalink to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_glacier_raster_mag</span> <span class="o">=</span> <span class="n">sample_glacier_raster_mag</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span>
-<span class="n">resample_obj_mag</span> <span class="o">=</span> <span class="n">sample_glacier_raster_mag</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">mid_date</span> <span class="o">=</span> <span class="s1">&#39;1M&#39;</span><span class="p">)</span>
-<span class="n">glacier_resample_1mo_mag</span> <span class="o">=</span> <span class="n">resample_obj_mag</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sample_glacier_raster_mag&#39; is not defined
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Spatially-averaged magnitude of velocity over time&#39;</span><span class="p">)</span>
-<span class="n">sample_glacier_raster_mag</span><span class="o">.</span><span class="n">v_mag_time</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;All obs&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">glacier_resample_1mo_mag</span><span class="o">.</span><span class="n">v_mag_time</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;1 month resample&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;meters/year&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Full y-axis range&#39;</span><span class="p">)</span>
-
-<span class="n">sample_glacier_raster_mag</span><span class="o">.</span><span class="n">v_mag_time</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;All obs&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
-<span class="n">glacier_resample_1mo_mag</span><span class="o">.</span><span class="n">v_mag_time</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;1 month resample&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;meters/year&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Limiting yaxis to (0,100)&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sample_glacier_raster_mag&#39; is not defined
-</pre></div>
-</div>
-<img alt="_images/4a341c037527bdb8ddf966731ff17175cf9e91dc6183c0ea9561a402b6603835.png" src="_images/4a341c037527bdb8ddf966731ff17175cf9e91dc6183c0ea9561a402b6603835.png" />
-</div>
-</div>
-</section>
-<section id="second-approach">
-<h3>2. Second approach<a class="headerlink" href="#second-approach" title="Permalink to this heading">#</a></h3>
 <p>The below plot is the initial velocity time series in blue, and the velocity data resampled to 1 month intervals in orange</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -930,41 +863,7 @@ First, we want to know how many observations (not NaNs) exist along the time dim
 <img alt="_images/4a341c037527bdb8ddf966731ff17175cf9e91dc6183c0ea9561a402b6603835.png" src="_images/4a341c037527bdb8ddf966731ff17175cf9e91dc6183c0ea9561a402b6603835.png" />
 </div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>does this look ok with a mix of points to represent raw data and lines for resampled data?
-alt. version of lines below:</p>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">ax1</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
-
-
-<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Spatially-averaged magnitude of velocity over time&#39;</span><span class="p">)</span>
-<span class="n">calc_velocity_magnitude</span><span class="p">(</span><span class="n">sample_glacier_raster</span><span class="p">)</span><span class="o">.</span><span class="n">v_mag_time</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;All obs&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">calc_velocity_magnitude</span><span class="p">(</span><span class="n">glacier_resample_1mo</span><span class="p">)</span><span class="o">.</span><span class="n">v_mag_time</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;1 month resample&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;meters/year&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Full y-axis range&#39;</span><span class="p">)</span>
-
-<span class="n">calc_velocity_magnitude</span><span class="p">(</span><span class="n">sample_glacier_raster</span><span class="p">)</span><span class="o">.</span><span class="n">v_mag_time</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;All obs&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
-<span class="n">calc_velocity_magnitude</span><span class="p">(</span><span class="n">glacier_resample_1mo</span><span class="p">)</span><span class="o">.</span><span class="n">v_mag_time</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;1 month resample&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;meters/year&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Limiting yaxis to (0,50)&#39;</span><span class="p">)</span>
-<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sample_glacier_raster&#39; is not defined
-</pre></div>
-</div>
-<img alt="_images/4a341c037527bdb8ddf966731ff17175cf9e91dc6183c0ea9561a402b6603835.png" src="_images/4a341c037527bdb8ddf966731ff17175cf9e91dc6183c0ea9561a402b6603835.png" />
-</div>
-</div>
 <p>This is interesting - despite what looks to be a pretty noisy signal looking at the full time series, we can start to pick out a seasonal signal and sub-annual velocity variability looking at the velocity data resampled into 1-month bins.</p>
-</section>
 </section>
 <section id="calculating-velocity-anomalies">
 <h2>Calculating velocity anomalies<a class="headerlink" href="#calculating-velocity-anomalies" title="Permalink to this heading">#</a></h2>
@@ -1296,15 +1195,7 @@ alt. version of lines below:</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-coverage">Checking coverage</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-resampling">Temporal resampling</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ways-of-computing-monthly-resampled-magnitude-of-velocity">2 ways of computing monthly resampled magnitude of velocity</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#i-think-approach-2-is-most-appropriate-resample-over-time-dim-then-reduce-then-calculate-mag">I think approach 2 is most appropriate? resample over time dim, then reduce then calculate mag?</a></li>
-</ul>
-</li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#first-approach">1. first approach</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#second-approach">2. Second approach</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-resampling">Temporal resampling</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculating-velocity-anomalies">Calculating velocity anomalies</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grouped-analysis-by-season">Grouped analysis by season</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extracting-and-visualizing-data-at-a-single-point">Extracting and visualizing data at a single point</a><ul class="nav section-nav flex-column">
