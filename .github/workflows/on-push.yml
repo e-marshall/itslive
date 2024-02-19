@@ -1,7 +1,7 @@
 name: on-push
   
 permissions:
-  contents: read
+  contents: write
   pages: write 
 
 
