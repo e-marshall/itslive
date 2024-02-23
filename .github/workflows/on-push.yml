@@ -39,6 +39,7 @@ jobs:
       uses: mamba-org/setup-micromamba@v1
       with:
         environment-file: /binder/environment.yml
+        generate-run-shell: false
         cache-environment: true
 
     - name: Build Jupyter Book
