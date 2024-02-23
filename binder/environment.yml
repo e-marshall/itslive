@@ -1,9 +1,8 @@
-name: itslivetools_env
+name: itslive_tutorial_env
 channels: 
  - conda-forge
 dependencies:
 - distributed
-- cartopy
 - flox
 - gdal
 - geocube
