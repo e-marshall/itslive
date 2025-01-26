@@ -4,11 +4,11 @@
 format: jb-book
 root: intro
 chapters:
-- file: software.ipynb
-- file: accessing_s3_data.ipynb
+- file: software_and_data.ipynb
+- file: accessing_itslive_s3_data.ipynb
 - file: ind_glacier_data_inspection.ipynb
-- file: ind_glacier_analysis.ipynb
-- file: glacier_analysis_grouped.ipynb
+- file: ind_glacier_data_analysis.ipynb
+- file: regional_glacier_data_analysis.ipynb
 - file: Summary.md
 - file: Acknowledgments.md
 - file: Contributing.md

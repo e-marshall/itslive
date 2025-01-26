@@ -1,5 +1,5 @@
-name: itslive_tutorial_env
-channels: 
+dname: itslive_tutorial_env
+channels:
  - conda-forge
 dependencies:
 - distributed
@@ -22,4 +22,4 @@ dependencies:
 # For development
 - jupyter-book
 - jupyterlab
-- sphinxext-opengraph 
+#- sphinxext-opengraph
