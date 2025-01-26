@@ -22,4 +22,3 @@ dependencies:
 # For development
 - jupyter-book
 - jupyterlab
-#- sphinxext-opengraph
