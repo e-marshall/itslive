@@ -1,0 +1,7 @@
+# .pre-commit-config.yaml
+repos:
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.9.1  # Use the latest version
+    hooks:
+      - id: nbqa-isort
+        args: ["--profile=black"]  # Optional: Use a specific profile
