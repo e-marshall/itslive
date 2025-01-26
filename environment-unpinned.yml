@@ -1,4 +1,4 @@
-name: itslive_tutorial
+name: itslive_tutorial_env
 channels:
  # - jmcmurray
   - pyviz
