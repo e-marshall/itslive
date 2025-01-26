@@ -51,3 +51,25 @@ sphinx:
     ogp_site_url: "https://e-marshall.github.io/itslive/intro.html"
     ogp_image: "https://e-marshall.github.io/itslive/_static/itslive_explore_img.png"
     ogp_description_length: 200
+    html_theme_options:
+      show_navbar_depth: 2
+      collapse_navigation: False
+      nb_execution_show_tb: True
+    nb_custom_formats:
+      .ipynb:
+        - sphinx.ext.jupyter_notebook.NotebookParser
+        - parse
+    html_js_files:
+      - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
+    jupyter_execute_notebooks: auto
+    nb_render_priority:
+      html:
+        - "application/vnd.jupyter.widget-view+json"
+        - "application/javascript"
+        - "text/html"
+        - "image/svg+xml"
+        - "image/png"
+        - "image/jpeg"
+        - "text/markdown"
+        - "text/latex"
+        - "text/plain"

@@ -18,6 +18,7 @@ dependencies:
 - seaborn
 - shapely
 - s3fs
+- watermark
 - zarr
 # For development
 - jupyter-book
