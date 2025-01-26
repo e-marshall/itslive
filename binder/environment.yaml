@@ -22,3 +22,4 @@ dependencies:
 # For development
 - jupyter-book
 - jupyterlab
+- readthedocs-sphinx-ext
