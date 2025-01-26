@@ -5,7 +5,7 @@ title: Using xarray to examine cloud-based glacier surface velocity data
 author: emma marshall
 #logo: logo.png
 
-#only want to include files listed in toc 
+#only want to include files listed in toc
 only_build_toc_files: true
 
 # Force re-execution of notebooks on each build.
@@ -36,7 +36,7 @@ repository:
 
 launch_buttons:
   binderhub_url: "https://mybinder.org"
-  notebook_interface: "jupyterlab" 
+  notebook_interface: "jupyterlab"
 
 # Add GitHub buttons to your book
 # See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
@@ -46,7 +46,7 @@ html:
 
 sphinx:
   extra_extensions:
-  - sphinxext.opengraph
+  #- sphinxext.opengraph
   config:
     ogp_site_url: "https://e-marshall.github.io/itslive/intro.html"
     ogp_image: "https://e-marshall.github.io/itslive/_static/itslive_explore_img.png"
