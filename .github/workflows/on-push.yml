@@ -53,7 +53,7 @@ jobs:
         if (test -a _build/html/reports/*log); then cat _build/html/reports/*log ; fi
 
     - name: Publish to GitHub Pages
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/review_edits'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
