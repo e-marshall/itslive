@@ -39,7 +39,7 @@ jobs:
     - name: Install Conda Environment
       uses: mamba-org/setup-micromamba@v1
       with:
-        environment-file: binder/environment.yaml
+        environment-file: binder/new_env.yaml
         generate-run-shell: false
         cache-environment: true
 
