@@ -72,7 +72,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="1. Accessing cloud-hosted ITS_LIVE data" href="1_accessing_itslive_s3_data.html" />
-    <link rel="prev" title="Introduction" href="../mds/intro.html" />
+    <link rel="prev" title="Introduction" href="../intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -138,7 +138,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="sidebar-primary-item">
   
 
-<a class="navbar-brand logo" href="../mds/intro.html">
+<a class="navbar-brand logo" href="../intro.html">
   
   
   
@@ -152,22 +152,21 @@ const thebe_selector_output = ".output, .cell_output"
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
-                <a class="reference internal" href="../mds/intro.html">
+                <a class="reference internal" href="../intro.html">
                     Introduction
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Software and Data</a></li>
-
 <li class="toctree-l1"><a class="reference internal" href="1_accessing_itslive_s3_data.html">1. Accessing cloud-hosted ITS_LIVE data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_data_organization_manipulation.html">2. Data organization and manipulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3_exploratory_data_analysis_single.html">3. Exploratory analysis of velocity data – single glacier</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4_exploratory_data_analysis_group.html">4. Exploratory analysis - multiple glaciers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mds/Summary.html">Summary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mds/Acknowledgments.html">Acknowledgments</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mds/Contributing.html">Contributing and Seeking help</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../mds/References.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_exploratory_data_analysis_single.html">3. Exploratory data analysis – single glacier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_exploratory_data_analysis_group.html">4. Exploratory data analysis - multiple glaciers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Acknowledgments.html">Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Contributing.html">Contributing and Seeking help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../References.html">References</a></li>
 </ul>
 
     </div>
@@ -392,7 +391,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Software and Data</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-software-packages">A. Software Packages</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-computational-environment">B. Computational Environment</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-tutorial-on-the-cloud">Running tutorial on the cloud</a></li>
@@ -405,14 +403,6 @@ document.write(`
 </ul>
 </li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#glossary-maybe">Glossary (maybe?)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raster-data">Raster Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-data">Vector Data</a></li>
-</ul>
-</li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -1010,16 +1000,6 @@ We will read in just one region of the RGI (region 15, SouthAsiaEast). RGI data 
 </section>
 </section>
 </section>
-<section id="glossary-maybe">
-<h1>Glossary (maybe?)<a class="headerlink" href="#glossary-maybe" title="Permalink to this headline">#</a></h1>
-<section id="raster-data">
-<h2>Raster Data<a class="headerlink" href="#raster-data" title="Permalink to this headline">#</a></h2>
-</section>
-<section id="vector-data">
-<h2>Vector Data<a class="headerlink" href="#vector-data" title="Permalink to this headline">#</a></h2>
-<p>Vector data represent discrete spatial features. They contain geometry data as well as attribute data about the features. For a more in-depth description of vector data, head <a class="reference external" href="https://datacarpentry.org/organization-geospatial/02-intro-vector-data.html">here</a>. Vector data helps us focus our analysis on specific locations of interest, in this case: individual glaciers. We use the Randolph Glacier Inventory, which contains vector data for glaciers around the world. You can read more about it <a class="reference external" href="http://www.glims.org/rgi_user_guide/welcome.html">here</a>.</p>
-</section>
-</section>
 
     <script type="text/x-thebe-config">
     {
@@ -1053,7 +1033,7 @@ We will read in just one region of the RGI (region 15, SouthAsiaEast). RGI data 
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../mds/intro.html"
+       href="../intro.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
@@ -1088,7 +1068,6 @@ We will read in just one region of the RGI (region 15, SouthAsiaEast). RGI data 
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Software and Data</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-software-packages">A. Software Packages</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-computational-environment">B. Computational Environment</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-tutorial-on-the-cloud">Running tutorial on the cloud</a></li>
@@ -1101,14 +1080,6 @@ We will read in just one region of the RGI (region 15, SouthAsiaEast). RGI data 
 </ul>
 </li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#glossary-maybe">Glossary (maybe?)</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raster-data">Raster Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-data">Vector Data</a></li>
-</ul>
-</li>
-</ul>
-
   </nav></div>
 
 </div></div>
