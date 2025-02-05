@@ -2,14 +2,14 @@
 # Learn more at https://jupyterbook.org/customize/toc.html
 
 format: jb-book
-root: mds/intro
+root: intro
 chapters:
 - file: nbs/software_and_data.ipynb
 - file: nbs/1_accessing_itslive_s3_data.ipynb
 - file: nbs/2_data_organization_manipulation.ipynb
 - file: nbs/3_exploratory_data_analysis_single.ipynb
 - file: nbs/4_exploratory_data_analysis_group.ipynb
-- file: mds/Summary.md
-- file: mds/Acknowledgments.md
-- file: mds/Contributing.md
-- file: mds/References.md
+- file: Summary.md
+- file: Acknowledgments.md
+- file: Contributing.md
+- file: References.md
