@@ -1,0 +1,9 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "mid_date"
+    ],
+    "coordinates": "spatial_ref",
+    "description": "number of valid pixels over slowest 25% of ice",
+    "standard_name": "stable_count_slow",
+    "units": "count"
+}

@@ -1,0 +1,9 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "mid_date"
+    ],
+    "coordinates": "spatial_ref",
+    "description": "applied vr shift calibrated using pixels over stable or slow surfaces",
+    "standard_name": "vr_stable_shift",
+    "units": "meter/year"
+}

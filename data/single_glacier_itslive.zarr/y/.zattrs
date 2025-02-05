@@ -1,0 +1,10 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "y"
+    ],
+    "axis": "Y",
+    "description": "y coordinate of projection",
+    "long_name": "y coordinate of projection",
+    "standard_name": "projection_y_coordinate",
+    "units": "metre"
+}
