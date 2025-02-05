@@ -1,0 +1,1570 @@
+
+
+<!DOCTYPE html>
+
+
+<html >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="3. Exploratory analysis of velocity data – single glacier" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://e-marshall.github.io/itslive/nbs/3_exploratory_data_analysis_single.html" />
+<meta property="og:site_name" content="Python" />
+<meta property="og:description" content="Introduction: In the previous notebook, we walked through initial steps to read and organize a large raster dataset, and to understand it in the context of spatial areas of interest represented by ..." />
+<meta property="og:image" content="https://e-marshall.github.io/itslive/_static/itslive_explore_img.png" />
+<meta property="og:image:alt" content="Python" />
+<meta name="description" content="Introduction: In the previous notebook, we walked through initial steps to read and organize a large raster dataset, and to understand it in the context of spatial areas of interest represented by ..." />
+
+    <title>3. Exploratory analysis of velocity data – single glacier &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'nbs/3_exploratory_data_analysis_single';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Exploratory analysis - multiple glaciers" href="4_exploratory_data_analysis_group.html" />
+    <link rel="prev" title="2. Data organization and manipulation" href="2_data_organization_manipulation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../mds/intro.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Using xarray to examine cloud-based glacier surface velocity data</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../mds/intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="software_and_data.html">Software and Data</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="1_accessing_itslive_s3_data.html">1. Accessing cloud-hosted ITS_LIVE data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_data_organization_manipulation.html">2. Data organization and manipulation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. Exploratory analysis of velocity data – single glacier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_exploratory_data_analysis_group.html">4. Exploratory analysis - multiple glaciers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mds/Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mds/Acknowledgments.html">Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mds/Contributing.html">Contributing and Seeking help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mds/References.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/e-marshall/itslive/master?urlpath=lab/tree/nbs/3_exploratory_data_analysis_single.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/e-marshall/itslive" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/e-marshall/itslive/issues/new?title=Issue%20on%20page%20%2Fnbs/3_exploratory_data_analysis_single.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/nbs/3_exploratory_data_analysis_single.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>3. Exploratory analysis of velocity data – single glacier</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">Outline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-exploration">A. Data exploration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-examine-velocity-variability">B. Examine velocity variability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-computations-and-additional-operations">C. Computations and additional operations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning goals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concepts">Concepts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#techniques">Techniques</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">A. Data exploration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-raster-data-into-memory-and-visualize-with-vector-data">1) Load raster data into memory and visualize with vector data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examine-data-coverage">2) Examine data coverage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#break-down-by-sensor">3) Break down by sensor</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#landsat-8">Landsat 8</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#what-about-a-sensor-with-multiple-identifiers">What about a sensor with multiple identifiers?</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-sensor-specific-datasets">4) Combine sensor-specific datasets</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">B. Examine velocity variability</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#histograms-and-summary-statistics">1) Histograms and summary statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-velocity-variability">2) Spatial velocity variability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-velocity-variability">3) Temporal velocity variability</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-dimensional-computations">C. Dimensional computations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-resampling">1) Temporal resampling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grouped-analysis-by-season">2) Grouped analysis by season</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="exploratory-analysis-of-velocity-data-single-glacier">
+<h1>3. Exploratory analysis of velocity data – single glacier<a class="headerlink" href="#exploratory-analysis-of-velocity-data-single-glacier" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>In the previous notebook, we walked through initial steps to read and organize a large raster dataset, and to understand it in the context of spatial areas of interest represented by vector data.</p>
+<p>The previous notebook mainly focused on high-level processing operations:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    1) reading a multi-dimensional dataset,   
+    2) re-organizing along a given dimension,   
+    3) reducing a large raster object to smaller areas of interest represented by vector data, and   
+    4) strategies for completing these steps with larger-than-memory datasets.   
+</pre></div>
+</div>
+<p>In this notebook, we will continue performing initial data inspection and exploratory analysis but this time, focused on velocity data clipped to an individual glacier. We demonstrate Xarray functionality for common computations and visualizations.</p>
+</section>
+<section id="outline">
+<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">#</a></h2>
+<section id="a-data-exploration">
+<h3>A. Data exploration<a class="headerlink" href="#a-data-exploration" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>Load raster data into memory and visualize with vector data</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>Examine data coverage</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="3">
+<li><p>Break down by sensor</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="4">
+<li><p>Combine sensor-specific subsets</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="b-examine-velocity-variability">
+<h3>B. Examine velocity variability<a class="headerlink" href="#b-examine-velocity-variability" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>Histograms and summary statistics</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>Spatial velocity variability</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="3">
+<li><p>Temporal velocity variability</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="c-computations-and-additional-operations">
+<h3>C. Computations and additional operations<a class="headerlink" href="#c-computations-and-additional-operations" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>Temporal resampling</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>Grouped analysis by season</p></li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+<section id="learning-goals">
+<h2>Learning goals<a class="headerlink" href="#learning-goals" title="Permalink to this headline">#</a></h2>
+<section id="concepts">
+<h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Examining metadata, interpreting physical observable in the contxt of available metadata</p></li>
+</ul>
+</section>
+<section id="techniques">
+<h3>Techniques<a class="headerlink" href="#techniques" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Using matplotlib to visualize raster and vector data with satellite imagery basemaps</p></li>
+</ul>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">xmode</span> minimal
+<span class="kn">import</span> <span class="nn">contextily</span> <span class="k">as</span> <span class="nn">cx</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rio</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception reporting mode: Minimal
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="id1">
+<h2>A. Data exploration<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<section id="load-raster-data-into-memory-and-visualize-with-vector-data">
+<h3>1) Load raster data into memory and visualize with vector data<a class="headerlink" href="#load-raster-data-into-memory-and-visualize-with-vector-data" title="Permalink to this headline">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_glacier_raster</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s1">&#39;data/single_glacier_itslive_cube.zarr&#39;</span><span class="p">)</span>
+<span class="n">single_glacier_vector</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">&#39;data/sample_glacier_vec.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">KeyError</span>: &#39;.zmetadata&#39;
+
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">GroupNotFoundError</span>: group not found at path &#39;&#39;
+
+
+<span class="n">The</span> <span class="n">above</span> <span class="n">exception</span> <span class="n">was</span> <span class="n">the</span> <span class="n">direct</span> <span class="n">cause</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span> <span class="n">exception</span><span class="p">:</span>
+
+<span class="ne">FileNotFoundError</span>: No such file or directory: &#39;/home/runner/work/itslive/itslive/nbs/data/single_glacier_itslive_cube.zarr&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">nbytes</span><span class="o">/</span> <span class="mf">1e9</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above code cells show us that this dataset contains observations from Sentinel 1 &amp; 2 and Landsat 4,5,6,7,8 &amp; 9 satellite sensors. The dataset is 3.3 GB.</p>
+<p>Next, we want to perform computations that require us to load this object into memory. To do this, we use the <a class="reference external" href="https://docs.dask.org/en/stable/generated/dask.dataframe.DataFrame.compute.html">dask .compute()</a> method, which turns a ‘lazy’ object into an in-memory object. If you try to run compute on too large of an object, your computer may run out of RAM and the kernel being used in this python session will die (if this happens, click ‘restart kernel’ from the kernel drop down menu above).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_glacier_raster</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, if you expand the data object to look at the variables, you will see that they no long hold <code class="docutils literal notranslate"><span class="pre">dask.array</span></code> objects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_glacier_raster</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a quick sanity check, we’ll convince ourselves that the clipping operation in the previous <span class="xref myst">notebook</span> worked correctly. We also show that we can plot both Xarray raster data and GeoPandas vector data overlaid on the same plot with a satellite image basemap as a background.</p>
+<p>A few notes about the following figure:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">single_glacier_raster</span></code> is a 3-dimensional object. We want to plot it in 2-d space with the RGI glacier outline. So, we perform a reduction (in this case, compute the mean), in order to reduce the dataset from 3-d to 2-d (Another option would be to select a single time step).</p></li>
+<li><p>We could make this plot with a white background, but it is also nice to be able to add a base map to the image. Here, we’ll use <a class="reference external" href="https://contextily.readthedocs.io/en/latest/">contextily</a> to do so. This will require converting the coordinate reference system (CRS) of both objects to the Web Mercator projection (EPSG:3857). We first need to use <code class="docutils literal notranslate"><span class="pre">rio.write_crs()</span></code> to assign a CRS to the raster object (Note: the data is already projected in the correct CRS, the object is just not ‘aware’ of its CRS. This is necessary for reprojection operations. For more, see Rioxarray’s <a class="reference external" href="https://corteva.github.io/rioxarray/stable/getting_started/crs_management.html">CRS Management documentation</a>).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Write CRS of raster data</span>
+<span class="n">single_glacier_raster</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">])</span>
+<span class="c1">#Check that CRS of vector and raster data are the same</span>
+<span class="k">assert</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span> <span class="o">==</span> <span class="n">single_glacier_vector</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Reproject both objects to web mercator</span>
+<span class="n">single_glacier_vector_web</span> <span class="o">=</span> <span class="n">single_glacier_vector</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:3857&#39;</span><span class="p">)</span>
+<span class="n">single_glacier_raster_web</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">reproject</span><span class="p">(</span><span class="s1">&#39;EPSG:3857&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="c1">#Plot objects</span>
+<span class="n">single_glacier_raster_web</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">single_glacier_vector_web</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="c1">#Add basemap</span>
+<span class="n">cx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">single_glacier_vector_web</span><span class="o">.</span><span class="n">crs</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">cx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">Esri</span><span class="o">.</span><span class="n">WorldImagery</span><span class="p">)</span>
+<span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_vector&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>We sorted along the time dimension in the previous notebook, so it should be in chronological order.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">mid_date</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="examine-data-coverage">
+<h3>2) Examine data coverage<a class="headerlink" href="#examine-data-coverage" title="Permalink to this headline">#</a></h3>
+<p>A wide variety of forces can impact both satellite imagery and the ability of ITS_LIVE’s feature tracking algorithm to extract velocity estimates from satellite image pairs. For these reasons, there are at times both gaps in coverage and ranges in the estimated error associated with different observations. The following section will demonstrate how to calculate and visualize coverage of the dataset over time. Part 2 will include a discussion of uncertainty and error estimates</p>
+<p>When first investigating a dataset, it is helpful to be able to scan/quickly visualize coverage along a given dimension. To create the data needed for such a visualization, we first need a mask that will tell us all possible ‘valid’ pixels; in other words, we need to differentiate between pixels in our 2-d rectangular array that represent ice v. non-ice. Then, for every time step, we can calculate the portion of possible ice pixels that contain an estimated velocity value.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#calculate number of valid pixels</span>
+<span class="n">valid_pixels</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+<span class="c1">#calculate max. number of valid pixels</span>
+<span class="n">valid_pixels_max</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">notnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">])</span>
+<span class="c1">#add cov proportion to dataset as variable</span>
+<span class="n">single_glacier_raster</span><span class="p">[</span><span class="s1">&#39;cov&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">valid_pixels</span><span class="o">/</span> <span class="n">valid_pixels_max</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can visualize coverage over time:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="c1">#Plot object</span>
+<span class="n">single_glacier_raster</span><span class="p">[</span><span class="s1">&#39;cov&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+
+<span class="c1">#Specify axes labels and title</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Velocity data coverage ovver time&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Coverage (proportion)&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Date&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+<img alt="../_images/5015f6c5c278ddabc9b89343312bcde0f141cb8709592051b594eaa0f779ce86.png" src="../_images/5015f6c5c278ddabc9b89343312bcde0f141cb8709592051b594eaa0f779ce86.png" />
+</div>
+</div>
+</section>
+<section id="break-down-by-sensor">
+<h3>3) Break down by sensor<a class="headerlink" href="#break-down-by-sensor" title="Permalink to this headline">#</a></h3>
+<p>In this dataset, we have a dense time series of velocity observations for a given glacier (~48,000 observatioons from 1986-2024 <em>note</em>: this notebook was last updated in 2025). However, we know that the ability of satellite imagery pairs to capture ice displacement (and by extension, velocity), can be impacted by conditions such as cloud-cover, which obscure Earth’s surface from optical sensors. ITS_LIVE is a multi-sensor ice velocity dataset, meaning that it is composed of ice velocity observations derived from a number of satellites, which include both optical and Synthetic Aperture Radar (SAR) imagery. Currently, Sentinel-1 is the only SAR sensor included in ITS_LIVE, all others are optical.</p>
+<p>While optical imagery requires solar illumination and can be impacted by cloud cover, Sentinel-1 is an active remote sensing technique and images in a longer wavelength (C-band, ~ 5 cm). This means that Sentinel-1 imagery does not require solar illumination, and can penetrate through cloud cover. Because of these sensors differing sensitivity to Earth’s surface conditions, there can sometimes be discrapancies in velocity data observed from different sensors.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are many great resources available for understanding the principles of SAR and working with SAR imagery. The appendix at the bottom of this notebook lists a few of them. In addition, Chapter 2 of this tutorial focuses on working with a dataset of Sentinel-1 imagery.</p>
+</div>
+<p>Let’s first look at what sensors are represented in the time series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sensors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
+<span class="n">sensors</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>To extract observations from a single satellite sensor, we will use Xarray indexing and selection methods such as <code class="docutils literal notranslate"><span class="pre">.where()</span></code> and <code class="docutils literal notranslate"><span class="pre">.sel()</span></code>. The following cells demonstrate different selection approaches and a brief discussion of the pros and cons of each when working with large and/ or sparse datasets.</p>
+<section id="landsat-8">
+<h4>Landsat 8<a class="headerlink" href="#landsat-8" title="Permalink to this headline">#</a></h4>
+<p>First, looking at velocity observations from Landsat8 data only:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">l8_data</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="p">[</span><span class="s1">&#39;satellite_img1&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">l8_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Another approach: using <code class="docutils literal notranslate"><span class="pre">.sel()</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">l8_condition</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span> <span class="o">==</span> <span class="s1">&#39;8&#39;</span>
+<span class="n">l8_data_alt</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span><span class="o">=</span><span class="n">l8_condition</span><span class="p">)</span>
+<span class="n">l8_data_alt</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>The approach using <code class="docutils literal notranslate"><span class="pre">.sel()</span></code> takes much less time than <code class="docutils literal notranslate"><span class="pre">.where()</span></code>. This is because <code class="docutils literal notranslate"><span class="pre">.sel()</span></code> queries the dataset using <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> index. Xarray dimensions have associated <code class="docutils literal notranslate"><span class="pre">Index</span></code> objects, which are built on Pandas Indexes. They are very powerful for quickly and efficiently querying large datasets. In contrast, <code class="docutils literal notranslate"><span class="pre">.where()</span></code> must check each <code class="docutils literal notranslate"><span class="pre">satellite_img</span></code> data variable against the specified condition (‘8’), which is not as efficient.</p>
+</section>
+<section id="what-about-a-sensor-with-multiple-identifiers">
+<h4>What about a sensor with multiple identifiers?<a class="headerlink" href="#what-about-a-sensor-with-multiple-identifiers" title="Permalink to this headline">#</a></h4>
+<p>For Landsat8 observations, we only needed to identify elements of the dataset where the <code class="docutils literal notranslate"><span class="pre">satellite_img1</span></code> variable matched a unique identifier, ‘8’. Sentinel-1 is a two-satellite constellation, meaning that it has sensors on board multiple satellites. For this, we need to select all observations where <code class="docutils literal notranslate"><span class="pre">satellite_img1</span></code> matches a list of possible values.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">s1_condition</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">satellite_img1</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;1A&#39;</span><span class="p">,</span><span class="s1">&#39;1B&#39;</span><span class="p">])</span>
+<span class="n">s1_data</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span><span class="o">=</span><span class="n">s1_condition</span><span class="p">)</span>
+<span class="n">s1_data</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Rather than go through the above steps for each sensor, let’s write a function that will subset the dataset by sensor, returning a dict of Xarray datasets holding velocity time series for each sensor.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Make dict of each sensor and identifying string(s)</span>
+<span class="n">sensor_conditions</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Landsat 4&#39;</span><span class="p">:</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> 
+              <span class="s1">&#39;Landsat 5&#39;</span><span class="p">:</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;Landsat 7&#39;</span><span class="p">:</span> <span class="s1">&#39;7&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;Landsat 8&#39;</span><span class="p">:</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;Landsat 9&#39;</span><span class="p">:</span> <span class="s1">&#39;9&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;Sentinel 1&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1A&#39;</span><span class="p">,</span><span class="s1">&#39;1B&#39;</span><span class="p">],</span>
+              <span class="s1">&#39;Sentinel 2&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;2A&#39;</span><span class="p">,</span><span class="s1">&#39;2B&#39;</span><span class="p">]}</span>   
+
+<span class="k">def</span> <span class="nf">separate_ds_by_sensor</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">sensor_conditions</span><span class="p">):</span>
+    <span class="c1">#Make empty lists to hold sensor IDs and subsetted datasets</span>
+    <span class="n">keys_ls</span><span class="p">,</span> <span class="n">vals_ls</span> <span class="o">=</span> <span class="p">[],[]</span>
+
+    <span class="c1">#Iterate through each sensor in dict</span>
+    <span class="k">for</span> <span class="n">sensor</span> <span class="ow">in</span> <span class="n">sensor_conditions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+
+        <span class="c1">#If there are two identifying conditions, use isin</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sensor_conditions</span><span class="p">[</span><span class="n">sensor</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+
+            <span class="n">condition</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">satellite_img1</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">sensor_conditions</span><span class="p">[</span><span class="n">sensor</span><span class="p">])</span>
+
+        <span class="c1">#If there&#39;s only one condition, use == </span>
+        <span class="k">else</span><span class="p">:</span> 
+            
+            <span class="n">condition</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">satellite_img1</span> <span class="o">==</span> <span class="n">sensor_conditions</span><span class="p">[</span><span class="n">sensor</span><span class="p">]</span>
+
+        <span class="c1">#Use .sel to subset data based on sensor</span>
+        <span class="n">sensor_data</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">mid_date</span> <span class="o">=</span> <span class="n">condition</span><span class="p">)</span>
+
+        <span class="n">keys_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">sensor</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">vals_ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sensor_data</span><span class="p">)</span>
+
+    <span class="c1">#Return dict of sensor IDs and subsetted datasets</span>
+    <span class="n">ds_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">keys_ls</span><span class="p">,</span> <span class="n">vals_ls</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ds_dict</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sensor_ds_dict</span> <span class="o">=</span> <span class="n">separate_ds_by_sensor</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="p">,</span> <span class="n">sensor_conditions</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">sensor_ds_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sensor_ds_dict&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sensor_ds_dict</span><span class="p">[</span><span class="s1">&#39;Landsat 8&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sensor_ds_dict&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="combine-sensor-specific-datasets">
+<h3>4) Combine sensor-specific datasets<a class="headerlink" href="#combine-sensor-specific-datasets" title="Permalink to this headline">#</a></h3>
+<p>In the previous section we looked at different ways to subset the ITS_LIVE time series. Now, we will look at a new structure within the Xarray data model (<code class="docutils literal notranslate"><span class="pre">xr.DataTree</span></code>) that facilitates working with collections of data.</p>
+<p>Our use-case in this section is that we would like to efficiently compute the mean along the time dimension of the ITS_LIVE dataset for each satellite sensor, and then visualize these results side-by-side.</p>
+<p>Before the implementation of Xarray DataTree, we would need to either perform the sequence of operations on each sensor-specific dataset individually, or, create a dict of the sensor specific datasets, write a function to perform certain operations and either update the dictionary or create another to hold the results; both of these options are quite clunky and inefficient.</p>
+<p>We can create an <code class="docutils literal notranslate"><span class="pre">xr.DataTree</span></code> object by using the <code class="docutils literal notranslate"><span class="pre">from_dict()</span></code> method:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sensor_ds_tree</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataTree</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">sensor_ds_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sensor_ds_dict&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sensor_ds_tree</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sensor_ds_tree&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>The DataTree has a parent node and groups (shown above) that contain individual <code class="docutils literal notranslate"><span class="pre">xr.Datasets</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sensor_ds_tree</span><span class="p">[</span><span class="s1">&#39;Landsat 8&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">ds</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sensor_ds_tree&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>If we want to perform a set of operations on every node of the datatree, we can define a function to pass to <code class="docutils literal notranslate"><span class="pre">xr.DataTree.map_over_datasets()</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_temporal_mean</span><span class="p">(</span><span class="n">ds</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;I&#39;m a function that calculates the temporal mean of a dataset with (x,y,mid_date) dimensions. </span>
+<span class="sd">    I return a new dataset with (x,y,sensor) dimensions &quot;&quot;&quot;</span>
+    
+    <span class="c1">#Skip parent node</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">data_vars</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1">#Calc mean</span>
+        <span class="n">tmean</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span>
+        <span class="c1">#Add a sensor dimension -- this will be used for combining them back together later</span>
+        <span class="n">sensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">satellite_img1</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span> 
+            <span class="n">sensor</span> <span class="o">=</span> <span class="p">[</span><span class="n">sensor</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="c1">#Expand dims to add sensor</span>
+        <span class="n">tmean</span> <span class="o">=</span> <span class="n">tmean</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">({</span><span class="s1">&#39;sensor&#39;</span><span class="p">:</span><span class="n">sensor</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">tmean</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temp_mean_tree</span> <span class="o">=</span> <span class="n">sensor_ds_tree</span><span class="o">.</span><span class="n">map_over_datasets</span><span class="p">(</span><span class="n">calc_temporal_mean</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sensor_ds_tree&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, we can take just the descendent nodes of this datatree:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">child_tree</span> <span class="o">=</span> <span class="n">temp_mean_tree</span><span class="o">.</span><span class="n">descendants</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;temp_mean_tree&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>and concatenate them into a single <code class="docutils literal notranslate"><span class="pre">xr.Dataset</span></code> along the <code class="docutils literal notranslate"><span class="pre">'sensor'</span></code> dimension we created above:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sensor_mean_ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">child_tree</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">ds</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">child_tree</span><span class="p">))],</span> <span class="n">dim</span><span class="o">=</span><span class="s1">&#39;sensor&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;child_tree&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sensor_mean_ds</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sensor_mean_ds&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we can use Xarray’s <code class="docutils literal notranslate"><span class="pre">FacetGrid</span></code> plottingto visualize them side-by-side:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_v_magnitude</span><span class="p">(</span><span class="n">ds</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;I&#39;m a function that calculates the magnitude of a velocity displacement vector given velocity component vectors.</span>
+<span class="sd">    I return the same dataset object with a new variable called &#39;vmag&#39;&quot;&quot;&quot;</span> 
+    
+    <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;vmag&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ds</span><span class="p">[</span><span class="s1">&#39;vx&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ds</span><span class="p">[</span><span class="s1">&#39;vy&#39;</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ds</span>
+
+<span class="c1">#First, calculate magnitude of velocity from the temporal mean of the component vectors</span>
+<span class="n">sensor_mean_ds</span> <span class="o">=</span> <span class="n">calc_v_magnitude</span><span class="p">(</span><span class="n">sensor_mean_ds</span><span class="p">)</span>
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">sensor_mean_ds</span><span class="p">[</span><span class="s1">&#39;vmag&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s1">&#39;sensor&#39;</span><span class="p">,</span> <span class="n">col_wrap</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;Meters / year&#39;</span><span class="p">})</span>
+<span class="n">a</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Temporal mean of velocity magnitude&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.05</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;Y-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">supxlabel</span><span class="p">(</span><span class="s1">&#39;X-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="c1">#remove individual axes labesl</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+
+    <span class="n">a</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">a</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">labelrotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sensor_mean_ds&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>It’s important to keep in mind that in addition to having different spectral properties and imaging resolutions, the sensors included in the ITS_LIVE dataset have been active during different, and sometimes overlapping periods of time. There is additional discussion of inter-sensor bias in the ITS_LIVE Known Issues <a class="reference external" href="http://its-live-data.jpl.nasa.gov.s3.amazonaws.com/documentation/ITS_LIVE-Regional-Glacier-and-Ice-Sheet-Surface-Velocities-Known-Issues.pdf">documentation</a>.</p>
+</section>
+</section>
+<section id="id2">
+<h2>B. Examine velocity variability<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<section id="histograms-and-summary-statistics">
+<h3>1) Histograms and summary statistics<a class="headerlink" href="#histograms-and-summary-statistics" title="Permalink to this headline">#</a></h3>
+<p>First, we plot histogram of the <code class="docutils literal notranslate"><span class="pre">v</span></code>, <code class="docutils literal notranslate"><span class="pre">vx</span></code> and <code class="docutils literal notranslate"><span class="pre">vy</span></code> variables to examine their distrubtions. To construct these plots, we use a combination of xarray plotting functionality and matplotlib object-oriented plotting. In addition, we use <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.reduce.html"><code class="docutils literal notranslate"><span class="pre">xr.reduce()</span></code></a> and <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.skew.html"><code class="docutils literal notranslate"><span class="pre">scipy.stats.skew()</span></code></a> to calculate the skew of each variable (inset in each sub-plot).</p>
+<p>To make things easier, write a function that calculates and hold summary statistics for each variable in a dictionary:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calc_summary_stats</span><span class="p">(</span><span class="n">ds</span><span class="p">:</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; I&#39;m a function that calculates summary statistics for a given data variable and returns them as a dict to be used in a plot&quot;&quot;&quot;</span>
+
+    <span class="n">skew</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">skew</span><span class="p">,</span> <span class="n">nan_policy</span><span class="o">=</span><span class="s1">&#39;omit&#39;</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;mid_date&#39;</span><span class="p">],</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+    <span class="n">median</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;mid_date&#39;</span><span class="p">],</span> <span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="n">stats_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;skew&#39;</span><span class="p">:</span><span class="n">skew</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">:</span><span class="n">mean</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span><span class="n">median</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">stats_dict</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats_vy</span> <span class="o">=</span> <span class="n">calc_summary_stats</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="p">,</span> <span class="s1">&#39;vy&#39;</span><span class="p">)</span>
+<span class="n">stats_vx</span> <span class="o">=</span> <span class="n">calc_summary_stats</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="p">,</span> <span class="s1">&#39;vx&#39;</span><span class="p">)</span>
+<span class="n">stats_v</span> <span class="o">=</span> <span class="n">calc_summary_stats</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="n">axs</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="c1">#VY</span>
+<span class="n">hist_y</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">vy</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">cumulative_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">hist_y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hist_y</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:],</span> <span class="n">cumulative_y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="c1"># VY stats text</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mi">2000</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">2e6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Skew: </span><span class="si">{</span><span class="n">stats_vy</span><span class="p">[</span><span class="s1">&#39;skew&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mi">2000</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.5e6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Mean: </span><span class="si">{</span><span class="n">stats_vy</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mi">2000</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1e6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Median: </span><span class="si">{</span><span class="n">stats_vy</span><span class="p">[</span><span class="s1">&#39;median&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1">#VX</span>
+<span class="n">hist_x</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">vx</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">cumulative_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">hist_x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hist_x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:],</span> <span class="n">cumulative_x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="c1">#VX stats text</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mi">2000</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">2e6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Skew: </span><span class="si">{</span><span class="n">stats_vx</span><span class="p">[</span><span class="s1">&#39;skew&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mi">2000</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.5e6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Mean: </span><span class="si">{</span><span class="n">stats_vx</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=-</span><span class="mi">2000</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1e6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Median: </span><span class="si">{</span><span class="n">stats_vx</span><span class="p">[</span><span class="s1">&#39;median&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1">#V</span>
+<span class="n">hist_v</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">v</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">cumulative_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">hist_v</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hist_v</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:],</span> <span class="n">cumulative_v</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="c1">#V stats text</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">2e6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Skew: </span><span class="si">{</span><span class="n">stats_v</span><span class="p">[</span><span class="s1">&#39;skew&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.5e6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Mean: </span><span class="si">{</span><span class="n">stats_v</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1e6</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Median: </span><span class="si">{</span><span class="n">stats_v</span><span class="p">[</span><span class="s1">&#39;median&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="c1">#Formating and labeling</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;VY&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;VX&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;V)&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">axs</span><span class="p">)):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;# Observations&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supxlabel</span><span class="p">(</span><span class="s1">&#39;Meters / year&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Histogram (blue) and cumulative distribution function (orange) of velocity components and magnitude&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.05</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+<img alt="../_images/c299b2d513a74e3f542063a2ff843eea551bfefe31b4c967ac3def47112d7638.png" src="../_images/c299b2d513a74e3f542063a2ff843eea551bfefe31b4c967ac3def47112d7638.png" />
+</div>
+</div>
+<p>The histograms and summary statistics show that <code class="docutils literal notranslate"><span class="pre">vx</span></code> and <code class="docutils literal notranslate"><span class="pre">vy</span></code> distributions are relatively Gaussian, while <code class="docutils literal notranslate"><span class="pre">v</span></code> is positively skewed and <a class="reference external" href="https://en.wikipedia.org/wiki/Rice_distribution">Rician</a>. This is due to the non-linear relationshipp between component and displacement vectors. In datasets such as this one where the signal to noise ratio can be low, calculating velocity magnitude on smoothed or averaged component vectors can help to suppress noise (for a bit more detail, refer to this <a class="reference external" href="https://github.com/e-marshall/itslive/issues/26">comment</a>). For this reason, we will usually calculate velocity magnitude after the dataset has been reduced over space or time dimensions.</p>
+</section>
+<section id="spatial-velocity-variability">
+<h3>2) Spatial velocity variability<a class="headerlink" href="#spatial-velocity-variability" title="Permalink to this headline">#</a></h3>
+<p>Now that we have a greater understanding of the importance of velocity component variability in shaping our understandings of velocity variability, let’s examine these variables as well as the estimated error provided in the dataset by reducing the dataset along the temporal dimension so that we can visualize the data along x and y dimensions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Calculate min, max for color bar </span>
+<span class="n">vmin_y</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">vy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+<span class="n">vmax_y</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">vy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+
+<span class="n">vmin_x</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">vx</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+<span class="n">vmax_x</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">vx</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mid_date&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">.</span><span class="n">data</span>
+
+<span class="n">vmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">vmin_x</span><span class="p">,</span> <span class="n">vmin_y</span><span class="p">])</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">vmax_x</span><span class="p">,</span> <span class="n">vmax_y</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span> <span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">vx</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu_r&#39;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">vy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdBu_r&#39;</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;x-component velocity&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;y-component velocity&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Temporal mean of velocity components&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
+
+<span class="n">x</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;m/y&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">)</span>
+<span class="n">y</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;m/yr&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">270</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">axs</span><span class="p">)):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;Y-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supxlabel</span><span class="p">(</span><span class="s1">&#39;X-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+<img alt="../_images/b42611f0e846525143f70af3ddfe3a58c304eca6b57250ab6e9567272ea733d6.png" src="../_images/b42611f0e846525143f70af3ddfe3a58c304eca6b57250ab6e9567272ea733d6.png" />
+</div>
+</div>
+<p>In addition to visualizing components (above), plotting velocity vectors is helpful for understanding magnitude and direction of flow:</p>
+<p>First, calculate and visualize mean velocity magnitude over time (we will use the function defined in Part 1), and the mean estimated error over time:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_v</span> <span class="o">=</span> <span class="n">calc_v_magnitude</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">,</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+
+<span class="n">single_glacier_vector</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">angles</span><span class="o">=</span><span class="s1">&#39;xy&#39;</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">single_glacier_vector</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">ds_v</span><span class="p">[</span><span class="s1">&#39;vmag&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">a</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;meter/year&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;Y-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supxlabel</span><span class="p">(</span><span class="s1">&#39;X-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Velocity vectors (R) and magntiude of velocity (L), averaged over time&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.98</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">axs</span><span class="p">)):</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="kc">None</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_vector&#39; is not defined
+</pre></div>
+</div>
+<img alt="../_images/319b765839938351486c757fd77b281e266efc10a7b4823a0c8d5778a3cbdfbc.png" src="../_images/319b765839938351486c757fd77b281e266efc10a7b4823a0c8d5778a3cbdfbc.png" />
+</div>
+</div>
+<p>Visualize magnitude of velocity overlaid with velocity vectors next to velocity error:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">vmag</span> <span class="o">=</span> <span class="n">ds_v</span><span class="o">.</span><span class="n">vmag</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">52</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="s1">&#39;vx&#39;</span><span class="p">,</span><span class="s1">&#39;vy&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">angles</span><span class="o">=</span><span class="s1">&#39;xy&#39;</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">err</span> <span class="o">=</span> <span class="n">ds_v</span><span class="o">.</span><span class="n">v_error</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">52</span><span class="p">)</span>
+
+
+<span class="n">vmag</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;m/y&#39;</span><span class="p">)</span><span class="c1">#, rotation=270)</span>
+<span class="n">err</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;m/y&#39;</span><span class="p">)</span><span class="c1">#, rotation=270)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ax</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">supxlabel</span><span class="p">(</span><span class="s1">&#39;X-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;Y-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Mean velocity magnitude over time (L), mean error over time (R)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;ds_v&#39; is not defined
+</pre></div>
+</div>
+<img alt="../_images/2d8020dfd184202c8f5c6a6670550f23c8b928dbd71e14fd2b101f715c1c5690.png" src="../_images/2d8020dfd184202c8f5c6a6670550f23c8b928dbd71e14fd2b101f715c1c5690.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">v_error</span></code> is large relative to the magnitude of velocity, suggesting that this data is pretty noisy.</p>
+</section>
+<section id="temporal-velocity-variability">
+<h3>3) Temporal velocity variability<a class="headerlink" href="#temporal-velocity-variability" title="Permalink to this headline">#</a></h3>
+<p>Reduce over the spatial dimensions (this time we will switch it up and choose a different reduction function) and visualize variability over time:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">vmag_med</span> <span class="o">=</span> <span class="n">calc_v_magnitude</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">]))</span>
+
+<span class="n">vmag_med</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;vmag&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Spatial median magnitude of velocity over time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;m/y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+<img alt="../_images/5015f6c5c278ddabc9b89343312bcde0f141cb8709592051b594eaa0f779ce86.png" src="../_images/5015f6c5c278ddabc9b89343312bcde0f141cb8709592051b594eaa0f779ce86.png" />
+</div>
+</div>
+<p>This helps get a sense of velocity variability over time, but also shows how many outliers there are, even after taking the median over the x and y dimensions. In the final section of this notebook, we explore different approaches for changing the resolution of the temporal dimension.</p>
+</section>
+</section>
+<section id="c-dimensional-computations">
+<h2>C. Dimensional computations<a class="headerlink" href="#c-dimensional-computations" title="Permalink to this headline">#</a></h2>
+<p>In Part 2, we saw that the timeseries is dense in places and quite noisy. This section demonstrates different approaches for looking at a temporal signal in the dataset.</p>
+<section id="temporal-resampling">
+<h3>1) Temporal resampling<a class="headerlink" href="#temporal-resampling" title="Permalink to this headline">#</a></h3>
+<p>Use Xarray’s <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.resample.html"><code class="docutils literal notranslate"><span class="pre">resample()</span></code></a> method to coarsen the dataset. With <code class="docutils literal notranslate"><span class="pre">resample()</span></code>, you can upsample or downsample the data, choosing both the resample frequency and the type of reduction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Coarsen dataset to monthly</span>
+<span class="n">resample_obj</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">mid_date</span><span class="o">=</span><span class="s1">&#39;2ME&#39;</span><span class="p">)</span>
+<span class="c1">#Calculate monthly median</span>
+<span class="n">glacier_resample_1mo</span> <span class="o">=</span> <span class="n">resample_obj</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> dimension is now much less dense:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">glacier_resample_1mo</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;glacier_resample_1mo&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compare the 2-month resampled median time series to the full time series we plotted at the end of Part 2:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="c1">#Calculate magnitude of velocity after the temporal reduction</span>
+<span class="n">vmag_1mo</span> <span class="o">=</span> <span class="n">calc_v_magnitude</span><span class="p">(</span><span class="n">glacier_resample_1mo</span><span class="p">)</span>
+
+<span class="c1">#Calculate spatial median</span>
+<span class="n">vmag_1mo</span><span class="p">[</span><span class="s1">&#39;vmag&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="c1">#Plot full time series (spatial median) magnitude of velocity</span>
+<span class="n">vmag_med</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;mid_date&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;vmag&#39;</span><span class="p">,</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">);</span>
+
+<span class="c1">#Labels and formatting</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;2-month median magnitude of velocity (blue), full time series (orange)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;m/y&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">750</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;glacier_resample_1mo&#39; is not defined
+</pre></div>
+</div>
+<img alt="../_images/5015f6c5c278ddabc9b89343312bcde0f141cb8709592051b594eaa0f779ce86.png" src="../_images/5015f6c5c278ddabc9b89343312bcde0f141cb8709592051b594eaa0f779ce86.png" />
+</div>
+</div>
+<p>We can make a few observations:</p>
+<ul class="simple">
+<li><p>Computing two-month median velocities makes it easier to see a somewhat periodic velocity signal</p></li>
+<li><p>As expected, the median is highly sensitive to the density of observations; as such, it displays greater amplitude during periods with sparser observations. When the density of observations increases significantly in 2014, the amplitude of variability of the 2-month median curve decreases dramatically.</p></li>
+</ul>
+</section>
+<section id="grouped-analysis-by-season">
+<h3>2) Grouped analysis by season<a class="headerlink" href="#grouped-analysis-by-season" title="Permalink to this headline">#</a></h3>
+<p>Xarray’s <a class="reference external" href="https://docs.xarray.dev/en/stable/user-guide/groupby.html"><code class="docutils literal notranslate"><span class="pre">groupby()</span></code></a> functionality allows us to segment the dataset into different groups along given dimensions. Here, we use that to analyze seasonal velocity variability patterns:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seasons_gb</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">mid_date</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">season</span><span class="p">)</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="c1">#add attrs to gb object</span>
+<span class="n">seasons_gb</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">attrs</span> 
+<span class="c1">#Reorder seasons</span>
+<span class="n">seasons_gb</span><span class="o">=</span><span class="n">seasons_gb</span><span class="o">.</span><span class="n">reindex</span><span class="p">({</span><span class="s1">&#39;season&#39;</span><span class="p">:[</span><span class="s1">&#39;DJF&#39;</span><span class="p">,</span><span class="s1">&#39;MAM&#39;</span><span class="p">,</span><span class="s1">&#39;JJA&#39;</span><span class="p">,</span><span class="s1">&#39;SON&#39;</span><span class="p">]})</span>
+<span class="n">seasons_gb</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is cool; we’ve gone from our 3-d object with a very dense <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> dimension to a 3-d object where the temporal aspect of the data is represented by 4 seasons.</p>
+<p>In the above cell, we defined how we wanted to group our data (<code class="docutils literal notranslate"><span class="pre">single_glacier_raster.mid_date.dt.season</span></code>) and the reduction we wanted to apply to each group (<code class="docutils literal notranslate"><span class="pre">median()</span></code>). After the apply step, Xarray automatically combines the groups into a single object with a <code class="docutils literal notranslate"><span class="pre">season</span></code> dimension.</p>
+<p>If you’d like to see another example of this with more detailed explanations, go <a class="reference external" href="https://tutorial.xarray.dev/fundamentals/03.2_groupby_with_xarray.html">here</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Calculate magnitude on seasonal groupby object</span>
+<span class="n">seasons_vmag</span> <span class="o">=</span> <span class="n">calc_v_magnitude</span><span class="p">(</span><span class="n">seasons_gb</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;seasons_gb&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use another <code class="docutils literal notranslate"><span class="pre">FacetGrid</span></code> plot to visualize the seasons side-by-side:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fg</span> <span class="o">=</span> <span class="n">seasons_vmag</span><span class="o">.</span><span class="n">vmag</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">col</span><span class="o">=</span><span class="s1">&#39;season&#39;</span><span class="p">,</span><span class="n">cbar_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="s1">&#39;Meters / year&#39;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">fg</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Seasonal median velocity magnitude&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.05</span><span class="p">)</span>
+<span class="n">fg</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">supxlabel</span><span class="p">(</span><span class="s1">&#39;X-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="n">fg</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;Y-coordinate of projection (meters)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+    <span class="n">fg</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">fg</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">fg</span><span class="o">.</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">labelrotation</span><span class="o">=</span><span class="mi">45</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;seasons_vmag&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>From the above FacetGrid plot, it appears that some regions of the glacier are very active (show high velocities) throughout the entire year. In other areas, it appears that glacier flow may be much more seasonal.</p>
+</section>
+<section id="conclusion">
+<h3>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">#</a></h3>
+<p>This was a deep dive in exploratory data analysis at the scale of an individual glacier. The last notebook in this chapter will demonstrate a regional-scale analysis.</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./nbs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="2_data_organization_manipulation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2. Data organization and manipulation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="4_exploratory_data_analysis_group.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4. Exploratory analysis - multiple glaciers</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">Outline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-data-exploration">A. Data exploration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-examine-velocity-variability">B. Examine velocity variability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-computations-and-additional-operations">C. Computations and additional operations</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning goals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concepts">Concepts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#techniques">Techniques</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">A. Data exploration</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-raster-data-into-memory-and-visualize-with-vector-data">1) Load raster data into memory and visualize with vector data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examine-data-coverage">2) Examine data coverage</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#break-down-by-sensor">3) Break down by sensor</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#landsat-8">Landsat 8</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#what-about-a-sensor-with-multiple-identifiers">What about a sensor with multiple identifiers?</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combine-sensor-specific-datasets">4) Combine sensor-specific datasets</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">B. Examine velocity variability</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#histograms-and-summary-statistics">1) Histograms and summary statistics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-velocity-variability">2) Spatial velocity variability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-velocity-variability">3) Temporal velocity variability</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-dimensional-computations">C. Dimensional computations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#temporal-resampling">1) Temporal resampling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grouped-analysis-by-season">2) Grouped analysis by season</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By emma marshall
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

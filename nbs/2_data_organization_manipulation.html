@@ -1,0 +1,1645 @@
+
+
+<!DOCTYPE html>
+
+
+<html >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta property="og:title" content="2. Data organization and manipulation" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://e-marshall.github.io/itslive/nbs/2_data_organization_manipulation.html" />
+<meta property="og:site_name" content="Python" />
+<meta property="og:description" content="Introduction: This notebook will talk through the initial steps involved in working with a large raster dataset (the ITS_LIVE granule that we read in the previous notebook) and subsetting it to the..." />
+<meta property="og:image" content="https://e-marshall.github.io/itslive/_static/itslive_explore_img.png" />
+<meta property="og:image:alt" content="Python" />
+<meta name="description" content="Introduction: This notebook will talk through the initial steps involved in working with a large raster dataset (the ITS_LIVE granule that we read in the previous notebook) and subsetting it to the..." />
+
+    <title>2. Data organization and manipulation &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'nbs/2_data_organization_manipulation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Exploratory analysis of velocity data – single glacier" href="3_exploratory_data_analysis_single.html" />
+    <link rel="prev" title="1. Accessing cloud-hosted ITS_LIVE data" href="1_accessing_itslive_s3_data.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../mds/intro.html">
+  
+  
+  
+  
+  
+    <p class="title logo__title">Using xarray to examine cloud-based glacier surface velocity data</p>
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../mds/intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="software_and_data.html">Software and Data</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="1_accessing_itslive_s3_data.html">1. Accessing cloud-hosted ITS_LIVE data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Data organization and manipulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_exploratory_data_analysis_single.html">3. Exploratory analysis of velocity data – single glacier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_exploratory_data_analysis_group.html">4. Exploratory analysis - multiple glaciers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mds/Summary.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mds/Acknowledgments.html">Acknowledgments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mds/Contributing.html">Contributing and Seeking help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mds/References.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/e-marshall/itslive/master?urlpath=lab/tree/nbs/2_data_organization_manipulation.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/e-marshall/itslive" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/e-marshall/itslive/issues/new?title=Issue%20on%20page%20%2Fnbs/2_data_organization_manipulation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/nbs/2_data_organization_manipulation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2. Data organization and manipulation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">Outline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-read-and-organize-gridded-ice-velocity-raster-data">A. Read and organize gridded ice velocity (raster) data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-incorporate-glacier-outline-vector-data">B. Incorporate glacier outline (vector) data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-join-raster-and-vector-data-single-glacier">C. Join raster and vector data - single glacier</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning goals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concepts">Concepts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#techniques">Techniques</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">A. Read and organize gridded ice velocity (raster) data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-approaches-for-reading-larger-than-memory-data">1) Compare approaches for reading larger-than-memory data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#chunks-auto"><code class="docutils literal notranslate"><span class="pre">Chunks</span> <span class="pre">=</span> <span class="pre">'auto'</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#chunks"><code class="docutils literal notranslate"><span class="pre">Chunks</span> <span class="pre">=</span> <span class="pre">{}</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#an-out-of-order-time-dimension">An out-of-order time dimension</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-dataset-without-dask">Read the dataset without Dask</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arrange-dataset-in-chronological-order">2) Arrange dataset in chronological order</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-to-a-dask-backed-xarray-dataset">Convert to a dask-backed Xarray dataset</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">B. Incorporate glacier outline (vector) data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-reproject-vector-data">1) Read and reproject vector data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-spatial-extents-of-glacier-outlines-and-its-live-granule">Visualize spatial extents of glacier outlines and ITS_LIVE granule</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crop-vector-data-to-spatial-extent-of-raster-data">2) Crop vector data to spatial extent of raster data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-handle-different-geometry-types">3) Optional: Handle different geometry types</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">C. Join raster and vector data - single glacier</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crop-its-live-granule-to-a-single-glacier-outline">1) Crop ITS_LIVE granule to a single glacier outline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-clipped-object-to-file">2) Write clipped object to file.</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="data-organization-and-manipulation">
+<h1>2. Data organization and manipulation<a class="headerlink" href="#data-organization-and-manipulation" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>This notebook will talk through the initial steps involved in working with a large raster dataset (the ITS_LIVE granule that we read in the previous notebook) and subsetting it to the spatial domain of a smaller area of interest. To clip ITS_LIVE data to the extent of a single glacier, we will use a vector dataset of glacier outlines, the <a class="reference external" href="https://nsidc.org/data/nsidc-0770">Randolph Glacier Inventory</a>.</p>
+<p>We will work through challenges that come with working with larger-than-memory datasets and complex geometries. The tools we will use include <strong>xarray</strong>, <strong>dask</strong>, <strong>rioxarray</strong>, <strong>geopandas</strong>, and <strong>flox</strong>.</p>
+</section>
+<section id="outline">
+<h2>Outline<a class="headerlink" href="#outline" title="Permalink to this headline">#</a></h2>
+<section id="a-read-and-organize-gridded-ice-velocity-raster-data">
+<h3>A. Read and organize gridded ice velocity (raster) data<a class="headerlink" href="#a-read-and-organize-gridded-ice-velocity-raster-data" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>Compare approaches for reading larger-than-memory data</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>Arrange dataset in chronological order</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="b-incorporate-glacier-outline-vector-data">
+<h3>B. Incorporate glacier outline (vector) data<a class="headerlink" href="#b-incorporate-glacier-outline-vector-data" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>Read and reproject vector data</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>Crop vector data to spatial extent of raster data.</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="3">
+<li><p>Optional: Handle different geometry types when visualizing vector data.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+<section id="c-join-raster-and-vector-data-single-glacier">
+<h3>C. Join raster and vector data - single glacier<a class="headerlink" href="#c-join-raster-and-vector-data-single-glacier" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>Crop ITS_LIVE granule to a single glacier outline</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>Write clipped object to file.</p></li>
+</ol>
+</li>
+</ul>
+</section>
+</section>
+<section id="learning-goals">
+<h2>Learning goals<a class="headerlink" href="#learning-goals" title="Permalink to this headline">#</a></h2>
+<section id="concepts">
+<h3>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Characteristics of larger than memory gridded data</p></li>
+<li><p>‘Lazy’ v. ‘non-lazy’ operations</p></li>
+<li><p>Troubleshooting code errors and warnings</p></li>
+</ul>
+</section>
+<section id="techniques">
+<h3>Techniques<a class="headerlink" href="#techniques" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Read + write large data with <span class="xref myst">Xarray</span>, <span class="xref myst">Zarr</span>, and <span class="xref myst">Dask</span></p></li>
+<li><p>Label-based indexing and selection</p></li>
+<li><p>Interactive visualizations with <span class="xref myst">Folium</span> and <span class="xref myst">GeoPandas</span></p></li>
+<li><p>Clip raster data with vector data using <span class="xref myst">Rioxarray</span></p></li>
+</ul>
+<p>Expand the next cell to see specific packages used in this notebook and relevant system and version information.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">xmode</span> minimal
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">LocalCluster</span>
+<span class="kn">import</span> <span class="nn">folium</span>
+<span class="kn">import</span> <span class="nn">geopandas</span> <span class="k">as</span> <span class="nn">gpd</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">rioxarray</span> <span class="k">as</span> <span class="nn">rx</span>
+<span class="kn">from</span> <span class="nn">shapely.geometry</span> <span class="kn">import</span> <span class="n">MultiPolygon</span><span class="p">,</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception reporting mode: Minimal
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="id1">
+<h2>A. Read and organize gridded ice velocity (raster) data<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h2>
+<p>This section uses functions we defined in the data access notebook, all of which are stored in the <code class="docutils literal notranslate"><span class="pre">itslivetools.py</span></code> file. If you cloned this tutorial from its github <a class="reference external" href="https://github.com/e-marshall/itslive">repository</a> you’ll see that <code class="docutils literal notranslate"><span class="pre">itslivetools.py</span></code> is in the same directory as our current notebook, so we can import it with the following line:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itslivetools</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">ModuleNotFoundError</span>: No module named &#39;itslivetools&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Read in the catalog again, and use the <code class="docutils literal notranslate"><span class="pre">find_granule_by_point()</span></code> to find the URL that points to the ITS_LIVE granule covering your area of interest.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">itslive_catalog</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">&#39;https://its-live-data.s3.amazonaws.com/datacubes/catalog_v02.json&#39;</span><span class="p">)</span>
+<span class="c1">#Find urls for granule covering point of interest</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">find_granule_by_point</span><span class="p">([</span><span class="mf">95.180191</span><span class="p">,</span> <span class="mf">30.645973</span><span class="p">])</span>
+<span class="n">url</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<section id="compare-approaches-for-reading-larger-than-memory-data">
+<h3>1) Compare approaches for reading larger-than-memory data<a class="headerlink" href="#compare-approaches-for-reading-larger-than-memory-data" title="Permalink to this headline">#</a></h3>
+<p>The function that we defined in the previous notebook, <code class="docutils literal notranslate"><span class="pre">read_in_s3()</span></code>, supports different options for reading large, chunked raster datasets. Before we use that again in this notebook, we will explore these options and the ways that they can impact how we work with the data. You can learn more about reading Zarr data with Xarray <a class="reference external" href="https://docs.xarray.dev/en/stable/user-guide/io.html#zarr">here</a>, and see the different chunking options that are supported and which we will demonstrate below <a class="reference external" href="https://docs.xarray.dev/en/stable/generated/xarray.open_dataset.html">here</a>.</p>
+<section id="chunks-auto">
+<h4><code class="docutils literal notranslate"><span class="pre">Chunks</span> <span class="pre">=</span> <span class="pre">'auto'</span></code><a class="headerlink" href="#chunks-auto" title="Permalink to this headline">#</a></h4>
+<p>This is the default option in <code class="docutils literal notranslate"><span class="pre">read_in_s3()</span></code>. The Xarray documentation states that <code class="docutils literal notranslate"><span class="pre">chunks='auto'</span></code> uses “dask <code class="docutils literal notranslate"><span class="pre">auto</span></code> chunking, taking into account the engine preferred chunks”.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_auto</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;zarr&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;url&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this instance, the chunks of the object created with <code class="docutils literal notranslate"><span class="pre">xr.open_dataset(...,</span> <span class="pre">chunks='auo')</span></code> do not exactly match the chunk size</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_auto</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_auto&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <span class="xref myst">data model</span> section/notebook discussed scalar information that is stored as attributes attached to Xarray objects. Similarly, Xarray objects read from Zarr datacubes have associated <code class="docutils literal notranslate"><span class="pre">encodings</span></code> that tell Xarray how to read and write the object to disk. We can use the encoding to learn about preferred chunking schemes.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_auto</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_auto&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_auto</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_auto&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>For the encoding of the <code class="docutils literal notranslate"><span class="pre">v</span></code> variable, it looks like the chunking scheme is expected to be <code class="docutils literal notranslate"><span class="pre">{'mid_date':</span> <span class="pre">2000,</span> <span class="pre">'y':10,</span> <span class="pre">'x':10}</span></code>. However, the chunks for this variable created with <code class="docutils literal notranslate"><span class="pre">chunks='auto'</span></code> are <code class="docutils literal notranslate"><span class="pre">{'mid_date':</span> <span class="pre">47892,</span> <span class="pre">'y':</span> <span class="pre">20,</span> <span class="pre">'x':</span> <span class="pre">20}</span></code>.</p>
+<p>Let’s take a look at the encoding for a 1-dimensional variable:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_auto</span><span class="p">[</span><span class="s1">&#39;vx_error&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_auto&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_auto</span><span class="p">[</span><span class="s1">&#39;vx_error&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_auto&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Interesting. We see that:</p>
+<ul class="simple">
+<li><p>The chunk size specified in the encoding doesn’t match the total length of the <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> dimension. It may be an artifact from an earlier step in the data processing chain before some observations were eliminated.</p></li>
+<li><p>The encoding specifies a single chunk along the <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> dimension for this variable, which matches the object we read into memory, the size of this chunk is just different.</p></li>
+</ul>
+<p>Another thing to note is that it looks like some of the variables within this <code class="docutils literal notranslate"><span class="pre">xr.Dataset</span></code> have different chunk sizes on the <code class="docutils literal notranslate"><span class="pre">y</span></code> dimension (Shown by  the error produced below). We will need to address this later before rechunking the dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_auto</span><span class="o">.</span><span class="n">chunksizes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_auto&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_auto</span> <span class="o">=</span> <span class="n">dc_auto</span><span class="o">.</span><span class="n">unify_chunks</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_auto&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_auto</span><span class="o">.</span><span class="n">chunksizes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_auto&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="chunks">
+<h4><code class="docutils literal notranslate"><span class="pre">Chunks</span> <span class="pre">=</span> <span class="pre">{}</span></code><a class="headerlink" href="#chunks" title="Permalink to this headline">#</a></h4>
+<p>For this argument, the documentation says: “loads the data with dask using the engine’s preferred chunk size, generally identical to the format’s chunk size. If not available, a single chunk for all arrays.”</p>
+<p>Note that with this dataset, <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> and <code class="docutils literal notranslate"><span class="pre">{}</span></code> don’t return the same chunking scheme.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_set</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;zarr&#39;</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">{})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;url&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_set</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_set&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_set</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_set&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>With this approach, we see that the chunking on the 3-dimensional variable we looked at above (‘v’) <em>does</em> match the chunking specified in the object’s encoding: <code class="docutils literal notranslate"><span class="pre">{'mid_date':</span> <span class="pre">20000,</span> <span class="pre">'y':</span> <span class="pre">10,</span> <span class="pre">'x':</span> <span class="pre">10}</span></code>.</p>
+<p>Looking at a one-dimensional variable, we see the same occurrence as with <code class="docutils literal notranslate"><span class="pre">dc_auto</span></code>: the number of chunks matches what is specified in the encoding, but the size of the chunk is different.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_set</span><span class="p">[</span><span class="s1">&#39;vx_error&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_set&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_set</span><span class="p">[</span><span class="s1">&#39;vx_error&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_set&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">v</span></code> and <code class="docutils literal notranslate"><span class="pre">vx_error</span></code> variables shown above have different chunk sizes along the <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> dimension, so we can expect the same chunk sizes error as above, but this time for <code class="docutils literal notranslate"><span class="pre">mid_date</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_set</span><span class="o">.</span><span class="n">chunksizes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_set&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>However this time, if try to resolve the above error like we did for <code class="docutils literal notranslate"><span class="pre">dc_auto</span></code>, We get a performance warning about the number of chunks increasing by a factor of 186.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dc_set</span> <span class="o">=</span> <span class="n">dc_set</span><span class="o">.</span><span class="n">unify_chunks</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">PerformanceWarning</span><span class="p">:</span> <span class="n">Increasing</span> <span class="n">number</span> <span class="n">of</span> <span class="n">chunks</span> <span class="n">by</span> <span class="n">factor</span> <span class="n">of</span> <span class="mi">186</span><span class="n">_</span><span class="p">,</span> <span class="n">chunked_data</span> <span class="o">=</span> <span class="n">chunkmanager</span><span class="o">.</span><span class="n">unify_chunks</span><span class="p">(</span><span class="o">*</span><span class="n">unify_chunks_args</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="an-out-of-order-time-dimension">
+<h4>An out-of-order time dimension<a class="headerlink" href="#an-out-of-order-time-dimension" title="Permalink to this headline">#</a></h4>
+<p>When we read this dataset from the S3 bucket, we get an object where the time dimension is not in chronological order. Because the dataset is so large, fixing this is not entirely straightforward.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">dc_set</span><span class="o">.</span><span class="n">mid_date</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_set&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>The standard approach would be calling Xarray’s <span class="xref myst"><code class="docutils literal notranslate"><span class="pre">.sortby()</span></code></span> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dc_set</span> <span class="o">=</span> <span class="n">dc_set</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Performing an operation like sorting or slicing requires the entire array to be loaded into memory; for a larage dimension like <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> (~48,000 elements), would be very slow and/or would max out available computationall resoures.</p>
+<p>There may be a chunking strategy that successfully allows one to sort this dataset along the <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> dimension, but when I tried a few different re-chunking approaches, they did not work. Instead, the sucessful approach I found was a bit counterintuitive: Re-read the dataset into memory <em>without</em> dask. This let’s us use Xarray’s ‘lazy’ functionality; we can sort the dataset without loading it into memory. The object will still be quite large so we will chunk the data, incorporating dask, after we sort by the time dimension.</p>
+</section>
+<section id="read-the-dataset-without-dask">
+<h4>Read the dataset without Dask<a class="headerlink" href="#read-the-dataset-without-dask" title="Permalink to this headline">#</a></h4>
+<p>We’ll again use the <code class="docutils literal notranslate"><span class="pre">read_in_s3()</span></code> function, but this time passing <code class="docutils literal notranslate"><span class="pre">chunks_arg</span> <span class="pre">=</span> <span class="pre">None</span></code>. This is the same as running: <code class="docutils literal notranslate"><span class="pre">dc</span> <span class="pre">=</span> <span class="pre">xr.open_dataset(url,</span> <span class="pre">engine='Zarr')</span></code>. The `read_in_s3()`` signature is shown below as a reminder:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">itslivetools</span><span class="o">.</span><span class="n">read_in_s3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">signature</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">read_in_s3</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">dc</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>As we saw above, the <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> dimension is still out of order:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">dc</span><span class="o">.</span><span class="n">mid_date</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="arrange-dataset-in-chronological-order">
+<h3>2) Arrange dataset in chronological order<a class="headerlink" href="#arrange-dataset-in-chronological-order" title="Permalink to this headline">#</a></h3>
+<p>But now, we can lazily perform the <code class="docutils literal notranslate"><span class="pre">.sortby()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="n">sortby</span><span class="p">(</span><span class="s1">&#39;mid_date&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">dc</span><span class="o">.</span><span class="n">mid_date</span><span class="p">[</span><span class="n">element</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great! After some experimentation with different approaches, we have our dataset sorted in chronological order.</p>
+<section id="convert-to-a-dask-backed-xarray-dataset">
+<h4>Convert to a dask-backed Xarray dataset<a class="headerlink" href="#convert-to-a-dask-backed-xarray-dataset" title="Permalink to this headline">#</a></h4>
+<p>Not passing a <code class="docutils literal notranslate"><span class="pre">'chunks'</span></code> argument to <code class="docutils literal notranslate"><span class="pre">xr.open_dataset()</span></code> means that the Xarray object is a collection of Numpy arrays rather than Dask arrays. However, the dataset is still very large. We will need to use Dask even though we didn’t read it in with Dask. We’ll use the preferred chunking from <code class="docutils literal notranslate"><span class="pre">.encoding['chunks']</span></code> to specify a chunking scheme to the object and convert the underlying arrays from Numpy to Dask.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if end up adding data overview notebook, this should be moved there. in text above this note is text to keep from the passage below if it moves.</p>
+</div>
+<p>However, the dataset is still very large: there are 60 variables that exist along 1,2 or, 3 dimensions (with the exception of the <code class="docutils literal notranslate"><span class="pre">mapping</span></code> variable which we will discuss later), and a single 3-d variable is 123 GB. We will still need to use Dask even though we didn’t read it in as a collection of Dask arrays straight away. We will use the preferred chunk sizes we saw in the earlier objects in order to add a chunking scheme to this object and convert the numpy arrays to Dask arrays.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunking_dict</span> <span class="o">=</span> <span class="n">dc_auto</span><span class="o">.</span><span class="n">chunksizes</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_auto&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_rechunk</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="n">chunk</span><span class="p">(</span><span class="n">chunking_dict</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_rechunk</span><span class="o">.</span><span class="n">chunks</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_rechunk&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great, now we have our ITS_LIVE dataset organized by time, and with appropriate chunking. Let’s move on and read in vector data describing some physical features we’d like to examine with the ITS_LIVE dataset.</p>
+</section>
+</section>
+</section>
+<section id="id2">
+<h2>B. Incorporate glacier outline (vector) data<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<section id="read-and-reproject-vector-data">
+<h3>1) Read and reproject vector data<a class="headerlink" href="#read-and-reproject-vector-data" title="Permalink to this headline">#</a></h3>
+<p>As discussed in the <span class="xref myst">Software and Data</span> notebook, the examples in this tutorial use glacier outlines from the Randolph Glacier Inventory, version 7 (RGI7). We’ll specifically be looking at the ‘South Asia East’ region.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s1">&#39;data/rgi7_region15_south_asia_east.parquet&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">FileNotFoundError</span>: data/rgi7_region15_south_asia_east.parquet
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check the projection of the ITS_LIVE dataset, which is stored in the attributes of the <code class="docutils literal notranslate"><span class="pre">dc</span></code> / <code class="docutils literal notranslate"><span class="pre">dc_rechunk</span></code> objects.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>This indicates that the data is projected to UTM zone 46N (EPSG:32646).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Project rgi data to match itslive</span>
+<span class="n">se_asia_prj</span> <span class="o">=</span> <span class="n">se_asia</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;EPSG:</span><span class="si">{</span><span class="n">dc</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;projection&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> 
+<span class="n">se_asia_prj</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>How many glaciers are represented in the dataset?</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">se_asia_prj</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_prj&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<section id="visualize-spatial-extents-of-glacier-outlines-and-its-live-granule">
+<h4>Visualize spatial extents of glacier outlines and ITS_LIVE granule<a class="headerlink" href="#visualize-spatial-extents-of-glacier-outlines-and-its-live-granule" title="Permalink to this headline">#</a></h4>
+<p>In <span class="xref myst">Accessing S3 Data</span>, we defined a function to create a vector object describing the footprint of a raster object; we’ll use that again here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Get vector bbox of itslive</span>
+<span class="n">bbox_dc</span> <span class="o">=</span> <span class="n">itslivetools</span><span class="o">.</span><span class="n">get_bounds_polygon</span><span class="p">(</span><span class="n">dc_rechunk</span><span class="p">)</span>
+<span class="n">bbox_dc</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span>
+<span class="c1">#Check that all objects have correct crs</span>
+<span class="k">assert</span> <span class="n">dc_rechunk</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">bbox_dc</span><span class="o">.</span><span class="n">crs</span> <span class="o">==</span> <span class="n">se_asia_prj</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;itslivetools&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Plot the outline of the itslive granule and the rgi dataframe together</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="n">bbox_dc</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">se_asia_prj</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;bbox_dc&#39; is not defined
+</pre></div>
+</div>
+<img alt="../_images/9787f8a2451f2e7e36145ae170b7a0df1c349c31116bdd2985cc12a5f053b850.png" src="../_images/9787f8a2451f2e7e36145ae170b7a0df1c349c31116bdd2985cc12a5f053b850.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="crop-vector-data-to-spatial-extent-of-raster-data">
+<h3>2) Crop vector data to spatial extent of raster data<a class="headerlink" href="#crop-vector-data-to-spatial-extent-of-raster-data" title="Permalink to this headline">#</a></h3>
+<p>The above plot shows the coverage of the vector dataset, in black, relative to the extent of the raster dataset, in red. We use the <a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.clip.html">geopandas <code class="docutils literal notranslate"><span class="pre">.clip()</span></code></a> method to subset the RGI object (<code class="docutils literal notranslate"><span class="pre">se_asia_prj</span></code>) to the footprint of the ITS_LIVe object (<code class="docutils literal notranslate"><span class="pre">bbox_dc</span></code>) object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Subset rgi to bounds </span>
+<span class="n">se_asia_subset</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">se_asia_prj</span><span class="p">,</span> <span class="n">bbox_dc</span><span class="p">)</span>
+<span class="n">se_asia_subset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_prj&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use the <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> <code class="docutils literal notranslate"><span class="pre">.explore()</span></code> method to interactively look at the RGI7 outlines contained within the ITS_LIVE granule:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">folium</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="n">max_lat</span> <span class="o">=</span> <span class="mi">31</span><span class="p">,</span><span class="n">max_lon</span> <span class="o">=</span> <span class="mi">95</span><span class="p">,</span> <span class="n">min_lat</span> <span class="o">=</span> <span class="mi">29</span><span class="p">,</span> <span class="n">min_lon</span> <span class="o">=</span> <span class="mi">97</span><span class="p">,</span>
+               <span class="n">location</span><span class="o">=</span><span class="p">[</span><span class="mf">30.2</span><span class="p">,</span> <span class="mf">95.5</span><span class="p">],</span> <span class="n">zoom_start</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="n">bbox_dc</span><span class="o">.</span><span class="n">explore</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">style_kwds</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fillColor&#39;</span><span class="p">:</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="s1">&#39;color&#39;</span><span class="p">:</span><span class="s1">&#39;red&#39;</span><span class="p">},</span>
+                <span class="n">legend_kwds</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;labels&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ITS_LIVE granule footprint&#39;</span><span class="p">]})</span>
+<span class="n">se_asia_subset</span><span class="o">.</span><span class="n">explore</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+
+<span class="n">folium</span><span class="o">.</span><span class="n">LayerControl</span><span class="p">()</span><span class="o">.</span><span class="n">add_to</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="n">m</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;bbox_dc&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<p>While the above code correctly produces a plot, it also throws an warning. For a detailed example of trouble shooting and resolving this kind of warning, proceed to <span class="xref myst">Section D</span>, otherwise, skip ahead to <span class="xref myst">Part 2</span>.</p>
+</section>
+<section id="optional-handle-different-geometry-types">
+<h3>3) Optional: Handle different geometry types<a class="headerlink" href="#optional-handle-different-geometry-types" title="Permalink to this headline">#</a></h3>
+<p>It looks like we’re getting a warning on the <code class="docutils literal notranslate"><span class="pre">explore()</span></code> method that is interfering with the functionality that displays feature info when you hover over a feature. Let’s dig into it and see what’s going on. It looks like the issue is being caused by rows of the <code class="docutils literal notranslate"><span class="pre">GeoDataFrame</span></code> object that have a ‘GeometryCollection’ geometry type. First, I’m going to copy the warning into a cell below. The warning is already in the form of a list of dictionaries, which makes it nice to work with:</p>
+<p>Here is the error message separated from the problem geometries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">home</span><span class="o">/../</span><span class="n">python3</span><span class="mf">.11</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">folium</span><span class="o">/</span><span class="n">features</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">1102</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">GeoJsonTooltip</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">configured</span> <span class="n">to</span> <span class="n">render</span> <span class="k">for</span> <span class="n">GeoJson</span> <span class="n">GeometryCollection</span> <span class="n">geometries</span><span class="o">.</span> <span class="n">Please</span> <span class="n">consider</span> <span class="n">reworking</span> <span class="n">these</span> <span class="n">features</span><span class="p">:</span> <span class="o">.....</span> <span class="n">to</span> <span class="n">MultiPolygon</span> <span class="k">for</span> <span class="n">full</span> <span class="n">functionality</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>And below are the problem geometries identified in the error message saved as a list of dictionaries:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem_geoms</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;rgi_id&#39;</span><span class="p">:</span> <span class="s1">&#39;RGI2000-v7.0-G-15-16433&#39;</span><span class="p">,</span> <span class="s1">&#39;o1region&#39;</span><span class="p">:</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span> <span class="s1">&#39;o2region&#39;</span><span class="p">:</span> <span class="s1">&#39;15-03&#39;</span><span class="p">,</span> <span class="s1">&#39;glims_id&#39;</span><span class="p">:</span> <span class="s1">&#39;G095721E29941N&#39;</span><span class="p">,</span> <span class="s1">&#39;anlys_id&#39;</span><span class="p">:</span> <span class="mi">929520</span><span class="p">,</span> <span class="s1">&#39;subm_id&#39;</span><span class="p">:</span> <span class="mi">752</span><span class="p">,</span> <span class="s1">&#39;src_date&#39;</span><span class="p">:</span> <span class="s1">&#39;2005-09-08T00:00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;cenlon&#39;</span><span class="p">:</span> <span class="mf">95.7211016152286</span><span class="p">,</span> <span class="s1">&#39;cenlat&#39;</span><span class="p">:</span> <span class="mf">29.940902187781784</span><span class="p">,</span> <span class="s1">&#39;utm_zone&#39;</span><span class="p">:</span> <span class="mi">46</span><span class="p">,</span> <span class="s1">&#39;area_km2&#39;</span><span class="p">:</span> <span class="mf">0.340954350813452</span><span class="p">,</span> <span class="s1">&#39;primeclass&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;conn_lvl&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;surge_type&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;term_type&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;glac_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;is_rgi6&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;termlon&#39;</span><span class="p">:</span> <span class="mf">95.72222864596793</span><span class="p">,</span> <span class="s1">&#39;termlat&#39;</span><span class="p">:</span> <span class="mf">29.937137080413784</span><span class="p">,</span> <span class="s1">&#39;zmin_m&#39;</span><span class="p">:</span> <span class="mf">4657.792</span><span class="p">,</span> <span class="s1">&#39;zmax_m&#39;</span><span class="p">:</span> <span class="mf">5049.5625</span><span class="p">,</span> <span class="s1">&#39;zmed_m&#39;</span><span class="p">:</span> <span class="mf">4825.1104</span><span class="p">,</span> <span class="s1">&#39;zmean_m&#39;</span><span class="p">:</span> <span class="mf">4839.4185</span><span class="p">,</span> <span class="s1">&#39;slope_deg&#39;</span><span class="p">:</span> <span class="mf">23.704372</span><span class="p">,</span> <span class="s1">&#39;aspect_deg&#39;</span><span class="p">:</span> <span class="mf">145.20973</span><span class="p">,</span> <span class="s1">&#39;aspect_sec&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;dem_source&#39;</span><span class="p">:</span> <span class="s1">&#39;COPDEM30&#39;</span><span class="p">,</span> <span class="s1">&#39;lmax_m&#39;</span><span class="p">:</span> <span class="mi">891</span><span class="p">},</span> 
+                 <span class="p">{</span><span class="s1">&#39;rgi_id&#39;</span><span class="p">:</span> <span class="s1">&#39;RGI2000-v7.0-G-15-12194&#39;</span><span class="p">,</span> <span class="s1">&#39;o1region&#39;</span><span class="p">:</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span> <span class="s1">&#39;o2region&#39;</span><span class="p">:</span> <span class="s1">&#39;15-03&#39;</span><span class="p">,</span> <span class="s1">&#39;glims_id&#39;</span><span class="p">:</span> <span class="s1">&#39;G095869E30315N&#39;</span><span class="p">,</span> <span class="s1">&#39;anlys_id&#39;</span><span class="p">:</span> <span class="mi">929951</span><span class="p">,</span> <span class="s1">&#39;subm_id&#39;</span><span class="p">:</span> <span class="mi">752</span><span class="p">,</span> <span class="s1">&#39;src_date&#39;</span><span class="p">:</span> <span class="s1">&#39;2005-09-08T00:00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;cenlon&#39;</span><span class="p">:</span> <span class="mf">95.86889789565677</span><span class="p">,</span> <span class="s1">&#39;cenlat&#39;</span><span class="p">:</span> <span class="mf">30.3147685</span><span class="p">,</span> <span class="s1">&#39;utm_zone&#39;</span><span class="p">:</span> <span class="mi">46</span><span class="p">,</span> <span class="s1">&#39;area_km2&#39;</span><span class="p">:</span> <span class="mf">8.797406997273084</span><span class="p">,</span> <span class="s1">&#39;primeclass&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;conn_lvl&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;surge_type&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;term_type&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;glac_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;is_rgi6&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;termlon&#39;</span><span class="p">:</span> <span class="mf">95.89518363763428</span><span class="p">,</span> <span class="s1">&#39;termlat&#39;</span><span class="p">:</span> <span class="mf">30.307036248571297</span><span class="p">,</span> <span class="s1">&#39;zmin_m&#39;</span><span class="p">:</span> <span class="mf">4642.1445</span><span class="p">,</span> <span class="s1">&#39;zmax_m&#39;</span><span class="p">:</span> <span class="mf">5278.752</span><span class="p">,</span> <span class="s1">&#39;zmed_m&#39;</span><span class="p">:</span> <span class="mf">5011.06</span><span class="p">,</span> <span class="s1">&#39;zmean_m&#39;</span><span class="p">:</span> <span class="mf">4993.9243</span><span class="p">,</span> <span class="s1">&#39;slope_deg&#39;</span><span class="p">:</span> <span class="mf">12.372513</span><span class="p">,</span> <span class="s1">&#39;aspect_deg&#39;</span><span class="p">:</span> <span class="mf">81.418945</span><span class="p">,</span> <span class="s1">&#39;aspect_sec&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;dem_source&#39;</span><span class="p">:</span> <span class="s1">&#39;COPDEM30&#39;</span><span class="p">,</span> <span class="s1">&#39;lmax_m&#39;</span><span class="p">:</span> <span class="mi">4994</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s1">&#39;rgi_id&#39;</span><span class="p">:</span> <span class="s1">&#39;RGI2000-v7.0-G-15-11941&#39;</span><span class="p">,</span> <span class="s1">&#39;o1region&#39;</span><span class="p">:</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span> <span class="s1">&#39;o2region&#39;</span><span class="p">:</span> <span class="s1">&#39;15-03&#39;</span><span class="p">,</span> <span class="s1">&#39;glims_id&#39;</span><span class="p">:</span> <span class="s1">&#39;G095301E30377N&#39;</span><span class="p">,</span> <span class="s1">&#39;anlys_id&#39;</span><span class="p">:</span> <span class="mi">928228</span><span class="p">,</span> <span class="s1">&#39;subm_id&#39;</span><span class="p">:</span> <span class="mi">752</span><span class="p">,</span> <span class="s1">&#39;src_date&#39;</span><span class="p">:</span> <span class="s1">&#39;2007-08-20T00:00:00&#39;</span><span class="p">,</span> <span class="s1">&#39;cenlon&#39;</span><span class="p">:</span> <span class="mf">95.30071978915663</span><span class="p">,</span> <span class="s1">&#39;cenlat&#39;</span><span class="p">:</span> <span class="mf">30.3770025</span><span class="p">,</span> <span class="s1">&#39;utm_zone&#39;</span><span class="p">:</span> <span class="mi">46</span><span class="p">,</span> <span class="s1">&#39;area_km2&#39;</span><span class="p">:</span> <span class="mf">0.267701958906151</span><span class="p">,</span> <span class="s1">&#39;primeclass&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;conn_lvl&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;surge_type&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;term_type&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;glac_name&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;is_rgi6&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;termlon&#39;</span><span class="p">:</span> <span class="mf">95.30345982475616</span><span class="p">,</span> <span class="s1">&#39;termlat&#39;</span><span class="p">:</span> <span class="mf">30.380097687364806</span><span class="p">,</span> <span class="s1">&#39;zmin_m&#39;</span><span class="p">:</span> <span class="mf">5475.784</span><span class="p">,</span> <span class="s1">&#39;zmax_m&#39;</span><span class="p">:</span> <span class="mf">5977.979</span><span class="p">,</span> <span class="s1">&#39;zmed_m&#39;</span><span class="p">:</span> <span class="mf">5750.727</span><span class="p">,</span> <span class="s1">&#39;zmean_m&#39;</span><span class="p">:</span> <span class="mf">5759.621</span><span class="p">,</span> <span class="s1">&#39;slope_deg&#39;</span><span class="p">:</span> <span class="mf">41.069595</span><span class="p">,</span> <span class="s1">&#39;aspect_deg&#39;</span><span class="p">:</span> <span class="mf">350.3331518173218</span><span class="p">,</span> <span class="s1">&#39;aspect_sec&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;dem_source&#39;</span><span class="p">:</span> <span class="s1">&#39;COPDEM30&#39;</span><span class="p">,</span> <span class="s1">&#39;lmax_m&#39;</span><span class="p">:</span> <span class="mi">807</span><span class="p">}]</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>First, convert the <code class="docutils literal notranslate"><span class="pre">problem_geoms</span></code> object from a list of dictionary objects to a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem_geoms_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">problem_geoms</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next, make a list of the IDs of the glaciers in this dataframe:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem_geom_ids</span> <span class="o">=</span> <span class="n">problem_geoms_df</span><span class="p">[</span><span class="s1">&#39;glims_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+<span class="n">problem_geom_ids</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;G095721E29941N&#39;, &#39;G095869E30315N&#39;, &#39;G095301E30377N&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Make a <code class="docutils literal notranslate"><span class="pre">geopandas.GeoDataFrame</span></code> object that is just the above-identified outlines:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem_geoms_gdf</span> <span class="o">=</span> <span class="n">se_asia_subset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">se_asia_subset</span><span class="p">[</span><span class="s1">&#39;glims_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">problem_geom_ids</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_subset&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check the geometry-type of these outlines and compare them to another outline from the <code class="docutils literal notranslate"><span class="pre">se_asia_subset</span></code> object that wasn’t flagged:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">problem_geoms_gdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">problem_geoms_gdf</span><span class="p">[</span><span class="s1">&#39;glims_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;G095301E30377N&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">geom_type</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;problem_geoms_gdf&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia_subset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">se_asia_subset</span><span class="p">[</span><span class="s1">&#39;rgi_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;RGI2000-v7.0-G-15-11754&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">geom_type</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_subset&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, the warning we saw above makes more sense. Most features in <code class="docutils literal notranslate"><span class="pre">se_asia_subset</span></code> have <code class="docutils literal notranslate"><span class="pre">geom_type</span> <span class="pre">=</span> <span class="pre">Polygon</span></code> but the flagged features have <code class="docutils literal notranslate"><span class="pre">geom_type=</span> <span class="pre">GeometryCollection</span></code>.</p>
+<p>Let’s dig a bit more into these flagged geometries. To do this, use the <a class="reference external" href="https://geopandas.org/en/stable/docs/reference/api/geopandas.GeoDataFrame.explode.html">geopandas method <code class="docutils literal notranslate"><span class="pre">explode()</span></code></a> to split multiple geometries into multiple single geometries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_flagged_feature</span> <span class="o">=</span> <span class="n">problem_geoms_gdf</span><span class="p">[</span><span class="n">problem_geoms_gdf</span><span class="o">.</span><span class="n">glims_id</span> <span class="o">==</span> <span class="s1">&#39;G095301E30377N&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="n">index_parts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;problem_geoms_gdf&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Printing this object shows that it actually contains a polygon geometry and a linestring geometry:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">first_flagged_feature</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;first_flagged_feature&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at the other two:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">second_flagged_feature</span> <span class="o">=</span> <span class="n">problem_geoms_gdf</span><span class="p">[</span><span class="n">problem_geoms_gdf</span><span class="o">.</span><span class="n">glims_id</span> <span class="o">==</span> <span class="s1">&#39;G095869E30315N&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="n">index_parts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">second_flagged_feature</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;problem_geoms_gdf&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">third_flagged_feature</span> <span class="o">=</span> <span class="n">problem_geoms_gdf</span><span class="p">[</span><span class="n">problem_geoms_gdf</span><span class="o">.</span><span class="n">glims_id</span> <span class="o">==</span> <span class="s1">&#39;G095721E29941N&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="n">index_parts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">third_flagged_feature</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;problem_geoms_gdf&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check out some properties of the line geometry objects, such as length:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">third_flagged_feature</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">second_flagged_feature</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">third_flagged_feature</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">length</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;third_flagged_feature&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>It looks like all of the linestring objects are very small, possibly artifacts, and don’t need to remain in the dataset. For simplicity, we can remove them from the original object. There are different ways to do this, but here’s one approach:</p>
+<ol class="arabic simple">
+<li><p>Identify and remove all features with the <code class="docutils literal notranslate"><span class="pre">GeometryCollection</span></code> geom_type:</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia_subset_polygon</span> <span class="o">=</span> <span class="n">se_asia_subset</span><span class="p">[</span><span class="o">~</span><span class="n">se_asia_subset</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">geom_type</span><span class="o">==</span><span class="s1">&#39;GeometryCollection&#39;</span> <span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_subset&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Remove the line geometries from the <code class="docutils literal notranslate"><span class="pre">GeometryCollection</span></code> features:</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia_subset_geom_collection</span> <span class="o">=</span> <span class="n">se_asia_subset</span><span class="p">[</span><span class="n">se_asia_subset</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">geom_type</span><span class="o">==</span><span class="s1">&#39;GeometryCollection&#39;</span> <span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_subset&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Make an object that is just the features where <code class="docutils literal notranslate"><span class="pre">geom_type</span></code> = Polygon:</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">keep_polygons</span> <span class="o">=</span> <span class="n">se_asia_subset_geom_collection</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="n">index_parts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">se_asia_subset_geom_collection</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="n">index_parts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">geom_type</span> <span class="o">==</span> <span class="s1">&#39;Polygon&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_subset_geom_collection&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Append the polygons to the <code class="docutils literal notranslate"><span class="pre">se_asia_subset_polygons</span></code> object:</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia_polygons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">se_asia_subset_polygon</span><span class="p">,</span><span class="n">keep_polygons</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_subset_polygon&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a sanity check, let’s make sure that we didn’t lose any glacier outline features during all of that:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">se_asia_subset</span><span class="p">[</span><span class="s1">&#39;rgi_id&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">se_asia_polygons</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_subset&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great, we know that we have the same number of glaciers that we started with.</p>
+<p>Now, let’s try visualizing the outlines with <code class="docutils literal notranslate"><span class="pre">explore()</span></code> again and seeing if the hover tools work:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">se_asia_polygons</span><span class="o">.</span><span class="n">explore</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_polygons&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can use the above interactive map to select a glacier to look at in more detail below.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="id3">
+<h2>C. Join raster and vector data - single glacier<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h2>
+<section id="crop-its-live-granule-to-a-single-glacier-outline">
+<h3>1) Crop ITS_LIVE granule to a single glacier outline<a class="headerlink" href="#crop-its-live-granule-to-a-single-glacier-outline" title="Permalink to this headline">#</a></h3>
+<p>If we want to dig in and analyze this velocity dataset at smaller spatial scales, we first need to subset it. The following section and the next notebook (<span class="xref myst">Single Glacier Data Analysis</span>) will focus on the spatial scale of a single glacier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Select a  glacier to subset to</span>
+<span class="n">sample_glacier_vec</span> <span class="o">=</span> <span class="n">se_asia_subset</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">se_asia_subset</span><span class="p">[</span><span class="s1">&#39;rgi_id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;RGI2000-v7.0-G-15-16257&#39;</span><span class="p">]</span>
+<span class="n">sample_glacier_vec</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;se_asia_subset&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Write it to file to that it can be used later</span>
+<span class="n">sample_glacier_vec</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="s1">&#39;data/single_glacier_vec.json&#39;</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s1">&#39;GeoJSON&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;sample_glacier_vec&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Check to see if the ITS_LIVE raster dataset has an assigned CRS attribute. We already know that the data is projected in the correct coordinate reference system (CRS), but the object may not be ‘CRS-aware’ yet (ie. have an attribute specifying its CRS). This is necessary for spatial operations such as clipping and reprojection. If <code class="docutils literal notranslate"><span class="pre">dc_rechunk</span></code> doesn’t have a CRS attribute, use <code class="docutils literal notranslate"><span class="pre">rio.write_crs()</span></code> to assign it. For more detail, see Rioxarray’s <a class="reference external" href="https://corteva.github.io/rioxarray/stable/getting_started/crs_management.html">CRS Management documentation</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_rechunk</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_rechunk&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>It doesn’t have a CRS attribute, so we assign it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_rechunk</span> <span class="o">=</span> <span class="n">dc_rechunk</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">write_crs</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;epsg:</span><span class="si">{</span><span class="n">dc_rechunk</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_rechunk&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dc_rechunk</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_rechunk&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, use the subset vector data object and Rioxarray’s <a class="reference external" href="https://corteva.github.io/rioxarray/html/examples/clip_geom.html"><code class="docutils literal notranslate"><span class="pre">.clip()</span></code> method</a> to crop the data cube.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="n">single_glacier_raster</span> <span class="o">=</span> <span class="n">dc_rechunk</span><span class="o">.</span><span class="n">rio</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">sample_glacier_vec</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">sample_glacier_vec</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;dc_rechunk&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="write-clipped-object-to-file">
+<h3>2) Write clipped object to file.<a class="headerlink" href="#write-clipped-object-to-file" title="Permalink to this headline">#</a></h3>
+<p>We want to use <code class="docutils literal notranslate"><span class="pre">single_glacier_raster</span></code> in the following notebook without going through all of the steps of creating it again. So, we write the object to file as a Zarr data cube so that we can easily read it into memory when we need it next. However, we’ll see that there are a few steps we must go through before we can successfully write this object.</p>
+<p>We first re-chunk the <code class="docutils literal notranslate"><span class="pre">single_glacier_raster</span></code> into more optimal chunk sizes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_glacier_raster</span> <span class="o">=</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">chunk</span><span class="p">({</span><span class="s1">&#39;mid_date&#39;</span><span class="p">:</span><span class="mi">20000</span><span class="p">,</span>
+                                                             <span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span>
+                                                             <span class="s1">&#39;y&#39;</span><span class="p">:</span><span class="mi">10</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>At this point, if we tried to write <code class="docutils literal notranslate"><span class="pre">single_glacier_raster</span></code> (eg. <code class="docutils literal notranslate"><span class="pre">single_glacier_raster.to_zarr('data/glacier_itslive.zarr',</span> <span class="pre">mode='w')</span></code>), we would get two errors that are cause by the ways that attribute and encoding information are stored.</p>
+<p>The first error is:<br />
+‘’’ValueError: failed to prevent overwriting existing key grid_mapping in attrs. This is probably an encoding field used by xarray to describe how a variable is serialized. To proceed, remove this key from the variable’s attributes manually.
+‘’’</p>
+<p>This indicates that the ‘grid_mapping’ attribute of several variables (<code class="docutils literal notranslate"><span class="pre">grid_mapping</span></code> specifies that spatial reference information about the data can be found in the <code class="docutils literal notranslate"><span class="pre">mapping</span></code> coordinate variable) is prohibiting the object being written to file. Because I’ve checked to ensure that these attribute keys all have the expected value (eg: <code class="docutils literal notranslate"><span class="pre">print([single_glacier_raster[var].attrs['grid_mapping']</span> <span class="pre">for</span> <span class="pre">var</span> <span class="pre">in</span> <span class="pre">single_glacier_raster.data_vars</span> <span class="pre">if</span> <span class="pre">'grid_mapping'</span> <span class="pre">in</span> <span class="pre">single_glacier_raster[var].attrs])</span></code>), I can go ahead and delete this attribute to proceed with the write operation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">&#39;grid_mapping&#39;</span> <span class="ow">in</span> <span class="n">single_glacier_raster</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">single_glacier_raster</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;grid_mapping&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Great, we’ve resolved one error, but as the next code cell will show, we would still run into an encoding error trying to write this object:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">to_zarr</span><span class="p">(</span><span class="s1">&#39;data/glacier_itslive.zarr&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>This one relates back to the Zarr encodings that we examined at the beginning of this notebook. Remember that we saw variables that only exist along the <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> dimension had <code class="docutils literal notranslate"><span class="pre">.encoding['chunks']</span> <span class="pre">=</span> <span class="pre">56147</span></code> even though the length of the <code class="docutils literal notranslate"><span class="pre">mid_date</span></code> dimension is 47,892. This occurs because Xarray does not overwrite or drop encodings when an object is rechunked or otherwise modified. In these cases, we should manually update or delete the out-of-date encoding. You can read more discussion on this topic <a class="reference external" href="https://github.com/pydata/xarray/issues/5219">here</a>. We can fix it in a similar way, deleting a key from the object’s <code class="docutils literal notranslate"><span class="pre">encoding</span></code> instead of <code class="docutils literal notranslate"><span class="pre">attrs</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">data_vars</span><span class="p">:</span>
+    <span class="k">del</span> <span class="n">single_glacier_raster</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">[</span><span class="s1">&#39;chunks&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now, let’s try to write the object as a Zarr group.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_glacier_raster</span><span class="o">.</span><span class="n">to_zarr</span><span class="p">(</span><span class="s1">&#39;data/single_glacier_itslive_cube.zarr&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="ne">NameError</span>: name &#39;single_glacier_raster&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./nbs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1_accessing_itslive_s3_data.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1. Accessing cloud-hosted ITS_LIVE data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3_exploratory_data_analysis_single.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3. Exploratory analysis of velocity data – single glacier</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">Outline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-read-and-organize-gridded-ice-velocity-raster-data">A. Read and organize gridded ice velocity (raster) data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-incorporate-glacier-outline-vector-data">B. Incorporate glacier outline (vector) data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-join-raster-and-vector-data-single-glacier">C. Join raster and vector data - single glacier</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-goals">Learning goals</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concepts">Concepts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#techniques">Techniques</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">A. Read and organize gridded ice velocity (raster) data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-approaches-for-reading-larger-than-memory-data">1) Compare approaches for reading larger-than-memory data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#chunks-auto"><code class="docutils literal notranslate"><span class="pre">Chunks</span> <span class="pre">=</span> <span class="pre">'auto'</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#chunks"><code class="docutils literal notranslate"><span class="pre">Chunks</span> <span class="pre">=</span> <span class="pre">{}</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#an-out-of-order-time-dimension">An out-of-order time dimension</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#read-the-dataset-without-dask">Read the dataset without Dask</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arrange-dataset-in-chronological-order">2) Arrange dataset in chronological order</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-to-a-dask-backed-xarray-dataset">Convert to a dask-backed Xarray dataset</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">B. Incorporate glacier outline (vector) data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-reproject-vector-data">1) Read and reproject vector data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-spatial-extents-of-glacier-outlines-and-its-live-granule">Visualize spatial extents of glacier outlines and ITS_LIVE granule</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crop-vector-data-to-spatial-extent-of-raster-data">2) Crop vector data to spatial extent of raster data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-handle-different-geometry-types">3) Optional: Handle different geometry types</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">C. Join raster and vector data - single glacier</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#crop-its-live-granule-to-a-single-glacier-outline">1) Crop ITS_LIVE granule to a single glacier outline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#write-clipped-object-to-file">2) Write clipped object to file.</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By emma marshall
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
