@@ -1,9 +1,0 @@
-{
-    "_ARRAY_DIMENSIONS": [
-        "mid_date"
-    ],
-    "coordinates": "spatial_ref",
-    "description": "va shift calibrated using valid pixels over stable surfaces,  stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
-    "standard_name": "va_stable_shift_stationary",
-    "units": "meter/year"
-}

@@ -1,8 +1,0 @@
-{
-    "_ARRAY_DIMENSIONS": [
-        "mid_date"
-    ],
-    "coordinates": "spatial_ref",
-    "description": "id of the mission that acquired image 1",
-    "standard_name": "image1_mission"
-}

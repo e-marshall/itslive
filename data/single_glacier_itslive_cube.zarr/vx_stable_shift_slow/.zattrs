@@ -1,9 +1,0 @@
-{
-    "_ARRAY_DIMENSIONS": [
-        "mid_date"
-    ],
-    "coordinates": "spatial_ref",
-    "description": "vx shift calibrated using valid pixels over slowest 25% of retrieved velocities",
-    "standard_name": "vx_stable_shift_slow",
-    "units": "meter/year"
-}

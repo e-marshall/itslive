@@ -1,9 +1,0 @@
-{
-    "_ARRAY_DIMENSIONS": [
-        "mid_date"
-    ],
-    "coordinates": "spatial_ref",
-    "description": "best estimate of y_velocity error: vy_error is populated according to the approach used for the velocity bias correction as indicated in \"stable_shift_flag\"",
-    "standard_name": "vy_error",
-    "units": "meter/year"
-}
