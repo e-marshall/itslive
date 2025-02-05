@@ -1,8 +1,0 @@
-{
-    "_ARRAY_DIMENSIONS": [
-        "mid_date"
-    ],
-    "description": "multiplicative factor that converts slant range pixel displacement dr to slant range velocity vr",
-    "standard_name": "M12_dr_to_vr_factor",
-    "units": "meter/(year*pixel)"
-}

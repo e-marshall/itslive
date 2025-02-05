@@ -1,8 +1,0 @@
-{
-    "_ARRAY_DIMENSIONS": [
-        "mid_date"
-    ],
-    "description": "vr shift calibrated using valid pixels over stable surfaces,  stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
-    "standard_name": "vr_stable_shift_stationary",
-    "units": "meter/year"
-}

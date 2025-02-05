@@ -1,8 +1,0 @@
-{
-    "_ARRAY_DIMENSIONS": [
-        "mid_date"
-    ],
-    "description": "RMSE over slowest 25% of retrieved velocities",
-    "standard_name": "vy_error_slow",
-    "units": "meter/year"
-}

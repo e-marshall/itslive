@@ -4,12 +4,12 @@
 format: jb-book
 root: intro
 chapters:
-- file: software_and_data.ipynb
-- file: 1_accessing_itslive_s3_data.ipynb
-- file: 2_data_organization_manipulation.ipynb
-- file: 3_exploratory_data_analysis_single.ipynb
-- file: 4_exploratory_data_analysis_group.ipynb
-- file: Summary.md
-- file: Acknowledgments.md
-- file: Contributing.md
-- file: References.md
+- file: nbs/software_and_data.ipynb
+- file: nbs/1_accessing_itslive_s3_data.ipynb
+- file: nbs/2_data_organization_manipulation.ipynb
+- file: nbs/3_exploratory_data_analysis_single.ipynb
+- file: nbs/4_exploratory_data_analysis_group.ipynb
+- file: mds/Summary.md
+- file: mds/Acknowledgments.md
+- file: mds/Contributing.md
+- file: mds/References.md
