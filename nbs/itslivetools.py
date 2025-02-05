@@ -1,8 +1,8 @@
-import geopandas as gpd
-from shapely.geometry import Point, Polygon
 from typing import Union
-import xarray as xr
 
+import geopandas as gpd
+import xarray as xr
+from shapely.geometry import Point, Polygon
 
 
 def read_in_s3(http_url: str, chunks_arg: Union[None, str, dict] = "auto") -> xr.Dataset:
