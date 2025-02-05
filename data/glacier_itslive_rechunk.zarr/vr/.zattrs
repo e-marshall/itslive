@@ -1,0 +1,10 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "mid_date",
+        "y",
+        "x"
+    ],
+    "description": "velocity in radar range direction",
+    "grid_mapping": "mapping",
+    "missing_value": -32767
+}

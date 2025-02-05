@@ -1,0 +1,9 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry"
+    ],
+    "coordinates": "index spatial_ref",
+    "grid_mapping": "spatial_ref",
+    "nodes": "y",
+    "standard_name": "projection_y_coordinate"
+}

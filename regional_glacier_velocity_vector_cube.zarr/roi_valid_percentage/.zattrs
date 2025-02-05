@@ -1,0 +1,11 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry",
+        "mid_date"
+    ],
+    "coordinates": "index spatial_ref",
+    "description": "percentage of pixels with a valid velocity estimate determined for the intersection of the full image pair footprint and the region of interest (roi) that defines where autoRIFT tried to estimate a velocity",
+    "geometry": "geometry_container",
+    "grid_mapping": "spatial_ref",
+    "standard_name": "region_of_interest_valid_pixel_percentage"
+}

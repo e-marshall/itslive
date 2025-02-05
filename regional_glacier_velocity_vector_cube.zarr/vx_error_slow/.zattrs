@@ -1,0 +1,12 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry",
+        "mid_date"
+    ],
+    "coordinates": "index spatial_ref",
+    "description": "RMSE over slowest 25% of retrieved velocities",
+    "geometry": "geometry_container",
+    "grid_mapping": "spatial_ref",
+    "standard_name": "vx_error_slow",
+    "units": "meter/year"
+}

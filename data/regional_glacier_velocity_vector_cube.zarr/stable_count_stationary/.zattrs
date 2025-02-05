@@ -1,0 +1,12 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry",
+        "mid_date"
+    ],
+    "coordinates": "Area_km2 RGIId Slope_deg spatial_ref",
+    "description": "number of valid pixels over stationary or slow-flowing surfaces",
+    "geometry": "geometry_container",
+    "grid_mapping": "spatial_ref",
+    "standard_name": "stable_count_stationary",
+    "units": "count"
+}

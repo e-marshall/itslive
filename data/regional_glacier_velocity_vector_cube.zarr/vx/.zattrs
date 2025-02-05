@@ -1,0 +1,12 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry",
+        "mid_date"
+    ],
+    "coordinates": "Area_km2 RGIId Slope_deg spatial_ref",
+    "description": "velocity component in x direction",
+    "geometry": "geometry_container",
+    "grid_mapping": "spatial_ref",
+    "standard_name": "land_ice_surface_x_velocity",
+    "units": "meter/year"
+}

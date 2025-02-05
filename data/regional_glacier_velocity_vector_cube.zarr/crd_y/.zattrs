@@ -1,0 +1,9 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry"
+    ],
+    "coordinates": "Area_km2 RGIId Slope_deg spatial_ref",
+    "grid_mapping": "spatial_ref",
+    "nodes": "y",
+    "standard_name": "projection_y_coordinate"
+}

@@ -1,0 +1,14 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry",
+        "mid_date"
+    ],
+    "chip_size_coordinates": "Optical data: chip_size_coordinates = 'image projection geometry: width = x, height = y'. Radar data: chip_size_coordinates = 'radar geometry: width = range, height = azimuth'",
+    "coordinates": "Area_km2 RGIId Slope_deg spatial_ref",
+    "description": "height of search template (chip)",
+    "geometry": "geometry_container",
+    "grid_mapping": "spatial_ref",
+    "standard_name": "chip_size_height",
+    "units": "m",
+    "y_pixel_size": 10.0
+}

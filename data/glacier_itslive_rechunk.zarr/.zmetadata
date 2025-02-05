@@ -1,0 +1,1906 @@
+{
+    "metadata": {
+        ".zattrs": {
+            "Conventions": "CF-1.8",
+            "GDAL_AREA_OR_POINT": "Area",
+            "author": "ITS_LIVE, a NASA MEaSUREs project (its-live.jpl.nasa.gov)",
+            "autoRIFT_parameter_file": "http://its-live-data.s3.amazonaws.com/autorift_parameters/v001/autorift_landice_0120m.shp",
+            "datacube_software_version": "1.0",
+            "date_created": "25-Sep-2023 22:00:23",
+            "date_updated": "13-Nov-2024 00:08:07",
+            "geo_polygon": "[[95.06959008486952, 29.814255053135895], [95.32812062059084, 29.809951334550703], [95.58659184122865, 29.80514261876954], [95.84499718862224, 29.7998293459177], [96.10333011481168, 29.79401200205343], [96.11032804508507, 30.019297601073085], [96.11740568350054, 30.244573983323825], [96.12456379063154, 30.469841094022847], [96.1318031397002, 30.695098878594504], [95.87110827645229, 30.70112924501256], [95.61033817656023, 30.7066371044805], [95.34949964126946, 30.711621947056347], [95.08859948278467, 30.716083310981194], [95.08376623410525, 30.49063893600811], [95.07898726183609, 30.26518607254204], [95.0742620484426, 30.039724763743482], [95.06959008486952, 29.814255053135895]]",
+            "institution": "NASA Jet Propulsion Laboratory (JPL), California Institute of Technology",
+            "latitude": 30.26,
+            "longitude": 95.6,
+            "proj_polygon": "[[700000, 3300000], [725000.0, 3300000.0], [750000.0, 3300000.0], [775000.0, 3300000.0], [800000, 3300000], [800000.0, 3325000.0], [800000.0, 3350000.0], [800000.0, 3375000.0], [800000, 3400000], [775000.0, 3400000.0], [750000.0, 3400000.0], [725000.0, 3400000.0], [700000, 3400000], [700000.0, 3375000.0], [700000.0, 3350000.0], [700000.0, 3325000.0], [700000, 3300000]]",
+            "projection": "32646",
+            "s3": "s3://its-live-data/datacubes/v2/N30E090/ITS_LIVE_vel_EPSG32646_G0120_X750000_Y3350000.zarr",
+            "skipped_granules": "s3://its-live-data/datacubes/v2/N30E090/ITS_LIVE_vel_EPSG32646_G0120_X750000_Y3350000.json",
+            "time_standard_img1": "UTC",
+            "time_standard_img2": "UTC",
+            "title": "ITS_LIVE datacube of image pair velocities",
+            "url": "https://its-live-data.s3.amazonaws.com/datacubes/v2/N30E090/ITS_LIVE_vel_EPSG32646_G0120_X750000_Y3350000.zarr"
+        },
+        ".zgroup": {
+            "zarr_format": 2
+        },
+        "M11/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<i2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "M11/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "description": "conversion matrix element (1st row, 1st column) that can be multiplied with vx to give range pixel displacement dr (see Eq. A18 in https://www.mdpi.com/2072-4292/13/4/749)",
+            "grid_mapping": "mapping",
+            "missing_value": -32767,
+            "standard_name": "conversion_matrix_element_11",
+            "units": "pixel/(meter/year)"
+        },
+        "M11_dr_to_vr_factor/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": 0.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "M11_dr_to_vr_factor/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "multiplicative factor that converts slant range pixel displacement dr to slant range velocity vr",
+            "standard_name": "M11_dr_to_vr_factor",
+            "units": "meter/(year*pixel)"
+        },
+        "M12/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<i2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "M12/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "description": "conversion matrix element (1st row, 2nd column) that can be multiplied with vy to give range pixel displacement dr (see Eq. A18 in https://www.mdpi.com/2072-4292/13/4/749)",
+            "grid_mapping": "mapping",
+            "missing_value": -32767,
+            "standard_name": "conversion_matrix_element_12",
+            "units": "pixel/(meter/year)"
+        },
+        "M12_dr_to_vr_factor/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": 0.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "M12_dr_to_vr_factor/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "multiplicative factor that converts slant range pixel displacement dr to slant range velocity vr",
+            "standard_name": "M12_dr_to_vr_factor",
+            "units": "meter/(year*pixel)"
+        },
+        "acquisition_date_img1/.zarray": {
+            "chunks": [
+                23946
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f8",
+            "fill_value": "NaN",
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "acquisition_date_img1/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "calendar": "proleptic_gregorian",
+            "description": "acquisition date and time of image 1",
+            "standard_name": "image1_acquition_date",
+            "units": "days since 1970-01-01"
+        },
+        "acquisition_date_img2/.zarray": {
+            "chunks": [
+                23946
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f8",
+            "fill_value": "NaN",
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "acquisition_date_img2/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "calendar": "proleptic_gregorian",
+            "description": "acquisition date and time of image 2",
+            "standard_name": "image2_acquition_date",
+            "units": "days since 1970-01-01"
+        },
+        "autoRIFT_software_version/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<U5",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "autoRIFT_software_version/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "version of autoRIFT software",
+            "standard_name": "autoRIFT_software_version"
+        },
+        "chip_size_height/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<u2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "chip_size_height/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "chip_size_coordinates": "Optical data: chip_size_coordinates = 'image projection geometry: width = x, height = y'. Radar data: chip_size_coordinates = 'radar geometry: width = range, height = azimuth'",
+            "description": "height of search template (chip)",
+            "grid_mapping": "mapping",
+            "missing_value": 0,
+            "standard_name": "chip_size_height",
+            "units": "m",
+            "y_pixel_size": 10.0
+        },
+        "chip_size_width/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<u2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "chip_size_width/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "chip_size_coordinates": "Optical data: chip_size_coordinates = 'image projection geometry: width = x, height = y'. Radar data: chip_size_coordinates = 'radar geometry: width = range, height = azimuth'",
+            "description": "width of search template (chip)",
+            "grid_mapping": "mapping",
+            "missing_value": 0,
+            "standard_name": "chip_size_width",
+            "units": "m",
+            "x_pixel_size": 10.0
+        },
+        "date_center/.zarray": {
+            "chunks": [
+                23946
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f8",
+            "fill_value": "NaN",
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "date_center/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "calendar": "proleptic_gregorian",
+            "description": "midpoint of image 1 and image 2 acquisition date",
+            "standard_name": "image_pair_center_date",
+            "units": "days since 1970-01-01"
+        },
+        "date_dt/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": "NaN",
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "date_dt/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "time separation between acquisition of image 1 and image 2",
+            "standard_name": "image_pair_time_separation",
+            "units": "days"
+        },
+        "floatingice/.zarray": {
+            "chunks": [
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "|u1",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "floatingice/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "y",
+                "x"
+            ],
+            "description": "floating ice mask, 0 = non-floating-ice, 1 = floating-ice",
+            "flag_meanings": "non-ice ice",
+            "flag_values": [
+                0,
+                1
+            ],
+            "grid_mapping": "mapping",
+            "missing_value": 255,
+            "standard_name": "floating ice mask",
+            "url": "https://its-live-data.s3.amazonaws.com/autorift_parameters/v001/N46_0120m_floatingice.tif"
+        },
+        "granule_url/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<U1024",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "granule_url/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "original granule URL",
+            "standard_name": "granule_url"
+        },
+        "interp_mask/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "|u1",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "interp_mask/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "description": "light interpolation mask",
+            "flag_meanings": "measured interpolated",
+            "flag_values": [
+                0,
+                1
+            ],
+            "grid_mapping": "mapping",
+            "missing_value": 0,
+            "standard_name": "interpolated_value_mask"
+        },
+        "landice/.zarray": {
+            "chunks": [
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "|u1",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "landice/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "y",
+                "x"
+            ],
+            "description": "land ice mask, 0 = non-land-ice, 1 = land-ice",
+            "flag_meanings": "non-ice ice",
+            "flag_values": [
+                0,
+                1
+            ],
+            "grid_mapping": "mapping",
+            "missing_value": 255,
+            "standard_name": "land ice mask",
+            "url": "https://its-live-data.s3.amazonaws.com/autorift_parameters/v001/N46_0120m_landice.tif"
+        },
+        "mapping/.zarray": {
+            "chunks": [],
+            "compressor": null,
+            "dtype": "<i8",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [],
+            "zarr_format": 2
+        },
+        "mapping/.zattrs": {
+            "GeoTransform": "784192.5 120.0 0.0 3315847.5 0.0 -120.0",
+            "_ARRAY_DIMENSIONS": [],
+            "crs_wkt": "PROJCS[\"WGS 84 / UTM zone 46N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",93],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"32646\"]]",
+            "false_easting": 500000.0,
+            "false_northing": 0.0,
+            "geographic_crs_name": "WGS 84",
+            "grid_mapping_name": "transverse_mercator",
+            "horizontal_datum_name": "World Geodetic System 1984",
+            "inverse_flattening": 298.257223563,
+            "latitude_of_projection_origin": 0.0,
+            "longitude_of_central_meridian": 93.0,
+            "longitude_of_prime_meridian": 0.0,
+            "prime_meridian_name": "Greenwich",
+            "projected_crs_name": "WGS 84 / UTM zone 46N",
+            "reference_ellipsoid_name": "WGS 84",
+            "scale_factor_at_central_meridian": 0.9996,
+            "semi_major_axis": 6378137.0,
+            "semi_minor_axis": 6356752.314245179,
+            "spatial_ref": "PROJCS[\"WGS 84 / UTM zone 46N\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",93],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"32646\"]]"
+        },
+        "mid_date/.zarray": {
+            "chunks": [
+                352
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f8",
+            "fill_value": "NaN",
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "mid_date/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "calendar": "proleptic_gregorian",
+            "description": "midpoint of image 1 and image 2 acquisition date and time with granule's centroid longitude and latitude as microseconds",
+            "standard_name": "image_pair_center_date_with_time_separation",
+            "units": "days since 1970-01-01"
+        },
+        "mission_img1/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<U1",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "mission_img1/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "id of the mission that acquired image 1",
+            "standard_name": "image1_mission"
+        },
+        "mission_img2/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<U1",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "mission_img2/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "id of the mission that acquired image 2",
+            "standard_name": "image2_mission"
+        },
+        "roi_valid_percentage/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": "NaN",
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "roi_valid_percentage/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "percentage of pixels with a valid velocity estimate determined for the intersection of the full image pair footprint and the region of interest (roi) that defines where autoRIFT tried to estimate a velocity",
+            "standard_name": "region_of_interest_valid_pixel_percentage"
+        },
+        "satellite_img1/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<U2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "satellite_img1/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "id of the satellite that acquired image 1",
+            "standard_name": "image1_satellite"
+        },
+        "satellite_img2/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<U2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "satellite_img2/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "id of the satellite that acquired image 2",
+            "standard_name": "image2_satellite"
+        },
+        "sensor_img1/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<U3",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "sensor_img1/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "id of the sensor that acquired image 1",
+            "standard_name": "image1_sensor"
+        },
+        "sensor_img2/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<U3",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "sensor_img2/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "id of the sensor that acquired image 2",
+            "standard_name": "image2_sensor"
+        },
+        "stable_count_slow/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<u2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "stable_count_slow/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "number of valid pixels over slowest 25% of ice",
+            "standard_name": "stable_count_slow",
+            "units": "count"
+        },
+        "stable_count_stationary/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<u2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "stable_count_stationary/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "number of valid pixels over stationary or slow-flowing surfaces",
+            "standard_name": "stable_count_stationary",
+            "units": "count"
+        },
+        "stable_shift_flag/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "|u1",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "stable_shift_flag/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "flag for applying velocity bias correction: 0 = no correction; 1 = correction from overlapping stable surface mask (stationary or slow-flowing surfaces with velocity < 15 m/yr)(top priority); 2 = correction from slowest 25% of overlapping velocities (second priority)",
+            "standard_name": "stable_shift_flag"
+        },
+        "v/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<i2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "v/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "description": "velocity magnitude",
+            "grid_mapping": "mapping",
+            "missing_value": -32767,
+            "standard_name": "land_ice_surface_velocity",
+            "units": "meter/year"
+        },
+        "v_error/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<i2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "v_error/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "description": "velocity magnitude error",
+            "grid_mapping": "mapping",
+            "missing_value": -32767,
+            "standard_name": "velocity_error",
+            "units": "meter/year"
+        },
+        "va/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<i2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "va/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "description": "velocity in radar azimuth direction",
+            "grid_mapping": "mapping",
+            "missing_value": -32767
+        },
+        "va_error/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "va_error/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "error for velocity in radar azimuth direction",
+            "standard_name": "va_error",
+            "units": "meter/year"
+        },
+        "va_error_modeled/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "va_error_modeled/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "1-sigma error calculated using a modeled error-dt relationship",
+            "standard_name": "va_error_modeled",
+            "units": "meter/year"
+        },
+        "va_error_slow/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "va_error_slow/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "RMSE over slowest 25% of retrieved velocities",
+            "standard_name": "va_error_slow",
+            "units": "meter/year"
+        },
+        "va_error_stationary/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "va_error_stationary/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "RMSE over stable surfaces, stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
+            "standard_name": "va_error_stationary",
+            "units": "meter/year"
+        },
+        "va_stable_shift/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "va_stable_shift/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "applied va shift calibrated using pixels over stable or slow surfaces",
+            "standard_name": "va_stable_shift",
+            "units": "meter/year"
+        },
+        "va_stable_shift_slow/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "va_stable_shift_slow/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "va shift calibrated using valid pixels over slowest 25% of retrieved velocities",
+            "standard_name": "va_stable_shift_slow",
+            "units": "meter/year"
+        },
+        "va_stable_shift_stationary/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "va_stable_shift_stationary/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "va shift calibrated using valid pixels over stable surfaces,  stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
+            "standard_name": "va_stable_shift_stationary",
+            "units": "meter/year"
+        },
+        "vr/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<i2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "vr/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "description": "velocity in radar range direction",
+            "grid_mapping": "mapping",
+            "missing_value": -32767
+        },
+        "vr_error/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vr_error/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "error for velocity in radar range direction",
+            "standard_name": "vr_error",
+            "units": "meter/year"
+        },
+        "vr_error_modeled/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vr_error_modeled/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "1-sigma error calculated using a modeled error-dt relationship",
+            "standard_name": "vr_error_modeled",
+            "units": "meter/year"
+        },
+        "vr_error_slow/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vr_error_slow/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "RMSE over slowest 25% of retrieved velocities",
+            "standard_name": "vr_error_slow",
+            "units": "meter/year"
+        },
+        "vr_error_stationary/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vr_error_stationary/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "RMSE over stable surfaces, stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
+            "standard_name": "vr_error_stationary",
+            "units": "meter/year"
+        },
+        "vr_stable_shift/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vr_stable_shift/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "applied vr shift calibrated using pixels over stable or slow surfaces",
+            "standard_name": "vr_stable_shift",
+            "units": "meter/year"
+        },
+        "vr_stable_shift_slow/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vr_stable_shift_slow/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "vr shift calibrated using valid pixels over slowest 25% of retrieved velocities",
+            "standard_name": "vr_stable_shift_slow",
+            "units": "meter/year"
+        },
+        "vr_stable_shift_stationary/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vr_stable_shift_stationary/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "vr shift calibrated using valid pixels over stable surfaces,  stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
+            "standard_name": "vr_stable_shift_stationary",
+            "units": "meter/year"
+        },
+        "vx/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<i2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "vx/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "description": "velocity component in x direction",
+            "grid_mapping": "mapping",
+            "missing_value": -32767,
+            "standard_name": "land_ice_surface_x_velocity",
+            "units": "meter/year"
+        },
+        "vx_error/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vx_error/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "best estimate of x_velocity error: vx_error is populated according to the approach used for the velocity bias correction as indicated in \"stable_shift_flag\"",
+            "standard_name": "vx_error",
+            "units": "meter/year"
+        },
+        "vx_error_modeled/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vx_error_modeled/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "1-sigma error calculated using a modeled error-dt relationship",
+            "standard_name": "vx_error_modeled",
+            "units": "meter/year"
+        },
+        "vx_error_slow/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vx_error_slow/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "RMSE over slowest 25% of retrieved velocities",
+            "standard_name": "vx_error_slow",
+            "units": "meter/year"
+        },
+        "vx_error_stationary/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vx_error_stationary/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "RMSE over stable surfaces, stationary or slow-flowing surfaces with velocity < 15 meter/year identified from an external mask",
+            "standard_name": "vx_error_stationary",
+            "units": "meter/year"
+        },
+        "vx_stable_shift/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vx_stable_shift/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "applied vx shift calibrated using pixels over stable or slow surfaces",
+            "standard_name": "vx_stable_shift",
+            "units": "meter/year"
+        },
+        "vx_stable_shift_slow/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vx_stable_shift_slow/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "vx shift calibrated using valid pixels over slowest 25% of retrieved velocities",
+            "standard_name": "vx_stable_shift_slow",
+            "units": "meter/year"
+        },
+        "vx_stable_shift_stationary/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vx_stable_shift_stationary/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "vx shift calibrated using valid pixels over stable surfaces,  stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
+            "standard_name": "vx_stable_shift_stationary",
+            "units": "meter/year"
+        },
+        "vy/.zarray": {
+            "chunks": [
+                20000,
+                10,
+                10
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<i2",
+            "fill_value": null,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892,
+                37,
+                40
+            ],
+            "zarr_format": 2
+        },
+        "vy/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date",
+                "y",
+                "x"
+            ],
+            "description": "velocity component in y direction",
+            "grid_mapping": "mapping",
+            "missing_value": -32767,
+            "standard_name": "land_ice_surface_y_velocity",
+            "units": "meter/year"
+        },
+        "vy_error/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vy_error/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "best estimate of y_velocity error: vy_error is populated according to the approach used for the velocity bias correction as indicated in \"stable_shift_flag\"",
+            "standard_name": "vy_error",
+            "units": "meter/year"
+        },
+        "vy_error_modeled/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vy_error_modeled/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "1-sigma error calculated using a modeled error-dt relationship",
+            "standard_name": "vy_error_modeled",
+            "units": "meter/year"
+        },
+        "vy_error_slow/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vy_error_slow/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "RMSE over slowest 25% of retrieved velocities",
+            "standard_name": "vy_error_slow",
+            "units": "meter/year"
+        },
+        "vy_error_stationary/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vy_error_stationary/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "RMSE over stable surfaces, stationary or slow-flowing surfaces with velocity < 15 meter/year identified from an external mask",
+            "standard_name": "vy_error_stationary",
+            "units": "meter/year"
+        },
+        "vy_stable_shift/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vy_stable_shift/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "applied vy shift calibrated using pixels over stable or slow surfaces",
+            "standard_name": "vy_stable_shift",
+            "units": "meter/year"
+        },
+        "vy_stable_shift_slow/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vy_stable_shift_slow/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "vy shift calibrated using valid pixels over slowest 25% of retrieved velocities",
+            "standard_name": "vy_stable_shift_slow",
+            "units": "meter/year"
+        },
+        "vy_stable_shift_stationary/.zarray": {
+            "chunks": [
+                20000
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 2,
+                "cname": "zlib",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f4",
+            "fill_value": -32767.0,
+            "filters": null,
+            "order": "C",
+            "shape": [
+                47892
+            ],
+            "zarr_format": 2
+        },
+        "vy_stable_shift_stationary/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "mid_date"
+            ],
+            "description": "vy shift calibrated using valid pixels over stable surfaces,  stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
+            "standard_name": "vy_stable_shift_stationary",
+            "units": "meter/year"
+        },
+        "x/.zarray": {
+            "chunks": [
+                833
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f8",
+            "fill_value": "NaN",
+            "filters": null,
+            "order": "C",
+            "shape": [
+                40
+            ],
+            "zarr_format": 2
+        },
+        "x/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "x"
+            ],
+            "axis": "X",
+            "description": "x coordinate of projection",
+            "long_name": "x coordinate of projection",
+            "standard_name": "projection_x_coordinate",
+            "units": "metre"
+        },
+        "y/.zarray": {
+            "chunks": [
+                833
+            ],
+            "compressor": {
+                "blocksize": 0,
+                "clevel": 5,
+                "cname": "lz4",
+                "id": "blosc",
+                "shuffle": 1
+            },
+            "dtype": "<f8",
+            "fill_value": "NaN",
+            "filters": null,
+            "order": "C",
+            "shape": [
+                37
+            ],
+            "zarr_format": 2
+        },
+        "y/.zattrs": {
+            "_ARRAY_DIMENSIONS": [
+                "y"
+            ],
+            "axis": "Y",
+            "description": "y coordinate of projection",
+            "long_name": "y coordinate of projection",
+            "standard_name": "projection_y_coordinate",
+            "units": "metre"
+        }
+    },
+    "zarr_consolidated_format": 1
+}

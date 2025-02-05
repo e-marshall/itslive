@@ -1,0 +1,11 @@
+{
+    "_ARRAY_DIMENSIONS": [],
+    "coordinates": "crd_x crd_y",
+    "geometry_type": "polygon",
+    "grid_mapping": "spatial_ref",
+    "interior_ring": "interior_ring",
+    "node_coordinates": "x y",
+    "node_count": "node_count",
+    "part_node_count": "part_node_count",
+    "variable_name": "geometry"
+}

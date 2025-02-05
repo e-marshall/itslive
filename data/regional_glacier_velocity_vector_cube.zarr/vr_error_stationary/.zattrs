@@ -1,0 +1,12 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry",
+        "mid_date"
+    ],
+    "coordinates": "Area_km2 RGIId Slope_deg spatial_ref",
+    "description": "RMSE over stable surfaces, stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
+    "geometry": "geometry_container",
+    "grid_mapping": "spatial_ref",
+    "standard_name": "vr_error_stationary",
+    "units": "meter/year"
+}

@@ -1,0 +1,7 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry"
+    ],
+    "geometry": "geometry_container",
+    "grid_mapping": "spatial_ref"
+}

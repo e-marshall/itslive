@@ -1,0 +1,12 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry",
+        "mid_date"
+    ],
+    "coordinates": "Area_km2 RGIId Slope_deg spatial_ref",
+    "description": "vx shift calibrated using valid pixels over stable surfaces,  stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
+    "geometry": "geometry_container",
+    "grid_mapping": "spatial_ref",
+    "standard_name": "vx_stable_shift_stationary",
+    "units": "meter/year"
+}

@@ -1,0 +1,8 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "mid_date"
+    ],
+    "description": "error for velocity in radar range direction",
+    "standard_name": "vr_error",
+    "units": "meter/year"
+}

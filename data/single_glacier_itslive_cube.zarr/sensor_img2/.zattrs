@@ -1,0 +1,8 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "mid_date"
+    ],
+    "coordinates": "spatial_ref",
+    "description": "id of the sensor that acquired image 2",
+    "standard_name": "image2_sensor"
+}

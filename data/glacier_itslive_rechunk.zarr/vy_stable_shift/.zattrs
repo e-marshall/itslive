@@ -1,0 +1,8 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "mid_date"
+    ],
+    "description": "applied vy shift calibrated using pixels over stable or slow surfaces",
+    "standard_name": "vy_stable_shift",
+    "units": "meter/year"
+}

@@ -1,0 +1,8 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "mid_date"
+    ],
+    "description": "RMSE over stable surfaces, stationary or slow-flowing surfaces with velocity < 15 m/yr identified from an external mask",
+    "standard_name": "va_error_stationary",
+    "units": "meter/year"
+}

@@ -1,0 +1,12 @@
+{
+    "_ARRAY_DIMENSIONS": [
+        "geometry",
+        "mid_date"
+    ],
+    "coordinates": "Area_km2 RGIId Slope_deg spatial_ref",
+    "description": "vr shift calibrated using valid pixels over slowest 25% of retrieved velocities",
+    "geometry": "geometry_container",
+    "grid_mapping": "spatial_ref",
+    "standard_name": "vr_stable_shift_slow",
+    "units": "meter/year"
+}
