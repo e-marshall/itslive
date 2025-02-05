@@ -1,9 +1,9 @@
 # Introduction
 
-:::{important}
+```{important}
 Feb 5, 2025
 This tutorial is currently undergoing revisions. Please check back soon
-:::
+```
 
 This tutorial will demonstrate how to access and work with with multi-dimensional remote sensing data using the python package and open source project `xarray`. This example will use a glacier surface velocity dataset called [ITS_LIVE](https://its-live.jpl.nasa.gov/).
 
