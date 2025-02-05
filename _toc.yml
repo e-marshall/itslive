@@ -2,7 +2,7 @@
 # Learn more at https://jupyterbook.org/customize/toc.html
 
 format: jb-book
-root: intro
+root: mds/intro
 chapters:
 - file: nbs/software_and_data.ipynb
 - file: nbs/1_accessing_itslive_s3_data.ipynb
