@@ -383,12 +383,22 @@ This tutorial is currently undergoing revisions. Please check back soon</p>
 <p>This tutorial will demonstrate how to access and work with with multi-dimensional remote sensing data using the python package and open source project <code class="docutils literal notranslate"><span class="pre">xarray</span></code>. This example will use a glacier surface velocity dataset called <a class="reference external" href="https://its-live.jpl.nasa.gov/">ITS_LIVE</a>.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
-<p>This tutorial contains a number of jupyter notebooks demonstrating various steps of a typical workflow for accessing, processing and analyzing remote sensing data. The structure is as follows:
-     1. Data access (accessing ITS_LIVE data stored in s3 buckets on Amazon Web Services (AWS))
-     2. Processing and analysis at the scale of an individual glacier
-         a. Clipping large raster to a smaller area of interest and preliminary dataset inspection
-         b. Using xarray for data analysis and visualization
-     3. Processing and analysis of a group of glaciers within a sub-region</p>
+<p>This tutorial contains a number of jupyter notebooks demonstrating various steps of a typical workflow for accessing, processing and analyzing remote sensing data. The structure is as follows:</p>
+<ol class="arabic simple">
+<li><p>Data access,</p>
+<ul class="simple">
+<li><p>Accessing ITS_LIVE data stored in s3 buckets on Amazon Web Services (AWS),</p></li>
+</ul>
+</li>
+<li><p>Manpulation and organization of a larger-than-memory dataset,</p></li>
+<li><p>Processing and analysis at the scale of an individual glacier:</p>
+<ul class="simple">
+<li><p>a. Clipping large raster to a smaller area of interest and preliminary dataset inspection</p></li>
+<li><p>b. Using xarray for data analysis and visualization</p></li>
+</ul>
+</li>
+<li><p>Processing and analysis of a group of glaciers within a sub-region using vector data cubes</p></li>
+</ol>
 </section>
 <section id="learning-objectives">
 <h2>Learning objectives<a class="headerlink" href="#learning-objectives" title="Permalink to this headline">#</a></h2>
@@ -397,16 +407,14 @@ This tutorial is currently undergoing revisions. Please check back soon</p>
 <li><p><strong>Load ITS_LIVE data from AWS S3 buckets</strong>
 <em>Lazily load cloud datasets using xarray, dask and zarr</em></p></li>
 <li><p><strong>Convert vector polygons to raster</strong>
-<em>Data manipulation with geopandas, xarray and geocube</em></p></li>
+<em>Data manipulation with <a class="reference external" href="https://geopandas.org/en/stable/">GeoPandas</a>, <a class="reference external" href="https://docs.xarray.dev/en/stable/">Xarray</a>, <a class="reference external" href="https://corteva.github.io/rioxarray/stable/">rioxarray</a>, and <a class="reference external" href="https://xvec.readthedocs.io/en/stable/">Xvec</a></em></p></li>
 <li><p><strong>Inspect large, multi-dimensional dataset</strong>
 <em>Use xarray label-based and index-based selection methods</em></p></li>
 <li><p><strong>Analyze glacier surface velocity data at multiple spatial scales</strong>
 <em>Use rioxarray’s .clip() to subset data to scale of individual glacier</em>
-<em>Use geocube, xarray’s <code class="docutils literal notranslate"><span class="pre">.groupby()</span></code> and pandas dataframes to compute reductions on groups of glaciers</em></p></li>
+<em>Use Xvec, xarray’s <code class="docutils literal notranslate"><span class="pre">.groupby()</span></code> and pandas dataframes to compute reductions on groups of glaciers</em></p></li>
 <li><p><strong>Examine dense time series of surface velocity data</strong>
-<em>Leverage xarray tools such as <code class="docutils literal notranslate"><span class="pre">.resample()</span></code>, <code class="docutils literal notranslate"><span class="pre">.map()</span></code> and <code class="docutils literal notranslate"><span class="pre">.reduce()</span></code></em></p></li>
-<li><p><strong>Construct seasonal averages of glacier velocity</strong>
-<em>Use’s xarray’s groupby and functionality</em></p></li>
+<em>Leverage xarray tools such as <code class="docutils literal notranslate"><span class="pre">.resample()</span></code>, and <code class="docutils literal notranslate"><span class="pre">.reduce()</span></code></em></p></li>
 </ul>
 </section>
 <section id="tutorial-structure">
