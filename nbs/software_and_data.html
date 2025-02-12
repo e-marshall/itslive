@@ -8,14 +8,6 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<meta property="og:title" content="Software and Data" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://e-marshall.github.io/itslive/nbs/software_and_data.html" />
-<meta property="og:site_name" content="Python" />
-<meta property="og:description" content="On this page you’ll find information about the computing environment and datasets that we’ll be using in this tutorial. A. Software Packages: Below, you’lll see a list of the python libraries we’ll..." />
-<meta property="og:image" content="https://e-marshall.github.io/itslive/_static/itslive_explore_img.png" />
-<meta property="og:image:alt" content="Python" />
-<meta name="description" content="On this page you’ll find information about the computing environment and datasets that we’ll be using in this tutorial. A. Software Packages: Below, you’lll see a list of the python libraries we’ll..." />
 
     <title>Software and Data &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
   
@@ -71,7 +63,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'nbs/software_and_data';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="1. Accessing cloud-hosted ITS_LIVE data" href="1_accessing_itslive_s3_data.html" />
+    <link rel="next" title="A. Read ITS_LIVE data from AWS S3 using Xarray" href="1_accessing_itslive_s3_data.html" />
     <link rel="prev" title="Introduction" href="../intro.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
@@ -116,6 +108,13 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">🚧 Feb 2025 - This book is under construction! 🚧
+</div>
+  </div>
+
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
     </nav>
@@ -159,10 +158,18 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Software and Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="1_accessing_itslive_s3_data.html">1. Accessing cloud-hosted ITS_LIVE data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2_data_organization_manipulation.html">2. Data organization and manipulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3_exploratory_data_analysis_single.html">3. Exploratory data analysis – single glacier</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4_exploratory_data_analysis_group.html">4. Exploratory data analysis - multiple glaciers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_accessing_itslive_s3_data.html">A. Read ITS_LIVE data from AWS S3 using Xarray</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="2_data_organization_manipulation.html">A. Read and organize gridded ice velocity (raster) data</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="3_exploratory_data_analysis_single.html">A. Data exploration</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="4_exploratory_data_analysis_group.html">A. Read and organize data</a></li>
+
+
 <li class="toctree-l1"><a class="reference internal" href="../Summary.html">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Acknowledgments.html">Acknowledgments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Contributing.html">Contributing and Seeking help</a></li>
@@ -208,37 +215,6 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="header-article-item">
 
 <div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-launch-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
-    <i class="fas fa-rocket"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://mybinder.org/v2/gh/e-marshall/itslive/master?urlpath=lab/tree/nbs/software_and_data.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch onBinder"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  
-    <img src="../_static/images/logo_binder.svg">
-  </span>
-<span class="btn__text-container">Binder</span>
-</a>
-</li>
-      
-  </ul>
-</div>
-
 
 
 
@@ -413,7 +389,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="software-and-data">
+  <section class="tex2jax_ignore mathjax_ignore" id="software-and-data">
 <h1>Software and Data<a class="headerlink" href="#software-and-data" title="Permalink to this headline">#</a></h1>
 <p>On this page you’ll find information about the computing environment and datasets that we’ll be using in this tutorial.</p>
 <section id="a-software-packages">
@@ -973,14 +949,14 @@ if (window.Jupyter !== undefined) {
 <h2>B. Computational Environment<a class="headerlink" href="#b-computational-environment" title="Permalink to this headline">#</a></h2>
 <section id="running-tutorial-on-the-cloud">
 <h3>Running tutorial on the cloud<a class="headerlink" href="#running-tutorial-on-the-cloud" title="Permalink to this headline">#</a></h3>
-<p>This link will launch a preconfigured jupyterlab environment on mybinder.org:</p>
+<p>This link will launch a preconfigured jupyterlab environment on <a class="reference external" href="http://mybinder.org">mybinder.org</a>:</p>
 <p><a class="reference external" href="https://mybinder.org/v2/gh/e-marshall/itslive/HEAD?labpath=accessing_s3_data.ipynb">https://mybinder.org/v2/gh/e-marshall/itslive/HEAD?labpath=accessing_s3_data.ipynb</a></p>
 </section>
 <section id="running-tutorial-material-locally">
 <h3>Running tutorial material locally<a class="headerlink" href="#running-tutorial-material-locally" title="Permalink to this headline">#</a></h3>
 <p>To run the notebooks contained in this tutorial on your local machine</p>
 <p>create the <code class="docutils literal notranslate"><span class="pre">itslivetools_env</span></code> conda environment (<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">create</span> <span class="pre">-f</span> <span class="pre">environment-unpinned.yml</span></code>) based on the <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file <a class="reference external" href="https://github.com/e-marshall/mynewbook/blob/master/environment.yml">here</a>. This should work on any platform (linux, osx, windows) and will install the latest versions of all dependencies.</p>
-<p>Alternatively, the code repository for this tutorial (https://github.com/e-marshall/itslive) also contains “lock” files for Linux (conda-linux-64.lock.yml) and MacOS (conda-osx-64.lock.yml) that pin exact versions of all required python packages for a <a class="reference external" href="https://mybinder.readthedocs.io/en/latest/tutorials/reproducibility.html">reproducible computing environment</a>.</p>
+<p>Alternatively, the code repository for this tutorial (<a class="github reference external" href="https://github.com/e-marshall/itslive">e-marshall/itslive</a>) also contains “lock” files for Linux (conda-linux-64.lock.yml) and MacOS (conda-osx-64.lock.yml) that pin exact versions of all required python packages for a <a class="reference external" href="https://mybinder.readthedocs.io/en/latest/tutorials/reproducibility.html">reproducible computing environment</a>.</p>
 </section>
 </section>
 <section id="c-data-used-in-this-chapter">
@@ -1046,7 +1022,7 @@ We will read in just one region of the RGI (region 15, SouthAsiaEast). RGI data 
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">1. Accessing cloud-hosted ITS_LIVE data</p>
+        <p class="prev-next-title">A. Read ITS_LIVE data from AWS S3 using Xarray</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

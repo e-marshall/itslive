@@ -8,14 +8,6 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-<meta property="og:title" content="Summary" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://e-marshall.github.io/itslive/Summary.html" />
-<meta property="og:site_name" content="Python" />
-<meta property="og:description" content="This tutorial demonstrated how to access, inspect and perform exploratory data analysis on a cloud-hosted dataset using xarray and various other python tools. Thank you to Scott Henderson, Deepak C..." />
-<meta property="og:image" content="https://e-marshall.github.io/itslive/_static/itslive_explore_img.png" />
-<meta property="og:image:alt" content="Python" />
-<meta name="description" content="This tutorial demonstrated how to access, inspect and perform exploratory data analysis on a cloud-hosted dataset using xarray and various other python tools. Thank you to Scott Henderson, Deepak C..." />
 
     <title>Summary &#8212; Using xarray to examine cloud-based glacier surface velocity data</title>
   
@@ -72,7 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Acknowledgments" href="Acknowledgments.html" />
-    <link rel="prev" title="4. Exploratory data analysis - multiple glaciers" href="nbs/4_exploratory_data_analysis_group.html" />
+    <link rel="prev" title="A. Read and organize data" href="nbs/4_exploratory_data_analysis_group.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -116,6 +108,13 @@ const thebe_selector_output = ".output, .cell_output"
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+
+  <div class="bd-header-announcement container-fluid bd-header-announcement">
+    <div class="bd-header-announcement__content">🚧 Feb 2025 - This book is under construction! 🚧
+</div>
+  </div>
+
   
     <nav class="bd-header navbar navbar-expand-lg bd-navbar">
     </nav>
@@ -159,10 +158,18 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="nbs/software_and_data.html">Software and Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nbs/1_accessing_itslive_s3_data.html">1. Accessing cloud-hosted ITS_LIVE data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nbs/2_data_organization_manipulation.html">2. Data organization and manipulation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nbs/3_exploratory_data_analysis_single.html">3. Exploratory data analysis – single glacier</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nbs/4_exploratory_data_analysis_group.html">4. Exploratory data analysis - multiple glaciers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nbs/1_accessing_itslive_s3_data.html">A. Read ITS_LIVE data from AWS S3 using Xarray</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="nbs/2_data_organization_manipulation.html">A. Read and organize gridded ice velocity (raster) data</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="nbs/3_exploratory_data_analysis_single.html">A. Data exploration</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="nbs/4_exploratory_data_analysis_group.html">A. Read and organize data</a></li>
+
+
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Summary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Acknowledgments.html">Acknowledgments</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Contributing.html">Contributing and Seeking help</a></li>
@@ -362,7 +369,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="summary">
+  <section class="tex2jax_ignore mathjax_ignore" id="summary">
 <h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">#</a></h1>
 <p>This tutorial demonstrated how to access, inspect and perform exploratory data analysis on a cloud-hosted dataset using <strong>xarray</strong> and various other python tools.</p>
 <p>Thank you to Scott Henderson, Deepak Cherian, Jessica Scheick and Kevin Paul for their insight and guidance developing these examples.</p>
@@ -407,7 +414,7 @@ document.write(`
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">4. Exploratory data analysis - multiple glaciers</p>
+        <p class="prev-next-title">A. Read and organize data</p>
       </div>
     </a>
     <a class="right-next"
