@@ -3,51 +3,158 @@
 
 title: Using xarray to examine cloud-based glacier surface velocity data
 author: emma marshall
-#logo: logo.png
 
-#only want to include files listed in toc 
-only_build_toc_files: true
+collapse_inactive_sections: true
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: 'force'
+  execute_notebooks: cache #'force'
   allow_errors: true
   timeout: 1500
 
-#enable parsing of latex-stype math blocks
-parse:
-    myst_enable_extensions:
-     - amsmath
-
-# Define the name of the latex output file for PDF builds
-latex:
-  latex_documents:
-    targetname: book.tex
-
-# Add a bibtex file so that we can create citations
 #bibtex_bibfiles:
 #  - references.bib
+
+only_build_toc_files: true
 
 # Information about where the book exists on the web
 repository:
   url: https://github.com/e-marshall/itslive  # Online location of your book
   branch: master  # Which branch of the repository should be used when creating links (optional)
 
-launch_buttons:
-  binderhub_url: "https://mybinder.org"
-  notebook_interface: "jupyterlab" 
+# Define the name of the latex output file for PDF builds
+#latex:
+#  latex_documents:
+#    targetname: book.tex
+
+
+#launch_buttons:
+#  binderhub_url: "https://mybinder.org"
+#  notebook_interface: "jupyterlab"
 
 # Add GitHub buttons to your book
 # See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
 html:
   use_issues_button: true
   use_repository_button: true
+  announcement: >
+    🚧 Feb 2025 - This book is under construction! 🚧
+
+jupyter:
+  notebook_metadata_filter: all
+
+parse:
+  myst_enable_extensions:
+    - amsmath
+    - colon_fence
+    - deflist
+    - dollarmath
+    - html_admonition
+    - html_image
+    - linkify
+    - replacements
+    - smartquotes
+    - substitution
 
 sphinx:
-  extra_extensions:
-  - sphinxext.opengraph
   config:
-    ogp_site_url: "https://e-marshall.github.io/itslive/intro.html"
-    ogp_image: "https://e-marshall.github.io/itslive/_static/itslive_explore_img.png"
-    ogp_description_length: 200
+    #myst_heading_anchors: True
+    myst_heading_anchors: 3
+    myst_enable_extensions:
+    - amsmath
+    - colon_fence
+    - deflist
+    - dollarmath
+    - html_admonition
+    - html_image
+    - linkify
+    - replacements
+    - smartquotes
+    - substitution
+
+    myst_substitutions:
+      title_its_nb1: "# 1. Accessing cloud-hosted ITS_LIVE data"
+      title_its_nb2: "# 2. Data organization and manipulation"
+      title_its_nb3: "# 3. Exploratory data analysis of a single glacier"
+      title_its_nb4: "# 4. Exploratory data analysis of multiple glaciers"
+
+      intro: "## Introduction"
+      overview: "### Overview"
+      outline: "### Outline"
+      learning_goals: "### Learning goals"
+      concepts: "#### Concepts"
+      techniques: "#### Techniques"
+      conclusion: "## Conclusion"
+      break: "----"
+
+      #nb1
+      #can't get subs + links to headings to work
+      # so not using lettered headings for now
+      # but still using numbered subsections (a1_...)
+      a_its_nb1: "A. Read ITS_LIVE data from AWS S3 using Xarray"
+      a1_its_nb1: "1) Overview of ITS_LIVE data storage and catalog"
+      a2_its_nb1: "2) Read ITS_LIVE data from S3 storage into memory"
+      a3_its_nb1: "3) Check spatial footprint of data"
+
+      b_its_nb1: "B. Query ITS_LIVE catalog"
+      b1_its_nb1: "1) Find ITS_LIVE granule for a point of interest"
+      b2_its_nb1: "2) Read + visualize spatial footprint of ITS_LIVE data"
+
+      c_its_nb1: "C. Overview of ITS_LIVE data"
+
+      #nb2
+      a_its_nb2: "A. Read and organize gridded ice velocity (raster) data"
+      a1_its_nb2: "1) Compare approaches for reading larger-than-memory data"
+      a2_its_nb2: "2) Arrange dataset in chronological order"
+
+      b_its_nb2: "B. Incorporate glacier outline (vector) data"
+      b1_its_nb2: "1) Read and reproject vector data"
+      b2_its_nb2: "2) Crop vector data to spatial extent of raster data"
+      b3_its_nb2: "3) Optional: Handle different geometry types when visualizing vector data"
+
+      c_its_nb2: "C. Join raster and vector data - single glacier"
+      c1_its_nb2: "1) Crop ITS_LIVE granule to a single glacier outline"
+      c2_its_nb2: "2) Write clipped object to file"
+
+      #nb3
+      a_its_nb3: "A. Data Exploration"
+      a1_its_nb3: "1) Load raster data into memory and visualize with vector data"
+      a2_its_nb3: "2) Examine data coverage"
+      a3_its_nb3: "3) Break down by sensor"
+      a4_its_nb3: "4) Combine sensor-specific subset"
+
+      b_its_nb3: "B. Examine velocity variability"
+      b1_its_nb3: "1) Histograms and summary statistics"
+      b2_its_nb3: "2) Spatial velocity variability"
+      b3_its_nb3: "3) Temporal velocity variability"
+
+      c_its_nb3: "C. Dimensional computations"
+      c1_its_nb3: "1) Temporal resampling"
+      c2_its_nb3: "2) Grouped analysis by season"
+
+      #nb4
+      a_its_nb4: "A. Read and organize data"
+      a1_its_nb4: "1) Raster data"
+      a2_its_nb4: "2) Vector data"
+
+      b_its_nb4: "B. Combine raster and vector to create a vector data cube"
+      b1_its_nb4: "1) Make a vector data cube"
+      b2_its_nb4: "2) Add attribute data to vector cube"
+      b3_its_nb4: "3) Write vector cube to disk"
+
+      c_its_nb4: "C. Data visualization"
+      c1_its_nb4: "1) Read vector data cube into memory"
+      c2_its_nb4: "2) Visualize velocity data"
+      c3_its_nb4: "3) Visualize associations between velocity and attribute data"
+
+
+
+
+
+  #extra_extensions:
+  #- sphinxext.opengraph
+  #config:
+  #  ogp_site_url: "https://e-marshall.github.io/itslive/intro.html"
+  #  ogp_image: "https://e-marshall.github.io/itslive/_static/itslive_explore_img.png"
+  #  ogp_description_length: 200
