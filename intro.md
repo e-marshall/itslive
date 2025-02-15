@@ -5,14 +5,14 @@ Feb 5, 2025
 This tutorial is currently undergoing revisions. Please check back soon
 ```
 
-This tutorial will demonstrate how to access and work with with multi-dimensional remote sensing data using the python package and open source project `xarray`. This example will use a glacier surface velocity dataset called [ITS_LIVE](https://its-live.jpl.nasa.gov/).
+This tutorial will demonstrate how to access and work with multi-dimensional remote sensing data using the open-source Python package `xarray`. We will use a glacier surface velocity dataset called [ITS_LIVE](https://its-live.jpl.nasa.gov/) to demonstrate scientific analysis that uses both raster data and vector geometries.
 
 ## Overview
 
-This tutorial contains a number of jupyter notebooks demonstrating various steps of a typical workflow for accessing, processing and analyzing remote sensing data. The structure is as follows:
+This tutorial contains a number of Jupyter notebooks demonstrating various steps of a typical workflow for accessing, processing and analyzing remote sensing data:
 1) Data access,
     - Accessing ITS_LIVE data stored in s3 buckets on Amazon Web Services (AWS),
-2) Manpulation and organization of a larger-than-memory dataset,
+2) Manipulation and organization of a larger-than-memory dataset,
 2) Processing and analysis at the scale of an individual glacier:
     - a. Clipping large raster to a smaller area of interest and preliminary dataset inspection
     - b. Using xarray for data analysis and visualization

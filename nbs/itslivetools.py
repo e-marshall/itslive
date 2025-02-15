@@ -5,7 +5,7 @@ import xarray as xr
 from shapely.geometry import Point, Polygon
 
 
-def read_in_s3(http_url: str, chunks_arg: Union[None, str, dict] = "auto") -> xr.Dataset:
+def read_in_s3(http_url: str, chunks: Union[None, str, dict] = "auto") -> xr.Dataset:
     """
     Reads a zarr datacube given an S3 URL using
     xarray and returns it as a xr.Dataset.
@@ -23,20 +23,7 @@ def read_in_s3(http_url: str, chunks_arg: Union[None, str, dict] = "auto") -> xr
     xarray.Dataset
         The dataset loaded from the given URL.
     """
-
-    if chunks_arg is not None:
-
-        datacube = xr.open_dataset(
-            http_url,
-            engine="zarr",
-            # storage_options={'anon':True},
-            chunks=chunks_arg,
-        )
-    elif chunks_arg is None:
-
-        datacube = xr.open_dataset(http_url, engine="zarr")
-
-    return datacube
+    return xr.open_dataset(http_url, chunks=chunks, engine="zarr", decode_coords="all", decode_timedelta=False)
 
 
 def get_bounds_polygon(input_xr: xr.Dataset) -> gpd.GeoDataFrame:
